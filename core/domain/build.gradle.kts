@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tokodizital.jajanmania.ui"
+    namespace = "com.tokodizital.jajanmania.core.domain"
     compileSdk = 33
 
     defaultConfig {
@@ -30,32 +30,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-    buildFeatures {
-        compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.4.3"
-    }
-    packaging {
-        resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-        }
-    }
 }
 
 dependencies {
 
-    implementation(project(":core:domain"))
-
-    api("androidx.core:core-ktx:1.9.0")
-    api("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    api("androidx.activity:activity-compose:1.7.2")
-    api(platform("androidx.compose:compose-bom:2023.03.00"))
-    api("androidx.compose.ui:ui")
-    api("androidx.compose.ui:ui-graphics")
-    api("androidx.compose.ui:ui-tooling-preview")
-    api("androidx.compose.material3:material3")
-
+    implementation("androidx.core:core-ktx:1.9.0")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
