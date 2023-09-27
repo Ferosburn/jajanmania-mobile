@@ -16,3 +16,5 @@ dependencyResolutionManagement {
 rootProject.name = "Jajan Mania"
 include(":app")
 include(":ui")
+include(":customer:home")
+include(":customer:profile")
