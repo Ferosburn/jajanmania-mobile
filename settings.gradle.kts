@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Jajan Mania"
 include(":app")
+include(":ui")
