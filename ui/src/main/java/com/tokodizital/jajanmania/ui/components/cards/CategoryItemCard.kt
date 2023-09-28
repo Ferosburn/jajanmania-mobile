@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,6 +22,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
+import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
 fun CategoryItemCard() {
@@ -39,16 +41,14 @@ fun CategoryItemCard() {
                 .fillMaxSize()
         ) {
             Column {
-                Box(
-                    modifier = Modifier.clip(RoundedCornerShape(8.dp))
-                ) {
-                    Image(
-                        painter = painterResource(R.drawable.placeholder),
-                        contentDescription = "placeholder",
-                        modifier = Modifier.height(120.dp),
-                        contentScale = ContentScale.Crop
-                    )
-                }
+                Image(
+                    painter = painterResource(R.drawable.placeholder),
+                    contentDescription = "placeholder",
+                    modifier = Modifier
+                        .height(120.dp)
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "Title")
             }
@@ -62,5 +62,9 @@ fun CategoryItemCard() {
 @Preview
 @Composable
 private fun PreviewCategoryItemCard() {
-    CategoryItemCard()
+    JajanManiaTheme {
+        Surface {
+            CategoryItemCard()
+        }
+    }
 }

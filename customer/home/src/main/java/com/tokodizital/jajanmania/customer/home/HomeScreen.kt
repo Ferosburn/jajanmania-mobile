@@ -62,7 +62,11 @@ private fun CategoryCollection() {
 @Preview
 @Composable
 fun PreviewHomeScreen() {
-    HomeScreen()
+    JajanManiaTheme {
+        Surface {
+            HomeScreen()
+        }
+    }
 }
 
 @Preview
@@ -78,11 +82,19 @@ private fun PreviewHomeContent() {
 @Preview
 @Composable
 private fun JajanManiaHomeAppBarPreview() {
-    HomeTopAppBar()
+    JajanManiaTheme {
+        Surface {
+            HomeTopAppBar()
+        }
+    }
 }
 
 @Preview
 @Composable
 private fun CategoryItemPreview() {
-    CategoryItemCard()
+    JajanManiaTheme {
+        Surface {
+            CategoryItemCard()
+        }
+    }
 }
