@@ -32,10 +32,12 @@ fun ProfileScreen(
                 .padding(all = 32.dp),
             contentAlignment = Alignment.Center,
         ) {
-            Text(text = "Welcome to profile screen customer!")
+            Text(text = "Welcome to customer!")
         }
     }
 }
+
+
 
 @ExperimentalMaterial3Api
 @Preview
