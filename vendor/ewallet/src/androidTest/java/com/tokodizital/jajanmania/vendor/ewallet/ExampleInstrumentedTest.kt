@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.home
+package com.tokodizital.jajanmania.vendor.ewallet
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -17,6 +17,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.tokodizital.jajanmania.vendor.home.test", appContext.packageName)
+        assertEquals("com.tokodizital.jajanmania.vendor.ewallet.test", appContext.packageName)
     }
 }
