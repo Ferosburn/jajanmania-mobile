@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.ui
+package com.tokodizital.jajanmania.vendor.shop
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

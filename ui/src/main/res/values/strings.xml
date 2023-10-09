@@ -5,4 +5,5 @@
     <string name="label_history">Riwayat</string>
     <string name="label_manage_shop">Kelola Toko</string>
     <string name="total_balance_test">Total Balance</string>
+    <string name="label_save">Simpan</string>
 </resources>

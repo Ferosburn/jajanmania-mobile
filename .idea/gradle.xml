@@ -24,6 +24,7 @@
             <option value="$PROJECT_DIR$/vendor/account" />
             <option value="$PROJECT_DIR$/vendor/ewallet" />
             <option value="$PROJECT_DIR$/vendor/home" />
+            <option value="$PROJECT_DIR$/vendor/shop" />
             <option value="$PROJECT_DIR$/vendor/transaction" />
           </set>
         </option>
