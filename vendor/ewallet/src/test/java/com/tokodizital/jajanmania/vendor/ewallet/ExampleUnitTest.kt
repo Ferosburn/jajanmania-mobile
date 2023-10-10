@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.transaction
+package com.tokodizital.jajanmania.vendor.ewallet
 
 import org.junit.Assert.assertEquals
 import org.junit.Test

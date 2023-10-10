@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/domain" />
@@ -21,6 +22,7 @@
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/vendor" />
             <option value="$PROJECT_DIR$/vendor/account" />
+            <option value="$PROJECT_DIR$/vendor/ewallet" />
             <option value="$PROJECT_DIR$/vendor/home" />
             <option value="$PROJECT_DIR$/vendor/transaction" />
           </set>
