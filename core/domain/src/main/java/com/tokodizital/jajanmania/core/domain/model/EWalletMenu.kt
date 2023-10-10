@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.domain.entity
+package com.tokodizital.jajanmania.core.domain.model
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

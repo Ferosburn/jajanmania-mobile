@@ -1,9 +1,11 @@
 package com.tokodizital.jajanmania.vendor.shop.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -16,22 +18,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.tokodizital.jajanmania.core.domain.model.Jajan
+import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseExtendedFloatingActionButton
+import com.tokodizital.jajanmania.ui.components.vendor.JajanItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
-import com.tokodizital.jajanmania.ui.R
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun ShopScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    listJajanan: List<Jajan> = emptyList()
 ) {
-
-    val listJajanan = remember {
-        emptyList<String>()
-    }
-
     Scaffold(
         topBar = {
             DetailTopAppBar(title = "Kelola Toko")
@@ -46,7 +46,6 @@ fun ShopScreen(
         modifier = modifier
     ) { paddingValues ->
         LazyColumn(
-            contentPadding = PaddingValues(start = 20.dp, top = 16.dp, end = 20.dp),
             modifier = Modifier.padding(paddingValues)
         ) {
             stickyHeader {
@@ -55,14 +54,19 @@ fun ShopScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color(0xFF000000),
+                    modifier = Modifier.padding(start = 20.dp, top = 16.dp, end = 20.dp)
                 )
             }
             if (listJajanan.isEmpty()) {
                 item {
                     EmptyShopContent(
-                        modifier = Modifier.padding(top = 62.dp)
+                        modifier = Modifier.padding(start = 20.dp, top = 62.dp, end = 20.dp)
                     )
                 }
+            }
+            item { Spacer(modifier = Modifier.height(8.dp)) }
+            items(items = listJajanan, key = { it.id }) {
+                JajanItem(jajan = it, onClick = {})
             }
         }
     }
@@ -74,10 +78,37 @@ fun ShopScreen(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewShopScreen() {
+fun PreviewEmptyShopScreen() {
     JajanManiaTheme {
         Surface {
             ShopScreen()
         }
     }
 }
+
+@ExperimentalFoundationApi
+@ExperimentalMaterial3Api
+@Preview
+@Composable
+fun PreviewFilledShopScreen() {
+    JajanManiaTheme {
+        Surface {
+            val listJajanan: List<Jajan> = remember {
+                (1..10).map {
+                    Jajan(
+                        id = it,
+                        vendorId = it,
+                        name = "Soto",
+                        category = "Makanan Kuah",
+                        price = 120000L,
+                        image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    )
+                }
+            }
+            ShopScreen(
+                listJajanan = listJajanan
+            )
+        }
+    }
+}
+

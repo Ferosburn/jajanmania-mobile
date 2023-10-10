@@ -46,6 +46,7 @@ android {
 dependencies {
 
     implementation(project(":core:domain"))
+    implementation(project(":common"))
 
     api("androidx.core:core-ktx:1.9.0")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
@@ -55,6 +56,8 @@ dependencies {
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
+
+    api("io.coil-kt:coil-compose:2.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
