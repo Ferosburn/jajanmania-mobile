@@ -1,27 +1,13 @@
 package com.tokodizital.jajanmania.customer.profile
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.Email
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material3.Button
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,17 +17,23 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
+import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.cards.CircleImageCard
-import com.tokodizital.jajanmania.ui.components.textfields.OutlinedTextFieldWithLabel
+import com.tokodizital.jajanmania.ui.components.textfields.BaseAutoCompleteTextField
+import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
+import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextFieldType
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
@@ -54,16 +46,19 @@ fun EditProfileScreen(
         modifier = modifier
     ) { paddingValues ->
 
-        val genderList = listOf("Pilih Jenis Kelamin", "Laki - laki", "Perempuan")
-        var selectedGender = genderList[0]
+        val focusManager = LocalFocusManager.current
+        val genderList = remember {
+            listOf(
+                "Laki - laki",
+                "Perempuan"
+            )
+        }
 
-        var profileName = rememberSaveable { mutableStateOf("Elon Musk") }
-        var profilePhone = rememberSaveable { mutableStateOf("") }
-        var profileEmail = rememberSaveable { mutableStateOf("") }
-        var profileAddress = rememberSaveable { mutableStateOf("") }
-        var profileGender = rememberSaveable { mutableStateOf(selectedGender) }
-
-        var expanded = rememberSaveable { mutableStateOf(false) }
+        var profileName by remember { mutableStateOf("") }
+        var profilePhone by remember { mutableStateOf("") }
+        var profileEmail by remember { mutableStateOf("") }
+        var profileAddress by remember { mutableStateOf("") }
+        var profileGender by remember { mutableStateOf("") }
 
         Box(
             modifier = Modifier
@@ -105,87 +100,60 @@ fun EditProfileScreen(
                     modifier = Modifier.padding(16.dp)
                 ) {
 
-                    OutlinedTextFieldWithLabel(
-                        value = profileName.value,
-                        onValueChange = {profileName.value = it},
+                    BaseOutlinedTextField(
+                        value = profileName,
+                        onValueChanged = { profileName = it},
+                        modifier = Modifier.fillMaxWidth(),
                         label = "Nama",
-                        inputType = "basic",
-                        leadingIcon = Icons.Outlined.AccountCircle,
-                        modifier = Modifier.fillMaxWidth()
+                        placeholder = "Masukan nama",
+                        type = BaseOutlinedTextFieldType.WithClearIcon
                     )
-                    OutlinedTextFieldWithLabel(
-                        value = profilePhone.value,
-                        onValueChange = {profilePhone.value = it},
+                    BaseOutlinedTextField(
+                        value = profilePhone,
+                        onValueChanged = { profilePhone = it},
+                        modifier = Modifier.fillMaxWidth(),
                         label = "No. Telepon",
-                        inputType = "basic",
-                        leadingIcon = Icons.Outlined.Call,
-                        modifier = Modifier.fillMaxWidth()
+                        placeholder = "Masukan nomor telepon",
+                        type = BaseOutlinedTextFieldType.WithClearIcon
                     )
-                    OutlinedTextFieldWithLabel(
-                        value = profileEmail.value,
-                        onValueChange = {profileEmail.value = it},
+                    BaseOutlinedTextField(
+                        value = profileEmail,
+                        onValueChanged = { profileEmail = it},
+                        modifier = Modifier.fillMaxWidth(),
                         label = "Email",
-                        inputType = "basic",
-                        leadingIcon = Icons.Outlined.Email,
-                        modifier = Modifier.fillMaxWidth()
+                        placeholder = "Masukan email",
+                        type = BaseOutlinedTextFieldType.WithClearIcon
                     )
-                    OutlinedTextFieldWithLabel(
-                        value = profileAddress.value,
-                        onValueChange = {profileAddress.value = it},
+                    BaseOutlinedTextField(
+                        value = profileAddress,
+                        onValueChanged = { profileAddress = it},
+                        modifier = Modifier.fillMaxWidth(),
                         label = "Alamat",
-                        inputType = "basic",
-                        leadingIcon = Icons.Outlined.Home,
-                        modifier = Modifier.fillMaxWidth()
+                        placeholder = "Masukan alamat",
+                        type = BaseOutlinedTextFieldType.WithClearIcon
                     )
-                    Box(modifier = Modifier
-                        .padding(top = 16.dp)
-                        .fillMaxWidth()
-                        .background(Color.Transparent, RoundedCornerShape(4.dp))
-                        .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(2.dp))
-                        .clickable {
-                            expanded.value = true
-                        }
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .padding(16.dp)
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween) {
-                            Text(text = profileGender.value)
-                            Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = "")
-                        }
-                        DropdownMenu(
-                            expanded = expanded.value,
-                            onDismissRequest = {expanded.value = false },
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            genderList.forEach {
-                                if (!(it == genderList[0])) {
-                                    DropdownMenuItem(
-                                        text = { Text(text = it) },
-                                        onClick = {
-                                            profileGender.value = it
-                                            selectedGender = it
-                                            expanded.value = false
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    Button(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 16.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = RoundedCornerShape(4.dp)
-                            ),
-                        onClick = {
 
-                        }) {
-                        Text(text = "Simpan")
-                    }
+                    BaseAutoCompleteTextField(
+                        value = profileGender,
+                        label = "Jenis Kelamin",
+                        placeholder = "Pilih Jenis Kelamin",
+                        modifier = Modifier.fillMaxWidth(),
+                        items = genderList,
+                        onItemClicked = {
+                            profileGender = it
+                            focusManager.clearFocus()
+                        }
+                    )
+
+                    BaseButton(
+                        text = "Simpan",
+                        modifier = Modifier.fillMaxWidth(),
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        onClicked = {
+
+                        }
+                    )
+
                 }
             }
         }

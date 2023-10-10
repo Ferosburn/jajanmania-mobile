@@ -1,6 +1,5 @@
 package com.tokodizital.jajanmania.customer.profile
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,24 +7,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -33,6 +29,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
+import com.tokodizital.jajanmania.ui.components.buttons.BaseExtendedFloatingActionButton
 import com.tokodizital.jajanmania.ui.components.buttons.MenuButton
 import com.tokodizital.jajanmania.ui.components.cards.ProfileInfoCard
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -47,11 +44,10 @@ fun ProfileScreen(
         modifier = modifier
     ) { paddingValues ->
 
-        var profileName = rememberSaveable { mutableStateOf("Elon Musk") }
-        var profilePhone = rememberSaveable { mutableStateOf("+62 852 6161 6161") }
-        var profileEmail = rememberSaveable { mutableStateOf("ElonMusk@twitter.com") }
-        var profileLevel = rememberSaveable { mutableStateOf("Level 1") }
-
+        var profileName by remember { mutableStateOf("") }
+        var profilePhone by remember { mutableStateOf("") }
+        var profileEmail by remember { mutableStateOf("") }
+        var profileLevel by remember { mutableStateOf("") }
 
         Box(
             modifier = Modifier
@@ -71,26 +67,20 @@ fun ProfileScreen(
                             .weight(1F)
                     ) {
                         ProfileInfoCard(
-                            profileName.value,
-                            profilePhone.value,
-                            profileEmail.value,
-                            profileLevel.value
+                            profileName,
+                            profilePhone,
+                            profileEmail,
+                            profileLevel
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .size(40.dp)
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = CircleShape
-                            )
-                    ) {
-                        IconButton(onClick = {
+                    BaseExtendedFloatingActionButton(
+                        modifier = Modifier.size(50.dp),
+                        icon = R.drawable.ic_edit,
+                        text = "",
+                        onClick = {
 
-                        }) {
-                            Icon(imageVector = Icons.Outlined.Edit, contentDescription = "")
                         }
-                    }
+                    )
                 }
 
                 Box(
