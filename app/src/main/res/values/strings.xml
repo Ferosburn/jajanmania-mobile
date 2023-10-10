@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Jajan Mania</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="desc_clear_text">Clear text</string>
+    <string name="hint_search_here">Search here</string>
+    <string name="arrow_back_content_desc">Back</string>
 </resources>
