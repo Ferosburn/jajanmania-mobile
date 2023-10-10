@@ -29,6 +29,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -39,7 +40,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
-import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
 import com.tokodizital.jajanmania.ui.components.cards.CircleImageCard
 import com.tokodizital.jajanmania.ui.components.textfields.OutlinedTextFieldWithLabel
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -50,7 +50,7 @@ fun EditProfileScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        topBar = { HomeTopAppBar() },
+        topBar = { TopAppBar(title = { Text(text = "Edit Profile Customer") }) },
         modifier = modifier
     ) { paddingValues ->
 
