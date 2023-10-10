@@ -1,12 +1,13 @@
 package com.tokodizital.jajanmania.vendor.shop.list
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -54,17 +55,19 @@ fun ShopScreen(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color(0xFF000000),
-                    modifier = Modifier.padding(start = 20.dp, top = 16.dp, end = 20.dp)
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 16.dp)
                 )
             }
             if (listJajanan.isEmpty()) {
                 item {
                     EmptyShopContent(
-                        modifier = Modifier.padding(start = 20.dp, top = 62.dp, end = 20.dp)
+                        modifier = Modifier.padding(start = 20.dp, top = 46.dp, end = 20.dp)
                     )
                 }
             }
-            item { Spacer(modifier = Modifier.height(8.dp)) }
             items(items = listJajanan, key = { it.id }) {
                 JajanItem(jajan = it, onClick = {})
             }
