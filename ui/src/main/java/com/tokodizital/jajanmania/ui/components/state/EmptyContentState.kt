@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.shop.list
+package com.tokodizital.jajanmania.ui.components.state
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -20,8 +20,10 @@ import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
-fun EmptyShopContent(
-    modifier: Modifier = Modifier
+fun EmptyContentState(
+    modifier: Modifier = Modifier,
+    title: String,
+    description: String
 ) {
     Column(
         modifier = modifier
@@ -33,7 +35,7 @@ fun EmptyShopContent(
             .padding(horizontal = 32.dp, vertical = 24.dp)
     ) {
         Text(
-            text = "Belum Ada Produk!",
+            text = title,
             fontSize = 14.sp,
             fontWeight = FontWeight.Medium,
             color = Color(0xFF343434),
@@ -42,7 +44,7 @@ fun EmptyShopContent(
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = "Mohon tambahkan produk jajanan yang dijual",
+            text = description,
             fontSize = 12.sp,
             color = Color(0xFF343434),
             textAlign = TextAlign.Center,
@@ -53,11 +55,13 @@ fun EmptyShopContent(
 
 @Preview
 @Composable
-fun PreviewEmptyShopContent() {
+fun PreviewEmptyContentState() {
     JajanManiaTheme {
         Surface {
-            EmptyShopContent(
-                modifier = Modifier.padding(16.dp)
+            EmptyContentState(
+                modifier = Modifier.padding(16.dp),
+                title = "Belum Ada Produk!",
+                description = "Mohon tambahkan produk jajanan yang dijual"
             )
         }
     }

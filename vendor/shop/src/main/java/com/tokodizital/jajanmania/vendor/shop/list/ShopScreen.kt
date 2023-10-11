@@ -23,6 +23,7 @@ import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseExtendedFloatingActionButton
+import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.components.vendor.JajanItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
@@ -63,8 +64,10 @@ fun ShopScreen(
             }
             if (listJajanan.isEmpty()) {
                 item {
-                    EmptyShopContent(
-                        modifier = Modifier.padding(start = 20.dp, top = 46.dp, end = 20.dp)
+                    EmptyContentState(
+                        modifier = Modifier.padding(start = 20.dp, top = 46.dp, end = 20.dp),
+                        title = "Belum Ada Produk!",
+                        description = "Mohon tambahkan produk jajanan yang dijual"
                     )
                 }
             }
