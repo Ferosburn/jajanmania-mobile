@@ -11,9 +11,10 @@ import com.tokodizital.jajanmania.ui.R
 
 
 val fonts = FontFamily(
-    Font(R.font.poppins_black, weight = FontWeight.Medium),
+    Font(R.font.poppins_black, weight = FontWeight.Black),
     Font(R.font.poppins_bold, weight = FontWeight.Bold),
-    Font(R.font.poppins_medium, weight = FontWeight.Normal),
+    Font(R.font.poppins_medium, weight = FontWeight.Medium),
+    Font(R.font.poppins_regular, weight = FontWeight.Normal),
     Font(R.font.poppins_light, weight = FontWeight.Light),
     Font(R.font.poppins_thin, weight = FontWeight.Thin),
     Font(R.font.poppins_italic, weight = FontWeight.Normal, style = FontStyle.Italic),

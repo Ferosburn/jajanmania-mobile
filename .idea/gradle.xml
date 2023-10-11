@@ -17,13 +17,14 @@
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/customer" />
-            <option value="$PROJECT_DIR$/customer/ewallet" />
             <option value="$PROJECT_DIR$/customer/auth" />
+            <option value="$PROJECT_DIR$/customer/ewallet" />
             <option value="$PROJECT_DIR$/customer/home" />
             <option value="$PROJECT_DIR$/customer/profile" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/vendor" />
             <option value="$PROJECT_DIR$/vendor/account" />
+            <option value="$PROJECT_DIR$/vendor/cashier" />
             <option value="$PROJECT_DIR$/vendor/ewallet" />
             <option value="$PROJECT_DIR$/vendor/home" />
             <option value="$PROJECT_DIR$/vendor/shop" />
