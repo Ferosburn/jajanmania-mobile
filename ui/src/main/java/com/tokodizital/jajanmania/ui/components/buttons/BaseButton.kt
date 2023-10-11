@@ -23,11 +23,13 @@ fun BaseButton(
     text: String,
     onClicked: () -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.primary,
-    contentColor: Color = Color.White
+    contentColor: Color = Color.White,
+    enabled: Boolean = true
 ) {
     Button(
         onClick = onClicked,
         modifier = modifier,
+        enabled = enabled,
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,

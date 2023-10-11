@@ -50,7 +50,7 @@ dependencies {
     api("androidx.core:core-ktx:1.9.0")
     api("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     api("androidx.activity:activity-compose:1.7.2")
-    api(platform("androidx.compose:compose-bom:2023.03.00"))
+    api(platform("androidx.compose:compose-bom:2023.06.01"))
     api("androidx.compose.ui:ui")
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
