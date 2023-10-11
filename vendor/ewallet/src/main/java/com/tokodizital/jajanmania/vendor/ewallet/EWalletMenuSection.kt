@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tokodizital.jajanmania.core.domain.entity.EWalletMenu
+import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
