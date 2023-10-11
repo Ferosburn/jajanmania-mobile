@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/core/data" />
             <option value="$PROJECT_DIR$/core/domain" />
             <option value="$PROJECT_DIR$/customer" />
+            <option value="$PROJECT_DIR$/customer/ewallet" />
             <option value="$PROJECT_DIR$/customer/auth" />
             <option value="$PROJECT_DIR$/customer/home" />
             <option value="$PROJECT_DIR$/customer/profile" />

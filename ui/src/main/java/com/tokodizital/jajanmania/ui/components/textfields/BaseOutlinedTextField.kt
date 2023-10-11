@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
@@ -40,6 +41,7 @@ fun BaseOutlinedTextField(
     placeholder: String = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
     type: BaseOutlinedTextFieldType = BaseOutlinedTextFieldType.Default
 ) {
     OutlinedTextField(
@@ -70,7 +72,8 @@ fun BaseOutlinedTextField(
             }
         },
         keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions
+        keyboardActions = keyboardActions,
+        visualTransformation = visualTransformation
     )
 }
 
