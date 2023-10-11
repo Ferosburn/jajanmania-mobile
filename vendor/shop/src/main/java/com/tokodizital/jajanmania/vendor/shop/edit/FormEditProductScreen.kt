@@ -1,23 +1,18 @@
-package com.tokodizital.jajanmania.vendor.shop.form
+package com.tokodizital.jajanmania.vendor.shop.edit
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -27,9 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -37,17 +29,17 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.textfields.BaseAutoCompleteTextField
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.vendor.shop.component.ImageProductSection
 
 @ExperimentalMaterial3Api
 @Composable
-fun FormAddProductScreen(
+fun FormDeleteProductScreen(
     modifier: Modifier = Modifier
 ) {
 
@@ -79,12 +71,14 @@ fun FormAddProductScreen(
 
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Tambah Product")
+            DetailTopAppBar(title = "Edit Produk")
         },
         modifier = modifier
     ) { paddingValues ->
         Column(
-            modifier = Modifier.padding(paddingValues),
+            modifier = Modifier
+                .padding(paddingValues)
+                .padding(bottom = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Column(
@@ -144,42 +138,23 @@ fun FormAddProductScreen(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
+
             BaseButton(
                 text = stringResource(R.string.label_save),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 16.dp)
             )
-        }
-    }
-}
-
-@Composable
-fun ImageProductSection(
-    modifier: Modifier = Modifier,
-    image: Uri? = null,
-    openGallery: () -> Unit = {}
-) {
-    Box(
-        modifier = modifier
-            .size(300.dp)
-            .clip(RoundedCornerShape(10.dp))
-            .border(width = 2.dp, color = Color(0xFF343434), RoundedCornerShape(10.dp))
-            .clickable { openGallery() },
-        contentAlignment = Alignment.Center
-    ) {
-        if (image == null) {
-            AsyncImage(
-                model = R.drawable.ic_image,
-                contentDescription = null,
-                modifier = Modifier.size(64.dp)
-            )
-        } else {
-            AsyncImage(
-                model = image,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
+            Spacer(modifier = Modifier.height(8.dp))
+            BaseButton(
+                text = stringResource(R.string.label_delete),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                containerColor = MaterialTheme.colorScheme.error,
+                contentColor = MaterialTheme.colorScheme.onError
             )
         }
     }
@@ -188,10 +163,10 @@ fun ImageProductSection(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewFormAddProductScreen() {
+fun PreviewFormDeleteProductScreen() {
     JajanManiaTheme {
         Surface {
-            FormAddProductScreen()
+            FormDeleteProductScreen()
         }
     }
 }
