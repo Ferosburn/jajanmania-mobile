@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.ui.components.appbars
 
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -22,7 +23,8 @@ fun DetailTopAppBar(
     modifier: Modifier = Modifier,
     onNavigationClicked: () -> Unit = {},
     title: String,
-    containerColor: Color = MaterialTheme.colorScheme.primary
+    containerColor: Color = MaterialTheme.colorScheme.primary,
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
         title = { Text(text = title) },
@@ -31,10 +33,11 @@ fun DetailTopAppBar(
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
             }
         },
-        modifier = modifier,
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = containerColor
-        )
+        ),
+        actions = actions,
+        modifier = modifier
     )
 }
 
