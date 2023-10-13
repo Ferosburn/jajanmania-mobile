@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.shop.list
+package com.tokodizital.jajanmania.vendor.cashier.addtransaction
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -12,7 +12,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -20,9 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
-import com.tokodizital.jajanmania.ui.components.buttons.BaseExtendedFloatingActionButton
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.components.vendor.JajanItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -30,25 +32,19 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-fun ShopScreen(
+fun AddTransactionScreen(
     modifier: Modifier = Modifier,
     listJajanan: List<Jajan> = emptyList()
 ) {
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Kelola Toko")
-        },
-        floatingActionButton = {
-            BaseExtendedFloatingActionButton(
-                icon = R.drawable.ic_add,
-                text = "Tambah Produk",
-                onClick = { }
-            )
+            DetailTopAppBar(title = "Tambah Item")
         },
         modifier = modifier
     ) { paddingValues ->
         LazyColumn(
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.padding(paddingValues),
+            horizontalAlignment = Alignment.End
         ) {
             stickyHeader {
                 Text(
@@ -72,22 +68,24 @@ fun ShopScreen(
                 }
             }
             items(items = listJajanan, key = { it.id }) {
-                JajanItem(jajan = it, onClick = {})
+                JajanItem(
+                    jajan = it,
+                    onClick = {}
+                )
             }
         }
     }
 }
 
 
-
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewEmptyShopScreen() {
+fun PreviewEmptyAddTransactionScreen() {
     JajanManiaTheme {
         Surface {
-            ShopScreen()
+            AddTransactionScreen()
         }
     }
 }
@@ -96,22 +94,30 @@ fun PreviewEmptyShopScreen() {
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewFilledShopScreen() {
+fun PreviewFilledAddTransactionScreen() {
     JajanManiaTheme {
         Surface {
-            val listJajanan: List<Jajan> = remember {
-                (1..10).map {
+            var listJajanan: List<Jajan> by remember {
+                mutableStateOf(listOf(
                     Jajan(
-                        id = it,
-                        vendorId = it,
+                        id = 1,
+                        vendorId = 1,
                         name = "Soto",
                         category = "Makanan Kuah",
                         price = 120000L,
                         image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    ),
+                    Jajan(
+                        id = 2,
+                        vendorId = 1,
+                        name = "Batagor Isi 7",
+                        category = "Tahu Isi",
+                        price = 10000L,
+                        image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
                     )
-                }
+                ))
             }
-            ShopScreen(
+            AddTransactionScreen(
                 listJajanan = listJajanan
             )
         }
