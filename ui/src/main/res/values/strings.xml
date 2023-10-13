@@ -10,4 +10,7 @@
     <string name="total_balance_test">Total Balance</string>
     <string name="label_save">Simpan</string>
     <string name="label_delete">Hapus</string>
+    <string name="label_bayar">Bayar</string>
+    <string name="label_topUp">TopUp</string>
+    <string name="label_Pengaturan">Pengaturan</string>
 </resources>
