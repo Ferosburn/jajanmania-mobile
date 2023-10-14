@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Jajan Mania</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="unsubscribe">Unsubscribe</string>
     <string name="menu_profile">Profil</string>
     <string name="action_back">Back</string>
     <string name="arrow_back_content_desc">Back Button</string>
@@ -12,5 +15,7 @@
     <string name="label_delete">Hapus</string>
     <string name="label_bayar">Bayar</string>
     <string name="label_topUp">TopUp</string>
+    <string name="label_others">Lainnya</string>
     <string name="label_Pengaturan">Pengaturan</string>
+    <string name="label_balance">Saldo</string>
 </resources>

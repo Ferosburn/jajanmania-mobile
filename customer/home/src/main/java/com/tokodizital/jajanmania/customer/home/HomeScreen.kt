@@ -1,21 +1,19 @@
 package com.tokodizital.jajanmania.customer.home
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tokodizital.jajanmania.ui.components.appbars.BottomNavigationBar
+import com.tokodizital.jajanmania.core.domain.model.Category
 import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
-import com.tokodizital.jajanmania.ui.components.cards.CategoryItemCard
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
@@ -23,36 +21,69 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 fun HomeScreen(
     modifier: Modifier = Modifier
 ) {
-    val navItems = listOf("Home", "Kategori", "Bayar", "Favorit", "Akun")
+    val subscriptionsList: List<Category> = listOf(
+        Category(
+            name = "Soto",
+            isSubscribed = true
+        ),
+        Category(
+            name = "Bakso",
+            isSubscribed = true
+        ),
+        Category(
+            name = "Es Lilin",
+            isSubscribed = true
+        ),
+        Category(
+            name = "Soto Medan",
+            isSubscribed = true
+        ),
+    )
+    val categoriesList: List<Category> = listOf(
+        Category(
+            name = "Mi Ayam",
+            isSubscribed = false
+        ),
+        Category(
+            name = "Cilok",
+            isSubscribed = false
+        ),
+        Category(
+            name = "Bala-bala",
+            isSubscribed = false
+        ),
+        Category(
+            name = "Gorengan",
+            isSubscribed = false
+        ),
+    )
+
     Scaffold(
         topBar = { HomeTopAppBar() },
-        modifier = modifier,
-        bottomBar = { BottomNavigationBar(navItems = navItems)}
+        modifier = modifier
     ) { paddingValues ->
-        HomeContent(modifier = Modifier.padding(paddingValues))
-    }
-}
-
-@Composable
-private fun HomeContent(
-    modifier: Modifier = Modifier
-) {
-    LazyColumn (modifier = modifier) {
-        items(4) {
-            CategoryCollection()
-        }
-    }
-}
-
-@Composable
-private fun CategoryCollection() {
-    Column {
-        Text(text = "Collection Title", modifier = Modifier.padding(8.dp))
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 8.dp)
+        LazyColumn(
+            contentPadding = PaddingValues(vertical = 24.dp),
+            modifier = Modifier.padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
         ) {
-            items(5) {
-                CategoryItemCard()
+            item {
+                EWalletHomeSection(
+                    Modifier.fillMaxWidth(),
+                    balance = 50000L
+                )
+            }
+            item {
+                CategoryCollection(
+                    title = "Langganan Notifikasi Saya",
+                    list = subscriptionsList
+                )
+            }
+            item {
+                CategoryCollection(
+                    title = "Kategori",
+                    list = categoriesList
+                )
             }
         }
     }
@@ -65,36 +96,6 @@ fun PreviewHomeScreen() {
     JajanManiaTheme {
         Surface {
             HomeScreen()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun PreviewHomeContent() {
-    JajanManiaTheme {
-        Surface {
-            HomeContent()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun JajanManiaHomeAppBarPreview() {
-    JajanManiaTheme {
-        Surface {
-            HomeTopAppBar()
-        }
-    }
-}
-
-@Preview
-@Composable
-private fun CategoryItemPreview() {
-    JajanManiaTheme {
-        Surface {
-            CategoryItemCard()
         }
     }
 }
