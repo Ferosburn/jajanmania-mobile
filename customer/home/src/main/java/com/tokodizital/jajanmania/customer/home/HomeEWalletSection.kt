@@ -48,7 +48,7 @@ fun EWalletHomeSection(
             label = R.string.label_topUp
         ),
         EWalletMenu(
-            icon = R.drawable.ic_history,
+            icon = R.drawable.ic_more_vertical,
             label = R.string.label_others
         ),
     )
