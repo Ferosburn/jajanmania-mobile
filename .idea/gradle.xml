@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/customer/ewallet" />
             <option value="$PROJECT_DIR$/customer/home" />
             <option value="$PROJECT_DIR$/customer/profile" />
+            <option value="$PROJECT_DIR$/customer/transaction" />
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/vendor" />
             <option value="$PROJECT_DIR$/vendor/account" />
