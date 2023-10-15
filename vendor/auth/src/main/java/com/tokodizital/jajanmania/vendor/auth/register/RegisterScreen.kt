@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.auth.login
+package com.tokodizital.jajanmania.vendor.auth.register
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -45,13 +45,16 @@ import com.tokodizital.jajanmania.ui.theme.poppins
 
 @ExperimentalMaterial3Api
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier
 ) {
 
+    var shopName by remember { mutableStateOf("") }
+    var ownerName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
+    var confirmPassword by remember { mutableStateOf("") }
+    var userAgreement by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier
@@ -63,7 +66,7 @@ fun LoginScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 26.dp)
         ) {
-            Spacer(modifier = Modifier.height(87.dp))
+            Spacer(modifier = Modifier.height(15.dp))
             Image(
                 painter = painterResource(id = R.drawable.logo_jajan_mania),
                 contentDescription = null,
@@ -74,13 +77,45 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Login Vendor",
+                text = "Register Vendor",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontFamily = poppins
             )
             Spacer(modifier = Modifier.height(42.dp))
+            BaseOutlinedTextField(
+                value = shopName,
+                onValueChanged = { shopName = it },
+                label = "Nama Toko/Warung",
+                placeholder = "Masukan nama toko/warung",
+                singleLine = true,
+                type = BaseOutlinedTextFieldType.WithClearIcon,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            BaseOutlinedTextField(
+                value = ownerName,
+                onValueChanged = { ownerName = it },
+                label = "Nama Lengkap Pemilik",
+                placeholder = "Masukan nama lengkap pemiliki",
+                singleLine = true,
+                type = BaseOutlinedTextFieldType.WithClearIcon,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+            )
+            Spacer(modifier = Modifier.height(20.dp))
             BaseOutlinedTextField(
                 value = email,
                 onValueChanged = { email = it },
@@ -105,6 +140,21 @@ fun LoginScreen(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            BasePasswordOutlinedTextField(
+                value = confirmPassword,
+                onValueChanged = { confirmPassword = it },
+                label = "Konfirmasi Password",
+                placeholder = "Masukan password kembali",
+                singleLine = true,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 ),
                 modifier = Modifier
@@ -113,13 +163,13 @@ fun LoginScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             BaseCheckBox(
-                text = "Remember me",
-                checked = rememberMe,
-                onCheckedChanged = { rememberMe = it }
+                text = "I agree to Terms and Conditions of Jajan Mania",
+                checked = userAgreement,
+                onCheckedChanged = { userAgreement = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
             BaseButton(
-                text = "Login",
+                text = "Register",
                 onClicked = {},
                 containerColor = Color(0xFF343434),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -130,7 +180,7 @@ fun LoginScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Forgot password?",
+                    text = "Already have an account?",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -149,10 +199,10 @@ fun LoginScreen(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewLoginScreen() {
+fun PreviewRegisterScreen() {
     JajanManiaTheme {
         Surface {
-            LoginScreen()
+            RegisterScreen()
         }
     }
 }
