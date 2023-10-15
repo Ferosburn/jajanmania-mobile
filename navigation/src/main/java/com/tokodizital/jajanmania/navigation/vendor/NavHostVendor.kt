@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.navigation
+package com.tokodizital.jajanmania.navigation.vendor
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api

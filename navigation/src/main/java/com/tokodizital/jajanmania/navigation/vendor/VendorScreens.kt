@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.navigation
+package com.tokodizital.jajanmania.navigation.vendor
 
 sealed class VendorScreens(val route: String) {
 
