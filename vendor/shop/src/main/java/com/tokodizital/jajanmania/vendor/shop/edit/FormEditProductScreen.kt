@@ -39,7 +39,7 @@ import com.tokodizital.jajanmania.vendor.shop.component.ImageProductSection
 
 @ExperimentalMaterial3Api
 @Composable
-fun FormDeleteProductScreen(
+fun FormEditProductScreen(
     modifier: Modifier = Modifier
 ) {
 
@@ -163,10 +163,10 @@ fun FormDeleteProductScreen(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewFormDeleteProductScreen() {
+fun PreviewFormEditProductScreen() {
     JajanManiaTheme {
         Surface {
-            FormDeleteProductScreen()
+            FormEditProductScreen()
         }
     }
 }

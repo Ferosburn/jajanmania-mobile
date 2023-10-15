@@ -70,8 +70,8 @@ fun EWalletMenuItem(
             modifier = Modifier
                 .clip(CircleShape)
                 .background(Color(0xFF343434))
-                .padding(8.dp)
-                .clickable { onClicked(menu) },
+                .clickable { onClicked(menu) }
+                .padding(8.dp),
             tint = Color.White
         )
         Spacer(modifier = Modifier.height(4.dp))
