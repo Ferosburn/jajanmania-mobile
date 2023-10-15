@@ -46,6 +46,7 @@ android {
 dependencies {
 
     implementation(project(":ui"))
+    implementation(project(":common"))
     implementation(project(":core:domain"))
 
     testImplementation("junit:junit:4.13.2")
