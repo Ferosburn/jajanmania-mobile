@@ -62,7 +62,7 @@ val Typography = Typography(
     ),
     titleLarge = TextStyle(
         fontFamily = poppins,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 22.sp,
     ),
     titleMedium = TextStyle(
