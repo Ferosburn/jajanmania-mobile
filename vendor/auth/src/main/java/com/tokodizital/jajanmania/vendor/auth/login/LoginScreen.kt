@@ -18,10 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseTextButton
@@ -46,12 +45,16 @@ import com.tokodizital.jajanmania.ui.theme.poppins
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel = viewModel()
 ) {
 
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var rememberMe by remember { mutableStateOf(false) }
+    val loginUiState by loginViewModel.loginUiState.collectAsState()
+    val email = loginUiState.email
+    val password = loginUiState.password
+    val rememberMe = loginUiState.rememberMe
+
+    val buttonLoginEnabled by loginViewModel.buttonLoginEnabled.collectAsState(initial = false)
 
     Scaffold(
         modifier = modifier
@@ -83,7 +86,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(42.dp))
             BaseOutlinedTextField(
                 value = email,
-                onValueChanged = { email = it },
+                onValueChanged = loginViewModel::updateEmail,
                 label = "Email",
                 placeholder = "Masukan email",
                 singleLine = true,
@@ -99,7 +102,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(20.dp))
             BasePasswordOutlinedTextField(
                 value = password,
-                onValueChanged = { password = it },
+                onValueChanged = loginViewModel::updatePassword,
                 label = "Password",
                 placeholder = "Masukan password",
                 singleLine = true,
@@ -115,13 +118,14 @@ fun LoginScreen(
             BaseCheckBox(
                 text = "Remember me",
                 checked = rememberMe,
-                onCheckedChanged = { rememberMe = it }
+                onCheckedChanged = loginViewModel::updateRememberMe
             )
             Spacer(modifier = Modifier.height(16.dp))
             BaseButton(
                 text = "Login",
                 onClicked = {},
                 containerColor = Color(0xFF343434),
+                enabled = buttonLoginEnabled,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(16.dp))

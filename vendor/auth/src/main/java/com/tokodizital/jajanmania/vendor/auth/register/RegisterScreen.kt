@@ -18,10 +18,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseTextButton
@@ -46,15 +45,19 @@ import com.tokodizital.jajanmania.ui.theme.poppins
 @ExperimentalMaterial3Api
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    registerViewModel: RegisterViewModel = viewModel()
 ) {
 
-    var shopName by remember { mutableStateOf("") }
-    var ownerName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
-    var userAgreement by remember { mutableStateOf(false) }
+    val registerUiState by registerViewModel.registerUiState.collectAsState()
+    val shopName = registerUiState.shopName
+    val ownerName = registerUiState.ownerName
+    val email = registerUiState.email
+    val password = registerUiState.password
+    val confirmPassword = registerUiState.confirmPassword
+    val userAgreement = registerUiState.userAgreement
+
+    val buttonRegisterEnabled by registerViewModel.buttonRegisterEnabled.collectAsState(initial = false)
 
     Scaffold(
         modifier = modifier
@@ -86,7 +89,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(42.dp))
             BaseOutlinedTextField(
                 value = shopName,
-                onValueChanged = { shopName = it },
+                onValueChanged = registerViewModel::updateShopName,
                 label = "Nama Toko/Warung",
                 placeholder = "Masukan nama toko/warung",
                 singleLine = true,
@@ -102,7 +105,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(20.dp))
             BaseOutlinedTextField(
                 value = ownerName,
-                onValueChanged = { ownerName = it },
+                onValueChanged = registerViewModel::updateOwnerName,
                 label = "Nama Lengkap Pemilik",
                 placeholder = "Masukan nama lengkap pemiliki",
                 singleLine = true,
@@ -118,7 +121,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(20.dp))
             BaseOutlinedTextField(
                 value = email,
-                onValueChanged = { email = it },
+                onValueChanged = registerViewModel::updateEmail,
                 label = "Email",
                 placeholder = "Masukan email",
                 singleLine = true,
@@ -134,7 +137,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(20.dp))
             BasePasswordOutlinedTextField(
                 value = password,
-                onValueChanged = { password = it },
+                onValueChanged = registerViewModel::updatePassword,
                 label = "Password",
                 placeholder = "Masukan password",
                 singleLine = true,
@@ -149,7 +152,7 @@ fun RegisterScreen(
             Spacer(modifier = Modifier.height(20.dp))
             BasePasswordOutlinedTextField(
                 value = confirmPassword,
-                onValueChanged = { confirmPassword = it },
+                onValueChanged = registerViewModel::updateConfirmPassword,
                 label = "Konfirmasi Password",
                 placeholder = "Masukan password kembali",
                 singleLine = true,
@@ -165,12 +168,13 @@ fun RegisterScreen(
             BaseCheckBox(
                 text = "I agree to Terms and Conditions of Jajan Mania",
                 checked = userAgreement,
-                onCheckedChanged = { userAgreement = it }
+                onCheckedChanged = registerViewModel::updateUserAgreement
             )
             Spacer(modifier = Modifier.height(16.dp))
             BaseButton(
                 text = "Register",
                 onClicked = {},
+                enabled = buttonRegisterEnabled,
                 containerColor = Color(0xFF343434),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
