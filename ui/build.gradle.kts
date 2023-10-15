@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.tokodizital.jajanmania.ui"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         minSdk = 24
@@ -56,6 +56,8 @@ dependencies {
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
+
+    api("androidx.navigation:navigation-compose:2.7.4")
 
     api("io.coil-kt:coil-compose:2.4.0")
 
