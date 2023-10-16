@@ -26,6 +26,7 @@
             <option value="$PROJECT_DIR$/ui" />
             <option value="$PROJECT_DIR$/vendor" />
             <option value="$PROJECT_DIR$/vendor/account" />
+            <option value="$PROJECT_DIR$/vendor/auth" />
             <option value="$PROJECT_DIR$/vendor/cashier" />
             <option value="$PROJECT_DIR$/vendor/ewallet" />
             <option value="$PROJECT_DIR$/vendor/home" />
