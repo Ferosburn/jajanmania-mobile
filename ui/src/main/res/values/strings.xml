@@ -18,4 +18,6 @@
     <string name="label_others">Lainnya</string>
     <string name="label_Pengaturan">Pengaturan</string>
     <string name="label_balance">Saldo</string>
+    <string name="label_kasir">Kasir</string>
+    <string name="label_toko">Toko</string>
 </resources>
