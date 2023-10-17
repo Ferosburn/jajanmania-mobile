@@ -60,6 +60,7 @@ dependencies {
     implementation(project(":customer:home"))
     implementation(project(":customer:profile"))
     implementation(project(":customer:auth"))
+    implementation(project(":customer:transaction"))
 
     implementation(project(":vendor:account"))
     implementation(project(":vendor:home"))
