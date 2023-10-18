@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tokodizital.jajanmania.customer.transaction"
+    namespace = "com.tokodizital.jajanmania.customer.payment"
     compileSdk = 34
 
     defaultConfig {

@@ -20,6 +20,7 @@
             <option value="$PROJECT_DIR$/customer/auth" />
             <option value="$PROJECT_DIR$/customer/ewallet" />
             <option value="$PROJECT_DIR$/customer/home" />
+            <option value="$PROJECT_DIR$/customer/payment" />
             <option value="$PROJECT_DIR$/customer/profile" />
             <option value="$PROJECT_DIR$/customer/transaction" />
             <option value="$PROJECT_DIR$/navigation" />
