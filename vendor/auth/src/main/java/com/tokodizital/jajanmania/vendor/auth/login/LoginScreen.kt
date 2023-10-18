@@ -32,6 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseTextButton
@@ -46,7 +48,9 @@ import com.tokodizital.jajanmania.ui.theme.poppins
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel()
+    loginViewModel: LoginViewModel = viewModel(),
+    navigateToRegisterScreen: () -> Unit = {},
+    navigateToDashboardScreen: () -> Unit = {}
 ) {
 
     val loginUiState by loginViewModel.loginUiState.collectAsState()
@@ -123,9 +127,9 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
             BaseButton(
                 text = "Login",
-                onClicked = {},
+                onClicked = navigateToDashboardScreen,
                 containerColor = Color(0xFF343434),
-                enabled = buttonLoginEnabled,
+//                enabled = buttonLoginEnabled,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -141,7 +145,7 @@ fun LoginScreen(
                 BaseTextButton(
                     text = "Click Here",
                     fontSize = 12.sp,
-                    onClicked = {},
+                    onClicked = navigateToRegisterScreen,
                     contentColor = Color(0XFF17C05B),
                     modifier = Modifier.offset(y = 2.5.dp)
                 )

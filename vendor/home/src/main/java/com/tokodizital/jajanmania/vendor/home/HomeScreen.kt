@@ -12,6 +12,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.tokodizital.jajanmania.core.domain.model.HomeMenu
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.ui.R
@@ -21,8 +23,12 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToCashierScreen: () -> Unit = {},
+    navigateToShopScreen: () -> Unit = {},
+    navigateToEWalletScreen: () -> Unit = {},
 ) {
+
 
     val menu = listOf(
         HomeMenu(
@@ -38,6 +44,14 @@ fun HomeScreen(
             label = R.string.label_others
         ),
     )
+
+    val onMenuClicked: (HomeMenu) -> Unit = {
+        when (it.label) {
+            R.string.label_cashier -> navigateToCashierScreen()
+            R.string.label_toko -> navigateToShopScreen()
+            R.string.label_others -> navigateToEWalletScreen()
+        }
+    }
 
     val history = (1..7).map {
         TransactionHistory(
@@ -67,6 +81,7 @@ fun HomeScreen(
                     menu = menu,
                     modifier = Modifier.fillMaxWidth(),
                     balance = 345000L,
+                    onMenuClicked = onMenuClicked
                 )
             }
 

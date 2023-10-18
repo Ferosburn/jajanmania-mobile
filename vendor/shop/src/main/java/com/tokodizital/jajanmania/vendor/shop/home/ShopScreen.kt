@@ -32,17 +32,23 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun ShopScreen(
     modifier: Modifier = Modifier,
-    listJajanan: List<Jajan> = emptyList()
+    listJajanan: List<Jajan> = emptyList(),
+    onNavigationClicked: () -> Unit = {},
+    navigateToAddProductScreen: () -> Unit = {},
+    navigateToEditProductScreen: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Kelola Toko")
+            DetailTopAppBar(
+                title = "Kelola Toko",
+                onNavigationClicked = onNavigationClicked
+            )
         },
         floatingActionButton = {
             BaseExtendedFloatingActionButton(
                 icon = R.drawable.ic_add,
                 text = "Tambah Produk",
-                onClick = { }
+                onClick = navigateToAddProductScreen
             )
         },
         modifier = modifier
@@ -72,7 +78,7 @@ fun ShopScreen(
                 }
             }
             items(items = listJajanan, key = { it.id }) {
-                JajanItem(jajan = it, onClick = {})
+                JajanItem(jajan = it, onClick = { navigateToEditProductScreen() })
             }
         }
     }
