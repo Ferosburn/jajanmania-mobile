@@ -38,13 +38,14 @@ fun BaseModalBottomSheet(
         modifier = Modifier
             .fillMaxWidth()
             .then(modifier),
-        sheetState = sheetState
+        sheetState = sheetState,
+        scrimColor = Color(0xFF000000).copy(alpha = 0.32f),
     ) {
         BaseBottomContent(
             title = title,
             body = body,
             modifier = Modifier
-                .padding(24.dp)
+                .padding(horizontal = 24.dp)
                 .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -58,6 +59,7 @@ fun BaseModalBottomSheet(
                 .fillMaxWidth()
         )
         if (negativeButtonTitle != null) {
+            Spacer(modifier = Modifier.height(16.dp))
             BaseOutlinedButton(
                 text = negativeButtonTitle,
                 onClicked = onNegativeButtonClicked,
