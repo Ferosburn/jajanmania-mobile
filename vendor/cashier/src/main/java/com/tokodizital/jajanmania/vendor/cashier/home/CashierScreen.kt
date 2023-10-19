@@ -13,7 +13,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,12 +43,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun CashierScreen(
     modifier: Modifier = Modifier,
+    onNavigationClicked: () -> Unit = {},
+    navigationToAddTransactionScreen: () -> Unit = {},
+    navigationToDetailTransactionScreen: () -> Unit = {},
     listJajanan: List<Jajan> = emptyList(),
     onDecreaseClicked: (Jajan) -> Unit = {},
     onIncreaseClicked: (Jajan) -> Unit = {}
 ) {
 
-    val modalBottomSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     var backDialogState by remember { mutableStateOf(false) }
@@ -76,7 +77,10 @@ fun CashierScreen(
             title = "Balik Ke Halaman Sebelumnya?",
             body = "Apakah anda yakin ingin membatalkan pesanan?",
             positiveButtonTitle = "Ya, Yakin",
-            onPositiveButtonClicked = { backDialogState = false },
+            onPositiveButtonClicked = {
+                backDialogState = false
+                onNavigationClicked()
+            },
             negativeButtonTitle = "Tutup",
             onNegativeButtonClicked = { backDialogState = false },
             positiveButtonContainerColor = MaterialTheme.colorScheme.error
@@ -105,7 +109,10 @@ fun CashierScreen(
             title = "Proses Sukses!",
             body = "Yeay! Tekan lanjut untuk menampilkan kode pembayaran",
             positiveButtonTitle = "Lanjut",
-            onPositiveButtonClicked = { successProcessTransactionDialogState = false },
+            onPositiveButtonClicked = {
+                successProcessTransactionDialogState = false
+                navigationToDetailTransactionScreen()
+            },
         )
     }
 
@@ -167,9 +174,7 @@ fun CashierScreen(
                     text = "Tambah Item",
                     modifier = Modifier.padding(horizontal = 16.dp),
                     containerColor = Color(0xFF343434),
-                    onClicked = {
-                        scope.launch { modalBottomSheetState.show() }
-                    }
+                    onClicked = navigationToAddTransactionScreen
                 )
             }
             item {

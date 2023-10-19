@@ -27,8 +27,12 @@ fun NavHostController.navigateToDashboardScreen(clearBackStack: Boolean = true, 
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToCashierScreen() {
-    navigate(VendorScreens.Cashier.route)
+fun NavHostController.navigateToCashierScreen(clearBackStack: Boolean = true, route: String = VendorScreens.Cashier.route) {
+    navigate(VendorScreens.Cashier.route) {
+        if (clearBackStack) {
+            popUpTo(route) { inclusive = true }
+        }
+    }
 }
 
 @Throws(IllegalArgumentException::class)

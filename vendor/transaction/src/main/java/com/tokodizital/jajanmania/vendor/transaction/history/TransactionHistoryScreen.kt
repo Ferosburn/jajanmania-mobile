@@ -35,12 +35,15 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun TransactionHistoryScreen(
     modifier: Modifier = Modifier,
-    history: List<TransactionHistory> = emptyList()
+    history: List<TransactionHistory> = emptyList(),
+    onNavigationClicked: () -> Unit = {},
+    navigationToDetailTransactionScreen: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
             DetailTopAppBar(
                 title = "Transaksi",
+                onNavigationClicked = onNavigationClicked,
                 actions = {
                     IconButton(onClick = { }) {
                         Icon(
@@ -49,7 +52,7 @@ fun TransactionHistoryScreen(
                             tint = MaterialTheme.colorScheme.onBackground
                         )
                     }
-                }
+                },
             )
         },
         modifier = modifier
@@ -82,7 +85,7 @@ fun TransactionHistoryScreen(
             items(items = history, key = { it.transactionId }) {
                 TransactionHistoryItem(
                     transactionHistory = it,
-                    onClick = {},
+                    onClick = { navigationToDetailTransactionScreen() },
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
             }
