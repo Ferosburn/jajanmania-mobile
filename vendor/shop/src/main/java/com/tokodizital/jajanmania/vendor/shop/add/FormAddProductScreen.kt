@@ -33,13 +33,16 @@ import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.textfields.BaseAutoCompleteTextField
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
+import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextFieldType
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.shop.component.ImageProductSection
 
 @ExperimentalMaterial3Api
 @Composable
 fun FormAddProductScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClicked: () -> Unit = {},
+    navigationToShopScreen: () -> Unit = {},
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -70,77 +73,81 @@ fun FormAddProductScreen(
 
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Tambah Produk")
+            DetailTopAppBar(
+                title = "Tambah Produk",
+                onNavigationClicked = onNavigationClicked
+            )
         },
-        modifier = modifier
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier.padding(paddingValues),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
-            ) {
-                ImageProductSection(
-                    image = image,
-                    openGallery = launchGallery,
-                    modifier = Modifier
-                        .padding(horizontal = 56.dp, vertical = 24.dp)
-                        .align(Alignment.CenterHorizontally)
-                )
-                BaseOutlinedTextField(
-                    value = productName,
-                    onValueChanged = { productName = it },
-                    label = "Nama Produk",
-                    placeholder = "Masukan nama produk",
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next,
-                        capitalization = KeyboardCapitalization.Words
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                BaseOutlinedTextField(
-                    value = productPrice,
-                    onValueChanged = { productPrice = it },
-                    label = "Harga",
-                    placeholder = "Masukan harga produk",
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Number,
-                        imeAction = ImeAction.Next
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                BaseAutoCompleteTextField(
-                    value = productCategory,
-                    label = "Kategori",
-                    placeholder = "Masukan kategori produk",
-                    onItemClicked = {
-                        productCategory = it
-                        focusManager.clearFocus(force = true)
-                    },
-                    items = productCategoryItems,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
+        bottomBar = {
             BaseButton(
                 text = stringResource(R.string.label_save),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                onClicked = navigationToShopScreen
             )
+        },
+        modifier = modifier
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ImageProductSection(
+                image = image,
+                openGallery = launchGallery,
+                modifier = Modifier
+                    .padding(horizontal = 56.dp, vertical = 24.dp)
+                    .align(Alignment.CenterHorizontally)
+            )
+            BaseOutlinedTextField(
+                value = productName,
+                onValueChanged = { productName = it },
+                label = "Nama Produk",
+                placeholder = "Masukan nama produk",
+                singleLine = true,
+                type = BaseOutlinedTextFieldType.WithClearIcon,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    capitalization = KeyboardCapitalization.Words
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            BaseOutlinedTextField(
+                value = productPrice,
+                onValueChanged = { productPrice = it },
+                label = "Harga",
+                placeholder = "Masukan harga produk",
+                singleLine = true,
+                type = BaseOutlinedTextFieldType.WithClearIcon,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+            BaseAutoCompleteTextField(
+                value = productCategory,
+                label = "Kategori",
+                placeholder = "Masukan kategori produk",
+                onItemClicked = {
+                    productCategory = it
+                    focusManager.clearFocus(force = true)
+                },
+                items = productCategoryItems,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

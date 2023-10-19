@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,11 +33,16 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun AddTransactionScreen(
     modifier: Modifier = Modifier,
-    listJajanan: List<Jajan> = emptyList()
+    listJajanan: List<Jajan> = emptyList(),
+    onNavigationClicked: () -> Unit = {},
+    navigationToCashierScreen: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Tambah Item")
+            DetailTopAppBar(
+                title = "Tambah Item",
+                onNavigationClicked = onNavigationClicked
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -70,7 +74,7 @@ fun AddTransactionScreen(
             items(items = listJajanan, key = { it.id }) {
                 JajanItem(
                     jajan = it,
-                    onClick = {}
+                    onClick = { navigationToCashierScreen() }
                 )
             }
         }
@@ -97,7 +101,7 @@ fun PreviewEmptyAddTransactionScreen() {
 fun PreviewFilledAddTransactionScreen() {
     JajanManiaTheme {
         Surface {
-            var listJajanan: List<Jajan> by remember {
+            val listJajanan: List<Jajan> by remember {
                 mutableStateOf(listOf(
                     Jajan(
                         id = 1,

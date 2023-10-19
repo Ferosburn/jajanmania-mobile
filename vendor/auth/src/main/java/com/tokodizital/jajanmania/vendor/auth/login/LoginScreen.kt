@@ -46,7 +46,9 @@ import com.tokodizital.jajanmania.ui.theme.poppins
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel()
+    loginViewModel: LoginViewModel = viewModel(),
+    navigateToRegisterScreen: () -> Unit = {},
+    navigateToDashboardScreen: () -> Unit = {}
 ) {
 
     val loginUiState by loginViewModel.loginUiState.collectAsState()
@@ -123,7 +125,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
             BaseButton(
                 text = "Login",
-                onClicked = {},
+                onClicked = navigateToDashboardScreen,
                 containerColor = Color(0xFF343434),
                 enabled = buttonLoginEnabled,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -141,7 +143,7 @@ fun LoginScreen(
                 BaseTextButton(
                     text = "Click Here",
                     fontSize = 12.sp,
-                    onClicked = {},
+                    onClicked = navigateToRegisterScreen,
                     contentColor = Color(0XFF17C05B),
                     modifier = Modifier.offset(y = 2.5.dp)
                 )

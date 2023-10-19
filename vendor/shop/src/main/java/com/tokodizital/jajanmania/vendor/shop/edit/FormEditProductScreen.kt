@@ -34,13 +34,16 @@ import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.textfields.BaseAutoCompleteTextField
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
+import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextFieldType
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.shop.component.ImageProductSection
 
 @ExperimentalMaterial3Api
 @Composable
 fun FormEditProductScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClicked: () -> Unit = {},
+    navigationToShopScreen: () -> Unit = {},
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -71,7 +74,10 @@ fun FormEditProductScreen(
 
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Edit Produk")
+            DetailTopAppBar(
+                title = "Edit Produk",
+                onNavigationClicked = onNavigationClicked
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -99,6 +105,7 @@ fun FormEditProductScreen(
                     label = "Nama Produk",
                     placeholder = "Masukan nama produk",
                     singleLine = true,
+                    type = BaseOutlinedTextFieldType.WithClearIcon,
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Next,
                         capitalization = KeyboardCapitalization.Words
@@ -114,6 +121,7 @@ fun FormEditProductScreen(
                     label = "Harga",
                     placeholder = "Masukan harga produk",
                     singleLine = true,
+                    type = BaseOutlinedTextFieldType.WithClearIcon,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
                         imeAction = ImeAction.Next
@@ -143,6 +151,7 @@ fun FormEditProductScreen(
 
             BaseButton(
                 text = stringResource(R.string.label_save),
+                onClicked = navigationToShopScreen,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
@@ -150,11 +159,12 @@ fun FormEditProductScreen(
             Spacer(modifier = Modifier.height(8.dp))
             BaseButton(
                 text = stringResource(R.string.label_delete),
+                onClicked = navigationToShopScreen,
+                containerColor = MaterialTheme.colorScheme.error,
+                contentColor = MaterialTheme.colorScheme.onError,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
-                containerColor = MaterialTheme.colorScheme.error,
-                contentColor = MaterialTheme.colorScheme.onError
             )
         }
     }

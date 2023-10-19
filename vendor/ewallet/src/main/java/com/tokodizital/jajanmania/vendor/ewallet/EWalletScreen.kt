@@ -20,7 +20,12 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun EWalletScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClicked: () -> Unit = {},
+    navigateToCashierScreen: () -> Unit = {},
+    navigateToTransferBankScreen: () -> Unit = {},
+    navigateToTransactionHistoryScreen: () -> Unit = {},
+    navigateToShopScreen: () -> Unit = {},
 ) {
 
     val menu = listOf(
@@ -42,9 +47,21 @@ fun EWalletScreen(
         ),
     )
 
+    val onMenuClicked: (EWalletMenu) -> Unit = {
+        when (it.label) {
+            R.string.label_cashier -> navigateToCashierScreen()
+            R.string.label_transfer_bank -> navigateToTransferBankScreen()
+            R.string.label_history -> navigateToTransactionHistoryScreen()
+            R.string.label_manage_shop -> navigateToShopScreen()
+        }
+    }
+
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "E-Wallet")
+            DetailTopAppBar(
+                title = "E-Wallet",
+                onNavigationClicked = onNavigationClicked
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -56,12 +73,14 @@ fun EWalletScreen(
             item {
                 EWalletBalanceSection(
                     modifier = Modifier.fillMaxWidth(),
-                    balance = 500000L
+                    balance = 500000L,
+                    onTransferBankClicked = navigateToTransferBankScreen
                 )
             }
             item {
                 EWalletMenuSection(
                     menu = menu,
+                    onMenuClicked = onMenuClicked,
                     modifier = Modifier.fillMaxWidth()
                 )
             }

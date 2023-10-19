@@ -32,7 +32,8 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun EWalletBalanceSection(
     modifier: Modifier = Modifier,
-    balance: Long = 0L
+    balance: Long = 0L,
+    onTransferBankClicked: () -> Unit = {}
 ) {
     Card(
         modifier = modifier,
@@ -62,7 +63,6 @@ fun EWalletBalanceSection(
                 Text(
                     text = "Saldo",
                     fontSize = 11.sp,
-//                    fontFamily = FontFamily(Font(R.font.poppins)),
                     fontWeight = FontWeight.Medium,
                     color = Color(0xFF343434)
                 )
@@ -70,7 +70,6 @@ fun EWalletBalanceSection(
                 Text(
                     text = balance.toRupiah(),
                     fontSize = 14.sp,
-//                    fontFamily = FontFamily(Font(R.font.poppins)),
                     fontWeight = FontWeight.Medium,
                     color = Color(0xFF343434)
                 )
@@ -78,7 +77,8 @@ fun EWalletBalanceSection(
             Spacer(modifier = Modifier.width(16.dp))
             BaseButton(
                 text = "Transfer Bank",
-                containerColor = Color(0xFF343434)
+                containerColor = Color(0xFF343434),
+                onClicked = onTransferBankClicked
             )
         }
     }
