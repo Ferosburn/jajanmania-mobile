@@ -23,7 +23,7 @@ fun DetailTopAppBar(
     modifier: Modifier = Modifier,
     onNavigationClicked: () -> Unit = {},
     title: String,
-    containerColor: Color = MaterialTheme.colorScheme.primary,
+    containerColor: Color = MaterialTheme.colorScheme.primaryContainer,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
