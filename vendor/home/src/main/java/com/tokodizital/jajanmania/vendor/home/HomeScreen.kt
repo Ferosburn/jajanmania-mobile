@@ -6,19 +6,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.tokodizital.jajanmania.core.domain.model.HomeMenu
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.ui.uicontroller.StatusBarColor
 
 @ExperimentalMaterial3Api
 @Composable
@@ -28,7 +28,6 @@ fun HomeScreen(
     navigateToShopScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
 ) {
-
 
     val menu = listOf(
         HomeMenu(
@@ -64,6 +63,10 @@ fun HomeScreen(
             createdAt = "2023-10-06T13:22:16.698Z"
         )
     }
+
+    StatusBarColor(
+        color = MaterialTheme.colorScheme.primaryContainer
+    )
 
     Scaffold(
         topBar = {

@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.vendor.home
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -41,47 +42,49 @@ fun HomeBalanceSection(
     onMenuClicked: (HomeMenu) -> Unit = {},
     balance: Long = 0L
 ) {
-    Card(
-        modifier = modifier,
-        shape = RoundedCornerShape(12.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
-        )
+    Box(
+        modifier = modifier
     ) {
-        Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_balance),
-                contentDescription = null,
-                modifier = Modifier
-                    .background(
-                        color = Color(0xFF343434),
-                        shape = RoundedCornerShape(size = 100.dp)
-                    )
-                    .padding(8.dp)
+        Card(
+            shape = RoundedCornerShape(12.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer
             )
-            Spacer(modifier = Modifier.width(16.dp))
-            Column(
-                modifier = Modifier.weight(1f)
+        ) {
+            Row(
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Text(
-                    text = "Saldo",
-                    fontSize = 11.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF343434)
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_balance),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .background(
+                            color = Color(0xFF343434),
+                            shape = RoundedCornerShape(size = 100.dp)
+                        )
+                        .padding(8.dp),
+                    tint = Color.White
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = balance.toRupiah(),
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = Color(0xFF343434)
-                )
-            }
-            menu.forEach {
-                HomeMenuItem(menu = it, onClicked = onMenuClicked)
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(
+                        text = "Saldo",
+                        fontSize = 11.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Text(
+                        text = balance.toRupiah(),
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Medium,
+                    )
+                }
+                menu.forEach {
+                    HomeMenuItem(menu = it, onClicked = onMenuClicked)
+                }
             }
         }
     }
@@ -125,7 +128,9 @@ fun HomeMenuItem(
 @Composable
 fun PreviewHomeBalanceSection() {
     JajanManiaTheme {
-        Surface {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
             val menu = (1..3).map {
                 HomeMenu(
                     icon = R.drawable.ic_balance,
