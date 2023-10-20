@@ -76,7 +76,7 @@ fun JajanManiaTheme(
 //    }
 
     StatusBarColor(
-        color = PrimaryContainer
+        color = colorScheme.background
     )
 
     MaterialTheme(

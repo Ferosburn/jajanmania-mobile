@@ -42,7 +42,7 @@ fun EWalletMenuSection(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
-            .background(MaterialTheme.colorScheme.primary)
+            .background(MaterialTheme.colorScheme.primaryContainer)
             .padding(24.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -90,7 +90,9 @@ fun EWalletMenuItem(
 @Composable
 fun PreviewEWalletMenuSection() {
     JajanManiaTheme {
-        Surface {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
             val menu = (1..4).map {
                 EWalletMenu(
                     icon = R.drawable.ic_balance,
@@ -100,6 +102,7 @@ fun PreviewEWalletMenuSection() {
             EWalletMenuSection(
                 menu = menu,
                 modifier = Modifier.fillMaxWidth()
+                    .padding(16.dp)
             )
         }
     }

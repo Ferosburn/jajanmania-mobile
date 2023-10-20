@@ -40,6 +40,7 @@ fun BaseModalBottomSheet(
             .then(modifier),
         sheetState = sheetState,
         scrimColor = Color(0xFF000000).copy(alpha = 0.32f),
+        containerColor = MaterialTheme.colorScheme.background
     ) {
         BaseBottomContent(
             title = title,

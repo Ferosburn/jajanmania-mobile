@@ -142,12 +142,12 @@ fun LoginScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Forgot password?",
+                    text = "Don't have any account?",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
                 BaseTextButton(
-                    text = "Click Here",
+                    text = "Register",
                     fontSize = 12.sp,
                     onClicked = navigateToRegisterScreen,
                     contentColor = Color(0XFF17C05B),
