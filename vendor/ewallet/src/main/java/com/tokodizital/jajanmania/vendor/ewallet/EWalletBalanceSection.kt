@@ -39,7 +39,7 @@ fun EWalletBalanceSection(
         modifier = modifier,
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Row(
@@ -54,7 +54,8 @@ fun EWalletBalanceSection(
                         color = Color(0xFF343434),
                         shape = RoundedCornerShape(size = 100.dp)
                     )
-                    .padding(8.dp)
+                    .padding(8.dp),
+                tint = Color.White
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(
@@ -88,7 +89,9 @@ fun EWalletBalanceSection(
 @Composable
 fun PreviewEWalletBalanceSection() {
     JajanManiaTheme {
-        Surface {
+        Surface(
+            color = MaterialTheme.colorScheme.background
+        ) {
             EWalletBalanceSection(
                 modifier = Modifier
                     .fillMaxWidth()
