@@ -27,10 +27,12 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun PaymentScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
+    navigateToPaymentDetailScreen: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { DetailTopAppBar(title = "Bayar") },
+        topBar = { DetailTopAppBar(title = "Bayar", onNavigationClicked = onNavigationClick) },
         modifier = modifier
     ) { paddingValues ->
         Column(
@@ -49,7 +51,7 @@ fun PaymentScreen(
                 modifier = Modifier.fillMaxWidth()
             )
             Box (modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterEnd) {
-                BaseButton(text = "Masukkan", enabled = value.isNotEmpty())
+                BaseButton(text = "Masukkan", enabled = value.isNotEmpty(), onClicked = navigateToPaymentDetailScreen)
             }
         }
     }

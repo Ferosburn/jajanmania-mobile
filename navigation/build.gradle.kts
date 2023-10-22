@@ -56,6 +56,14 @@ dependencies {
     implementation(project(":vendor:transaction"))
     implementation(project(":core:domain"))
 
+    implementation(project(":customer:auth"))
+    implementation(project(":customer:ewallet"))
+    implementation(project(":customer:home"))
+    implementation(project(":customer:payment"))
+    implementation(project(":customer:profile"))
+    implementation(project(":customer:transaction"))
+    implementation(project(":customer:subscription"))
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -15,8 +15,6 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
+import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseExtendedFloatingActionButton
 import com.tokodizital.jajanmania.ui.components.buttons.MenuButton
 import com.tokodizital.jajanmania.ui.components.cards.ProfileInfoCard
@@ -37,17 +36,22 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
+    navigateToEditProfileScreen: () -> Unit = {},
+    navigateToTransactionHistoryScreen: () -> Unit = {},
+    navigateToMySubscriptionScreen: () -> Unit = {},
+    navigateToLoginScreen: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Profile Customer") }) },
+        topBar = { DetailTopAppBar(title = "Profile Customer", onNavigationClicked = onNavigationClick) },
         modifier = modifier
     ) { paddingValues ->
 
-        var profileName by remember { mutableStateOf("") }
-        var profilePhone by remember { mutableStateOf("") }
-        var profileEmail by remember { mutableStateOf("") }
-        var profileLevel by remember { mutableStateOf("") }
+        var profileName by remember { mutableStateOf("Kaedehara Kazuha") }
+        var profilePhone by remember { mutableStateOf("+81 2906212910") }
+        var profileEmail by remember { mutableStateOf("mapleave@thecruxcrew.com") }
+        var profileLevel by remember { mutableStateOf("Level: 3") }
 
         Box(
             modifier = Modifier
@@ -77,9 +81,7 @@ fun ProfileScreen(
                         modifier = Modifier.size(50.dp),
                         icon = R.drawable.ic_edit,
                         text = "",
-                        onClick = {
-
-                        }
+                        onClick = navigateToEditProfileScreen
                     )
                 }
 
@@ -93,19 +95,17 @@ fun ProfileScreen(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_history),
                             menuTitle = "Riwayat Transaksi",
                             menuDescription = "Lihat riwayat transaksi",
-                            showEnter = true
-                        ) {
-
-                        }
+                            showEnter = true,
+                            onClick = navigateToTransactionHistoryScreen
+                        )
 
                         MenuButton(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_store),
                             menuTitle = "Langgananku",
                             menuDescription = "Atur vendor langgananku",
-                            showEnter = true
-                        ) {
-
-                        }
+                            showEnter = true,
+                            onClick = navigateToMySubscriptionScreen
+                        )
 
                         MenuButton(
                             imageVector = Icons.Outlined.Notifications,
@@ -147,10 +147,9 @@ fun ProfileScreen(
                             imageVector = Icons.Rounded.ExitToApp,
                             menuTitle = "Keluar",
                             menuDescription = "",
-                            showEnter = false
-                        ) {
-
-                        }
+                            showEnter = false,
+                            onClick = navigateToLoginScreen
+                        )
                     }
                 }
             }

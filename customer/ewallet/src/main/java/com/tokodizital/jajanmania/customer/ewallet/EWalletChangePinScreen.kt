@@ -16,7 +16,6 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -32,6 +31,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -40,7 +40,9 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterial3Api
 @Composable
 fun EWalletChangePinScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
+    navigateToEWalletSettingScreen: () -> Unit = {}
 ) {
 
     var oldPin by remember { mutableStateOf("") }
@@ -60,7 +62,7 @@ fun EWalletChangePinScreen(
     var showBottomSheet by remember { mutableStateOf(false) }
 
     Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Ubah PIN") }) },
+        topBar = { DetailTopAppBar(title = "Ubah PIN", onNavigationClicked = onNavigationClick) },
         modifier = modifier
     ) { paddingValues ->
         Box(
@@ -141,7 +143,7 @@ fun EWalletChangePinScreen(
                             text = "Lanjut",
                             modifier = Modifier
                                 .align(Alignment.End),
-                            enabled = isButtonEnabled
+                            enabled = isButtonEnabled,
                         )
                     }
 
@@ -183,6 +185,7 @@ fun EWalletChangePinScreen(
                                     onClicked = {
                                         scope.launch { sheetState.hide() }.invokeOnCompletion {
                                             if (!sheetState.isVisible) {
+                                                navigateToEWalletSettingScreen()
                                                 showBottomSheet = false
                                             }
                                         }

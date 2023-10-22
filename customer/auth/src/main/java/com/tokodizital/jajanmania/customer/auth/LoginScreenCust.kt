@@ -12,15 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material.icons.outlined.Lock
@@ -40,7 +35,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -50,13 +44,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.ui.R
-import com.tokodizital.jajanmania.ui.components.buttons.BlackButton
+import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.checkbox.SimpleCheckBox
 import com.tokodizital.jajanmania.ui.components.textfields.SimpleTextField
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
-fun LoginScreenCust() {
+fun LoginScreenCust(
+    navigateToHomeScreen: () -> Unit = {},
+    navigateToRegisterScreen: () -> Unit = {}
+) {
 
     var username by remember { mutableStateOf("") }
     var showPassword by remember { mutableStateOf(value = false) }
@@ -67,7 +64,7 @@ fun LoginScreenCust() {
             .fillMaxHeight()
             .padding(top = 30.dp)
             .background(
-                color = Color.Transparent,
+                color = MaterialTheme.colorScheme.background,
             )
     ) {
 
@@ -77,10 +74,10 @@ fun LoginScreenCust() {
                 .size(180.dp)
                 .padding(top = 50.dp)
                 .wrapContentSize(Alignment.Center),
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo_jajan_mania),
             contentDescription = null,
 
-        )
+            )
 
         Column(
             modifier = Modifier
@@ -103,7 +100,7 @@ fun LoginScreenCust() {
                     text = "Login Customer",
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .padding(top = 50.dp, ),
+                        .padding(top = 50.dp),
 
                     style = MaterialTheme.typography.bodyMedium
                 )
@@ -117,11 +114,12 @@ fun LoginScreenCust() {
                     onValueChange = { newText ->
                         username = newText
                     },
-                    placeholder = { Text(
-                        "Username",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                                  },
+                    placeholder = {
+                        Text(
+                            "Username",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(20.dp))
@@ -159,10 +157,11 @@ fun LoginScreenCust() {
                     onValueChange = { newText ->
                         username = newText
                     },
-                    placeholder = { Text(
-                        "Password",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
+                    placeholder = {
+                        Text(
+                            "Password",
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     },
                 )
             }
@@ -174,7 +173,7 @@ fun LoginScreenCust() {
                 horizontalAlignment = Alignment.Start
             ) {
                 SimpleCheckBox(
-                    text= "Remember me",
+                    text = "Remember me",
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -186,7 +185,7 @@ fun LoginScreenCust() {
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                BlackButton(text = "Login")
+                BaseButton(text = "Login", onClicked = navigateToHomeScreen)
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -201,10 +200,7 @@ fun LoginScreenCust() {
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    androidx.compose.material3.TextButton(onClick = {
-
-
-                    }) {
+                    androidx.compose.material3.TextButton(onClick = navigateToRegisterScreen) {
                         Text(
                             text = "Create here",
                             fontSize = 15.sp,

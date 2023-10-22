@@ -27,7 +27,9 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeTopAppBar() {
+fun HomeTopAppBar(
+    onProfileClicked: () -> Unit = {}
+) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = Color(0xFFFDD671)
@@ -50,7 +52,7 @@ fun HomeTopAppBar() {
         },
         actions = {
             IconButton(
-                onClick = {},
+                onClick = onProfileClicked,
             ) {
                 Icon(
                     Icons.Filled.Person,

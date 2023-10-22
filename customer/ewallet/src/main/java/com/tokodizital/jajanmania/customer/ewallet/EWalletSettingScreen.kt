@@ -9,23 +9,25 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.MenuButton
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
 @Composable
 fun EWalletSettingScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
+    navigateToChangePinScreen: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "E-Wallet") })},
+        topBar = { DetailTopAppBar(title = "E-Wallet", onNavigationClicked = onNavigationClick) },
         modifier = modifier
     ) { paddingValues ->
         Box(
@@ -44,10 +46,9 @@ fun EWalletSettingScreen(
                     imageVector = ImageVector.vectorResource(com.tokodizital.jajanmania.ui.R.drawable.ic_password),
                     menuTitle = "Ubah PIN",
                     menuDescription = "Ubah PIN untuk meningkatkan keamanan",
-                    showEnter = true
-                ) {
-                    
-                }
+                    showEnter = true,
+                    onClick = navigateToChangePinScreen
+                )
                 MenuButton(
                     imageVector = ImageVector.vectorResource(com.tokodizital.jajanmania.ui.R.drawable.ic_lock_reset),
                     menuTitle = "Lupa PIN",

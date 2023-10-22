@@ -28,7 +28,8 @@ import com.tokodizital.jajanmania.ui.components.cards.CategoryItemCard
 @Composable
 fun CategoryCollection(
     title: String = "Title",
-    list: List<Category> = listOf()
+    list: List<Category> = listOf(),
+    onMoreClick: () -> Unit = {}
 ) {
     Column {
         if (list.isNotEmpty()) {
@@ -47,7 +48,7 @@ fun CategoryCollection(
                 )
                 Spacer(modifier = Modifier.width(32.dp))
                 Row (
-                    modifier = Modifier.clickable {},
+                    modifier = Modifier.clickable(onClick = onMoreClick),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(text = "Lihat Lainnya", style = MaterialTheme.typography.labelMedium)

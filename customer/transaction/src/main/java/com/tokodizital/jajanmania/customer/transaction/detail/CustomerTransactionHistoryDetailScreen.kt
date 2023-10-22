@@ -44,6 +44,7 @@ import com.tokodizital.jajanmania.ui.theme.Typography
 @Composable
 fun CustomerTransactionDetailScreen(
     modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
     transaction: TransactionHistory
 ) {
     val dummyJajan = listOf(
@@ -74,9 +75,7 @@ fun CustomerTransactionDetailScreen(
         topBar = {
             DetailTopAppBar(
                 title = "Detail Transaksi",
-                onNavigationClicked = {
-
-                }
+                onNavigationClicked = onNavigationClick
             )
         },
         modifier = modifier
@@ -186,9 +185,7 @@ fun CustomerTransactionDetailScreen(
                     BaseOutlinedButton(
                         text = "Tutup",
                         modifier = Modifier.fillMaxWidth(),
-                        onClicked = {
-
-                        }
+                        onClicked = onNavigationClick
                     )
                 }
             }
