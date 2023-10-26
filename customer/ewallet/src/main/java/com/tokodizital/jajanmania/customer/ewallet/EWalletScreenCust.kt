@@ -47,7 +47,12 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun EWalletScreenCust(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
+    navigateToTopUpScreen: () -> Unit = {},
+    navigateToPaymentScreen: () -> Unit = {},
+    navigateToTransactionHistoryScreen: () -> Unit = {},
+    navigateToEWalletSettingScreen: () -> Unit = {}
 ) {
     val menu = listOf(
         EWalletMenu(
@@ -68,12 +73,21 @@ fun EWalletScreenCust(
         )
     )
 
+    val onMenuClicked: (EWalletMenu) -> Unit = {
+        when (it.label) {
+            R.string.label_bayar -> navigateToPaymentScreen()
+            R.string.label_topUp -> navigateToTopUpScreen()
+            R.string.label_history -> navigateToTransactionHistoryScreen()
+            R.string.label_Pengaturan -> navigateToEWalletSettingScreen()
+        }
+    }
+
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "E-Wallet")
+            DetailTopAppBar(title = "E-Wallet", onNavigationClicked = onNavigationClick)
         },
         modifier = modifier
-    ) {paddingValues ->
+    ) { paddingValues ->
         LazyColumn(
             contentPadding = PaddingValues(start = 24.dp, top = 24.dp, end = 24.dp),
             modifier = Modifier.padding(paddingValues),
@@ -88,7 +102,8 @@ fun EWalletScreenCust(
             item {
                 EWalletMenuSection(
                     menu = menu,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    onMenuClicked = onMenuClicked
                 )
             }
         }
@@ -135,7 +150,7 @@ fun EWalletMenuItem(
                 .clip(CircleShape)
                 .background(Color(0xFF343434))
                 .padding(8.dp)
-                .clickable {onClicked(menu)},
+                .clickable { onClicked(menu) },
             tint = Color.White
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -143,7 +158,8 @@ fun EWalletMenuItem(
             text = stringResource(id = menu.label),
             fontSize = 14.sp,
             fontFamily = FontFamily(
-                Font(R.font.poppins_medium)),
+                Font(R.font.poppins_medium)
+            ),
             color = Color(0xFF343434),
             textAlign = TextAlign.Center,
         )
@@ -153,13 +169,14 @@ fun EWalletMenuItem(
 @Composable
 fun EWalletBalanceSection(
     modifier: Modifier = Modifier,
+    onTopUpButtonClick: () -> Unit = {},
     balance: Long = 0L
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFFDD671),
-            contentColor =  Color.White
+            contentColor = Color.White
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
@@ -185,7 +202,8 @@ fun EWalletBalanceSection(
                     text = "Saldo",
                     fontSize = 11.sp,
                     fontFamily = FontFamily(
-                        Font(R.font.poppins_medium)),
+                        Font(R.font.poppins_medium)
+                    ),
                     color = Color(0xFF343434)
                 )
                 Spacer(modifier = Modifier.height(4.dp))
@@ -193,15 +211,16 @@ fun EWalletBalanceSection(
                     text = balance.toRupiah(),
                     fontSize = 14.sp,
                     fontFamily = FontFamily(
-                        Font(R.font.poppins_medium)),
+                        Font(R.font.poppins_medium)
+                    ),
                     color = Color(0xFF343434),
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))
             BaseButton(
                 containerColor = Color(0xFF343434),
-                text = "Isi saldo"
-
+                text = "Isi saldo",
+                onClicked = onTopUpButtonClick
             )
         }
     }

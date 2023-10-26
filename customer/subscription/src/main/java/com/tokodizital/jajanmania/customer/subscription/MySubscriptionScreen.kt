@@ -30,7 +30,8 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun MySubscriptionScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {}
 ) {
     val SubsList: List<Subscription> = listOf(
         Subscription(
@@ -62,7 +63,7 @@ fun MySubscriptionScreen(
 
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Langgananku")
+            DetailTopAppBar(title = "Langgananku", onNavigationClicked = onNavigationClick)
         },
         modifier = modifier
     ) {

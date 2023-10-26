@@ -36,23 +36,10 @@ import com.tokodizital.jajanmania.ui.R
 @Composable
 fun EWalletHomeSection(
     modifier: Modifier = Modifier,
+    menuList: List<EWalletMenu>,
+    onMenuClick: (EWalletMenu) -> Unit = {},
     balance: Long = 0L
 ) {
-    val listOfMenu: List<EWalletMenu> = listOf(
-        EWalletMenu(
-            icon = R.drawable.ic_bayar,
-            label = R.string.label_bayar
-        ),
-        EWalletMenu(
-            icon = R.drawable.ic_add,
-            label = R.string.label_topUp
-        ),
-        EWalletMenu(
-            icon = R.drawable.ic_more_vertical,
-            label = R.string.label_others
-        ),
-    )
-
     Card(
         modifier = modifier.padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
@@ -81,10 +68,11 @@ fun EWalletHomeSection(
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = balance.toRupiah(), style = MaterialTheme.typography.titleSmall)
             }
-            Row (horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                listOfMenu.map { eWalletMenu ->
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                menuList.map { eWalletMenu ->
                     EWalletHomeMenuItem(
-                        menu = eWalletMenu
+                        menu = eWalletMenu,
+                        onMenuClick = onMenuClick
                     )
                 }
             }
@@ -96,7 +84,7 @@ fun EWalletHomeSection(
 fun EWalletHomeMenuItem(
     modifier: Modifier = Modifier,
     menu: EWalletMenu,
-    onClicked: (EWalletMenu) -> Unit = {}
+    onMenuClick: (EWalletMenu) -> Unit = {}
 ) {
     Column(
         modifier = modifier
@@ -111,7 +99,7 @@ fun EWalletHomeMenuItem(
                 .clip(CircleShape)
                 .background(Color(0xFF343434))
                 .padding(8.dp)
-                .clickable { onClicked(menu) },
+                .clickable { onMenuClick(menu) },
             tint = Color.White,
         )
         Spacer(modifier = Modifier.height(4.dp))

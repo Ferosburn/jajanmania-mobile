@@ -14,8 +14,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
+import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.cards.CircleImageCard
 import com.tokodizital.jajanmania.ui.components.textfields.BaseAutoCompleteTextField
@@ -39,10 +38,12 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun EditProfileScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {},
+    navigateToProfileScreen: () -> Unit = {}
 ) {
     Scaffold(
-        topBar = { TopAppBar(title = { Text(text = "Edit Profile Customer") }) },
+        topBar = { DetailTopAppBar(title = "Edit Profile Customer", onNavigationClicked = onNavigationClick) },
         modifier = modifier
     ) { paddingValues ->
 
@@ -149,11 +150,8 @@ fun EditProfileScreen(
                         text = "Simpan",
                         modifier = Modifier.fillMaxWidth(),
                         containerColor = MaterialTheme.colorScheme.primary,
-                        onClicked = {
-
-                        }
+                        onClicked = navigateToProfileScreen
                     )
-
                 }
             }
         }

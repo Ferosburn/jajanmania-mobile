@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.customer.payment
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -48,6 +49,8 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun PaymentDetailScreen(
     modifier: Modifier = Modifier,
+    navigateUp: () -> Unit = {},
+    navigateToHomeScreen: () -> Unit = {},
     listJajanan: List<TransactionItem> = emptyList(),
     vendorName: String,
     balance: Long
@@ -69,7 +72,10 @@ fun PaymentDetailScreen(
             title = "Balik Ke Halaman Sebelumnya?",
             body = "Yakin?",
             positiveButtonTitle = "Ya, Yakin",
-            onPositiveButtonClicked = { backDialogState = false },
+            onPositiveButtonClicked = {
+                backDialogState = false
+                navigateUp()
+            },
             negativeButtonTitle = "Tutup",
             onNegativeButtonClicked = { backDialogState = false },
             positiveButtonContainerColor = MaterialTheme.colorScheme.error
@@ -118,7 +124,14 @@ fun PaymentDetailScreen(
             title = "Pembayaran Sukses!",
             body = "Yeay, terima kasih telah bertransaksi",
             positiveButtonTitle = "Lanjut",
-            onPositiveButtonClicked = { cashPaymentSuccessDialogState = false })
+            onPositiveButtonClicked = {
+                cashPaymentSuccessDialogState = false
+                navigateToHomeScreen()
+            })
+    }
+
+    BackHandler {
+        backDialogState = true
     }
 
     Scaffold(

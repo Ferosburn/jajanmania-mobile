@@ -36,8 +36,9 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun CategoryScreen(
-    modifier: Modifier = Modifier
-){
+    modifier: Modifier = Modifier,
+    onNavigationClick: () -> Unit = {}
+) {
     val CategoryTypeList: List<Category> = listOf(
         Category(
             name = "Soto",
@@ -110,42 +111,41 @@ fun CategoryScreen(
             isSubscribed = false
         ),
     )
-   Scaffold(
-       topBar = {
-               DetailTopAppBar(title = "Kategori")},
-       modifier = modifier
-   ) { paddingValues ->
-       LazyColumn(
-           contentPadding = PaddingValues(vertical = 24.dp),
-           modifier = modifier.padding(paddingValues),
-           verticalArrangement = Arrangement.spacedBy(24.dp)
-       ) {
-           item {
-               CategoryType(
-                   title = "Makanan Berkuah",
-                   list = CategoryTypeList
-               )
-           }
-           item {
-               CategoryType(
-                   title = "Goreng",
-                   list = CategoryTypeList2
-               )
-           }
-           item {
-               CategoryType(
-                   title = "Manis-Manis",
-                   list = CategoryTypeList3
-               )
-           }
-           item {
-               CategoryType(
-                   title = "Asin Gurih",
-                   list = CategoryTypeList4
-               )
-           }
-       }
-   }
+    Scaffold(
+        topBar = { DetailTopAppBar(title = "Kategori", onNavigationClicked = onNavigationClick) },
+        modifier = modifier
+    ) { paddingValues ->
+        LazyColumn(
+            contentPadding = PaddingValues(vertical = 24.dp),
+            modifier = modifier.padding(paddingValues),
+            verticalArrangement = Arrangement.spacedBy(24.dp)
+        ) {
+            item {
+                CategoryType(
+                    title = "Makanan Berkuah",
+                    list = CategoryTypeList
+                )
+            }
+            item {
+                CategoryType(
+                    title = "Goreng",
+                    list = CategoryTypeList2
+                )
+            }
+            item {
+                CategoryType(
+                    title = "Manis-Manis",
+                    list = CategoryTypeList3
+                )
+            }
+            item {
+                CategoryType(
+                    title = "Asin Gurih",
+                    list = CategoryTypeList4
+                )
+            }
+        }
+    }
 }
 
 @Composable
@@ -171,11 +171,15 @@ fun CategoryType(
 
                 )
                 Spacer(modifier = Modifier.width(32.dp))
-                Row (
+                Row(
                     modifier = Modifier.clickable {},
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Lihat Lainnya", style = MaterialTheme.typography.labelMedium, fontWeight = FontWeight.Medium)
+                    Text(
+                        text = "Lihat Lainnya",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Medium
+                    )
                     Spacer(modifier = Modifier.width(4.dp))
                     Icon(imageVector = Icons.Rounded.KeyboardArrowRight, contentDescription = "")
                 }

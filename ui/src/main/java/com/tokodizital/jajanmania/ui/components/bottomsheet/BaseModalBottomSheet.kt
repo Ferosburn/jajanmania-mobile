@@ -39,7 +39,7 @@ fun BaseModalBottomSheet(
             .fillMaxWidth()
             .then(modifier),
         sheetState = sheetState,
-        scrimColor = Color(0xFF000000).copy(alpha = 0.32f),
+        scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = 0.32f),
         containerColor = MaterialTheme.colorScheme.background
     ) {
         BaseBottomContent(

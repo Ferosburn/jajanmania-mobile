@@ -37,7 +37,6 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -45,13 +44,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.ui.R
-import com.tokodizital.jajanmania.ui.components.buttons.BlackButton
+import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.checkbox.SimpleCheckBox
 import com.tokodizital.jajanmania.ui.components.textfields.SimpleTextField
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
-fun RegisterScreenCust() {
+fun RegisterScreenCust(
+    navigateToLoginScreen: () -> Unit = {},
+) {
 
     var fullname by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -73,7 +74,7 @@ fun RegisterScreenCust() {
                 .size(220.dp)
                 .padding(top = 10.dp)
                 .wrapContentSize(Alignment.Center),
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo_jajan_mania),
             contentDescription = null,
 
             )
@@ -255,7 +256,7 @@ fun RegisterScreenCust() {
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                BlackButton(text = "Register")
+                BaseButton(text = "Register", onClicked = navigateToLoginScreen)
 
                 Spacer(modifier = Modifier.height(20.dp))
 
@@ -270,10 +271,7 @@ fun RegisterScreenCust() {
                         style = MaterialTheme.typography.bodyMedium
                     )
 
-                    androidx.compose.material3.TextButton(onClick = {
-
-
-                    }) {
+                    androidx.compose.material3.TextButton(onClick = navigateToLoginScreen) {
                         Text(
                             text = "Click here",
                             modifier = Modifier.drawBehind {

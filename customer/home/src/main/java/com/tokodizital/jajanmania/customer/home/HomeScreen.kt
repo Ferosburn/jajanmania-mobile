@@ -13,13 +13,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.core.domain.model.Category
+import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
+import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToProfileScreen: () -> Unit = {},
+    navigateToPaymentScreen: () -> Unit = {},
+    navigateToTopUpScreen: () -> Unit = {},
+    navigateToEWalletScreen: () -> Unit = {},
+    navigateToMySubscriptionScreen: () -> Unit = {},
+    navigateToCategoryScreen: () -> Unit = {}
 ) {
     val subscriptionsList: List<Category> = listOf(
         Category(
@@ -58,8 +66,31 @@ fun HomeScreen(
         ),
     )
 
+    val listOfMenu: List<EWalletMenu> = listOf(
+        EWalletMenu(
+            icon = R.drawable.ic_bayar,
+            label = R.string.label_bayar
+        ),
+        EWalletMenu(
+            icon = R.drawable.ic_add,
+            label = R.string.label_topUp
+        ),
+        EWalletMenu(
+            icon = R.drawable.ic_more_vertical,
+            label = R.string.label_others
+        ),
+    )
+
+    val onMenuClick: (EWalletMenu) -> Unit = {
+        when (it.label) {
+            R.string.label_bayar -> navigateToPaymentScreen()
+            R.string.label_topUp -> navigateToTopUpScreen()
+            R.string.label_others -> navigateToEWalletScreen()
+        }
+    }
+
     Scaffold(
-        topBar = { HomeTopAppBar() },
+        topBar = { HomeTopAppBar(onProfileClicked = navigateToProfileScreen) },
         modifier = modifier
     ) { paddingValues ->
         LazyColumn(
@@ -69,20 +100,24 @@ fun HomeScreen(
         ) {
             item {
                 EWalletHomeSection(
-                    Modifier.fillMaxWidth(),
-                    balance = 50000L
+                    modifier = Modifier.fillMaxWidth(),
+                    balance = 50000L,
+                    menuList = listOfMenu,
+                    onMenuClick = onMenuClick
                 )
             }
             item {
                 CategoryCollection(
                     title = "Langganan Notifikasi Saya",
-                    list = subscriptionsList
+                    list = subscriptionsList,
+                    onMoreClick = navigateToMySubscriptionScreen,
                 )
             }
             item {
                 CategoryCollection(
                     title = "Kategori",
-                    list = categoriesList
+                    list = categoriesList,
+                    onMoreClick = navigateToCategoryScreen,
                 )
             }
         }
