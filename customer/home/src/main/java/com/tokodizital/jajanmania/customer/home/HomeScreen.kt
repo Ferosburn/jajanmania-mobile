@@ -9,13 +9,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.core.domain.model.Category
 import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
+import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
+import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
@@ -23,48 +27,69 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateToProfileScreen: () -> Unit = {},
-    navigateToPaymentScreen: () -> Unit = {},
     navigateToTopUpScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
     navigateToMySubscriptionScreen: () -> Unit = {},
-    navigateToCategoryScreen: () -> Unit = {}
+    navigateToCategoryScreen: () -> Unit = {},
+    navigateToNearbyVendorScreen: () -> Unit = {},
+    navigateToVendorDetailScreen: () -> Unit = {}
 ) {
-    val subscriptionsList: List<Category> = listOf(
-        Category(
-            name = "Soto",
-            isSubscribed = true
-        ),
-        Category(
-            name = "Bakso",
-            isSubscribed = true
-        ),
-        Category(
-            name = "Es Lilin",
-            isSubscribed = true
-        ),
-        Category(
-            name = "Soto Medan",
-            isSubscribed = true
-        ),
-    )
-    val categoriesList: List<Category> = listOf(
-        Category(
-            name = "Mi Ayam",
-            isSubscribed = false
-        ),
-        Category(
-            name = "Cilok",
-            isSubscribed = false
-        ),
-        Category(
-            name = "Bala-bala",
-            isSubscribed = false
-        ),
-        Category(
-            name = "Gorengan",
-            isSubscribed = false
-        ),
-    )
+    val nearbyVendorList: List<NearbyVendor> = remember {
+        listOf(
+            NearbyVendor(
+                jajanName = "Batagor Bang Tigor",
+                jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+            ),
+            NearbyVendor(
+                jajanName = "Klepon Pak Jadi",
+                jajanDescription = "Jual Klepon, Onde-Onde, Cenil, dan Lumpia"
+            ),
+            NearbyVendor(
+                jajanName = "Soto Padang Meriah",
+                jajanDescription = ""
+            )
+        )
+    }
+    val subscriptionsList: List<Category> = remember {
+        listOf(
+            Category(
+                name = "Soto",
+                isSubscribed = true
+            ),
+            Category(
+                name = "Bakso",
+                isSubscribed = true
+            ),
+            Category(
+                name = "Es Lilin",
+                isSubscribed = true
+            ),
+            Category(
+                name = "Soto Medan",
+                isSubscribed = true
+            ),
+        )
+    }
+    val categoriesList: List<Category> = remember {
+        listOf(
+            Category(
+                name = "Mi Ayam",
+                isSubscribed = false
+            ),
+            Category(
+                name = "Cilok",
+                isSubscribed = false
+            ),
+            Category(
+                name = "Bala-bala",
+                isSubscribed = false
+            ),
+            Category(
+                name = "Gorengan",
+                isSubscribed = false
+            ),
+        )
+    }
 
     val listOfMenu: List<EWalletMenu> = listOf(
         EWalletMenu(
@@ -83,7 +108,7 @@ fun HomeScreen(
 
     val onMenuClick: (EWalletMenu) -> Unit = {
         when (it.label) {
-            R.string.label_bayar -> navigateToPaymentScreen()
+            R.string.label_bayar -> navigateToNearbyVendorScreen()
             R.string.label_topUp -> navigateToTopUpScreen()
             R.string.label_others -> navigateToEWalletScreen()
         }
@@ -106,19 +131,39 @@ fun HomeScreen(
                     onMenuClick = onMenuClick
                 )
             }
-            item {
-                CategoryCollection(
-                    title = "Langganan Notifikasi Saya",
-                    list = subscriptionsList,
-                    onMoreClick = navigateToMySubscriptionScreen,
-                )
+            if (nearbyVendorList.isNotEmpty()) {
+                item {
+                    HomeNearbyVendorSection(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        list = nearbyVendorList.take(5),
+                        onMoreClick = navigateToNearbyVendorScreen,
+                        navigateToVendorDetailScreen = navigateToVendorDetailScreen
+                    )
+                }
             }
             item {
-                CategoryCollection(
-                    title = "Kategori",
-                    list = categoriesList,
-                    onMoreClick = navigateToCategoryScreen,
-                )
+                if (subscriptionsList.isNotEmpty()) {
+                    CategoryCollection(
+                        title = stringResource(R.string.title_my_notification_subscription),
+                        list = subscriptionsList.take(5),
+                        onMoreClick = navigateToMySubscriptionScreen,
+                    )
+                } else {
+                    EmptyContentState(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        title = stringResource(R.string.my_notification_subscription_empty_title),
+                        description = stringResource(R.string.my_notification_subscription_empty_description)
+                    )
+                }
+            }
+            if (categoriesList.isNotEmpty()) {
+                item {
+                    CategoryCollection(
+                        title = stringResource(R.string.title_category),
+                        list = categoriesList,
+                        onMoreClick = navigateToCategoryScreen,
+                    )
+                }
             }
         }
     }
