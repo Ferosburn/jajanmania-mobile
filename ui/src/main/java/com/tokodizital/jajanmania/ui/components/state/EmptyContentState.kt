@@ -7,16 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
@@ -29,24 +27,23 @@ fun EmptyContentState(
         modifier = modifier
             .border(
                 width = 2.dp,
-                color = Color(0xFF343434),
+                color = MaterialTheme.colorScheme.outline,
                 shape = RoundedCornerShape(size = 12.dp)
             )
             .padding(horizontal = 32.dp, vertical = 24.dp)
     ) {
         Text(
             text = title,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium,
-            color = Color(0xFF343434),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
             text = description,
-            fontSize = 12.sp,
-            color = Color(0xFF343434),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onBackground,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
