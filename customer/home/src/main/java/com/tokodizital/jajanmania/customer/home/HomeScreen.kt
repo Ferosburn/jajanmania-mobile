@@ -37,14 +37,17 @@ fun HomeScreen(
     val nearbyVendorList: List<NearbyVendor> = remember {
         listOf(
             NearbyVendor(
+                id = "1",
                 jajanName = "Batagor Bang Tigor",
                 jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
             ),
             NearbyVendor(
+                id = "2",
                 jajanName = "Klepon Pak Jadi",
                 jajanDescription = "Jual Klepon, Onde-Onde, Cenil, dan Lumpia"
             ),
             NearbyVendor(
+                id = "3",
                 jajanName = "Soto Padang Meriah",
                 jajanDescription = ""
             )

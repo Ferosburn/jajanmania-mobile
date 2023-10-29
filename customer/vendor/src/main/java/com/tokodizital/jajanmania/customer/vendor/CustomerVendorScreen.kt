@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.customer.payment
+package com.tokodizital.jajanmania.customer.vendor
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -18,22 +18,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tokodizital.jajanmania.core.domain.model.Vendor
+import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
+import com.tokodizital.jajanmania.ui.components.customer.CustomerNearbyVendorItem
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
-import com.tokodizital.jajanmania.ui.components.vendor.VendorItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
-fun VendorSelectionScreen(
+fun CustomerVendorScreen(
     modifier: Modifier = Modifier,
     navigateToVendorDetailScreen: () -> Unit = {},
     onNavigationClick: () -> Unit = {},
-    vendors: List<Vendor> = emptyList()
+    vendors: List<NearbyVendor> = emptyList()
 ) {
-    val onItemClick: (Vendor) -> Unit = {
+    val onItemClick: (NearbyVendor) -> Unit = {
         navigateToVendorDetailScreen()
     }
 
@@ -73,7 +73,7 @@ fun VendorSelectionScreen(
                 }
             }
             items(items = vendors, key = {it.id}) {
-                VendorItem(
+                CustomerNearbyVendorItem(
                     vendor = it,
                     onClick = onItemClick,
                     modifier = Modifier.padding(horizontal = 16.dp)
@@ -92,7 +92,7 @@ fun VendorSelectionScreen(
 fun PreviewEmptyVendorSelectionScreen() {
     JajanManiaTheme {
         Surface {
-            VendorSelectionScreen()
+            CustomerVendorScreen()
         }
     }
 }
@@ -101,29 +101,18 @@ fun PreviewEmptyVendorSelectionScreen() {
 @Composable
 @Preview
 fun PreviewFilledVendorSelectionScreen() {
-    val listVendor: List<Vendor> = remember {
+    val listVendor: List<NearbyVendor> = remember {
         (1..4).map {
-            Vendor(
+            NearbyVendor(
                 id = "fbe68aec-8119-42a9-a820-ef7e6ebf2f20$it",
-                fullname = "Vendor Name",
-                gender = "MALE",
-                address = "Jl Melati no 9",
-                username = "dummyUsername",
-                email = "dummyemail@email.com",
-                balance = 0,
-                experience = 0,
-                jajanImage = "",
                 jajanName = "Pisang Keju Pak Eko $it",
-                jajanDescription = "Spesialis pisang keju di kota Kotok $it",
-                status = "ON",
-                lastLat = 0.0,
-                lastLng = 1.0
+                jajanDescription = "Spesialis pisang keju di kota Kotok $it"
             )
         }
     }
     JajanManiaTheme {
         Surface {
-            VendorSelectionScreen(vendors = listVendor)
+            CustomerVendorScreen(vendors = listVendor)
         }
     }
 }

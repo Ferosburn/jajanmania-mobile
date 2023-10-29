@@ -15,9 +15,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.tokodizital.jajanmania.core.domain.model.Jajan
+import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.TransactionItem
-import com.tokodizital.jajanmania.core.domain.model.Vendor
 import com.tokodizital.jajanmania.customer.auth.LoginScreenCust
 import com.tokodizital.jajanmania.customer.auth.RegisterScreenCust
 import com.tokodizital.jajanmania.customer.ewallet.EWalletChangePinScreen
@@ -26,13 +26,14 @@ import com.tokodizital.jajanmania.customer.ewallet.EWalletSettingScreen
 import com.tokodizital.jajanmania.customer.home.HomeScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentDetailScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentScreen
-import com.tokodizital.jajanmania.customer.payment.VendorSelectionScreen
 import com.tokodizital.jajanmania.customer.profile.EditProfileScreen
 import com.tokodizital.jajanmania.customer.profile.ProfileScreen
 import com.tokodizital.jajanmania.customer.subscription.CategoryScreen
 import com.tokodizital.jajanmania.customer.subscription.MySubscriptionScreen
 import com.tokodizital.jajanmania.customer.transaction.detail.CustomerTransactionDetailScreen
 import com.tokodizital.jajanmania.customer.transaction.history.CustomerTransactionHistoryScreen
+import com.tokodizital.jajanmania.customer.vendor.CustomerVendorDetailScreen
+import com.tokodizital.jajanmania.customer.vendor.CustomerVendorScreen
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalFoundationApi
@@ -66,8 +67,8 @@ fun NavHostCustomer(
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
                 navigateToCategoryScreen = navController::navigateToCategoryScreen,
                 navigateToTopUpScreen = {},
-                navigateToNearbyVendorScreen = {navController::navigateToNearbyVendorScreen},
-                navigateToVendorDetailScreen = {navController::navigateToNearbyVendorDetailScreen}
+                navigateToNearbyVendorScreen = navController::navigateToNearbyVendorScreen,
+                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
             )
         }
         composable(CustomerScreens.MySubscription.route) {
@@ -199,34 +200,49 @@ fun NavHostCustomer(
             )
         }
         composable(CustomerScreens.NearbyVendor.route) {
-            val listVendors: List<Vendor> = remember {
+            val listVendors: List<NearbyVendor> = remember {
                 (1..4).map {
-                    Vendor(
+                    NearbyVendor(
                         id = "fbe68aec-8119-42a9-a820-ef7e6ebf2f20$it",
-                        fullname = "Vendor Name",
-                        gender = "MALE",
-                        address = "Jl Melati no 9",
-                        username = "dummyUsername",
-                        email = "dummyemail@email.com",
-                        balance = 0,
-                        experience = 0,
-                        jajanImage = "",
                         jajanName = "Pisang Keju Pak Eko $it",
-                        jajanDescription = "Spesialis pisang keju di kota Kotok $it",
-                        status = "ON",
-                        lastLat = 0.0,
-                        lastLng = 1.0
+                        jajanDescription = "Spesialis pisang keju di kota Kotok $it"
                     )
                 }
             }
 
-            VendorSelectionScreen(
+            CustomerVendorScreen(
                 vendors = listVendors,
                 onNavigationClick = navController::navigateUp,
                 navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
             )
         }
-
+        composable(CustomerScreens.NearbyVendorDetail.route) {
+            val vendor = remember {
+                NearbyVendor(
+                    id = "",
+                    jajanName = "Batagor Bang Tigor",
+                    jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+                )
+            }
+            val list: List<Jajan> = remember {
+                (1..7).map {
+                    Jajan(
+                        id = it,
+                        vendorId = 12317414,
+                        name = "Es Teh",
+                        category = "Minuman Dingin",
+                        price = 3000L,
+                        image = ""
+                    )
+                }
+            }
+            CustomerVendorDetailScreen(
+                nearbyVendor = vendor,
+                jajanList = list,
+                navigateUp = navController::navigateUp,
+                navigateToCheckoutScreen = {}
+            )
+        }
     }
 }
 
