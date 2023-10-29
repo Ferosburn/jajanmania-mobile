@@ -23,12 +23,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.common.utils.toRupiah
 import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
 import com.tokodizital.jajanmania.ui.R
@@ -44,7 +42,7 @@ fun EWalletHomeSection(
         modifier = modifier.padding(horizontal = 16.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFDD671)
+            containerColor = MaterialTheme.colorScheme.primaryContainer
         )
     ) {
         Row(
@@ -56,15 +54,15 @@ fun EWalletHomeSection(
                 contentDescription = null,
                 modifier = Modifier
                     .background(
-                        color = Color(0xFF343434),
-                        shape = RoundedCornerShape(size = 100.dp)
+                        color = MaterialTheme.colorScheme.primary,
+                        shape = CircleShape
                     )
                     .padding(8.dp),
-                tint = Color.White
+                tint = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = "Saldo", style = MaterialTheme.typography.labelSmall)
+                Text(text = stringResource(R.string.balance), style = MaterialTheme.typography.labelSmall)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(text = balance.toRupiah(), style = MaterialTheme.typography.titleSmall)
             }
@@ -97,18 +95,17 @@ fun EWalletHomeMenuItem(
             modifier = Modifier
                 .size(34.dp, 34.dp)
                 .clip(CircleShape)
-                .background(Color(0xFF343434))
+                .background(MaterialTheme.colorScheme.primary)
                 .padding(8.dp)
                 .clickable { onMenuClick(menu) },
-            tint = Color.White,
+            tint = MaterialTheme.colorScheme.onPrimary,
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = stringResource(id = menu.label),
+            text = stringResource(menu.label),
             style = MaterialTheme.typography.labelSmall,
-            color = Color(0xFF343434),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             textAlign = TextAlign.Center,
-            lineHeight = 16.sp
         )
     }
 }

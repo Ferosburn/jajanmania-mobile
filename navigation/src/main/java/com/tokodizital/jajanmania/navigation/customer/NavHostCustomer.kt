@@ -62,11 +62,12 @@ fun NavHostCustomer(
         composable(CustomerScreens.Home.route) {
             HomeScreen(
                 navigateToProfileScreen = navController::navigateToProfileScreen,
-                navigateToPaymentScreen = navController::navigateToPaymentScreen,
                 navigateToEWalletScreen = navController::navigateToEWalletScreen,
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
                 navigateToCategoryScreen = navController::navigateToCategoryScreen,
-                navigateToTopUpScreen = {}
+                navigateToTopUpScreen = {},
+                navigateToNearbyVendorScreen = {},
+                navigateToVendorDetailScreen = {}
             )
         }
         composable(CustomerScreens.MySubscription.route) {
