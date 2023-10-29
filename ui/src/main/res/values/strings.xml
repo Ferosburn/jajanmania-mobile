@@ -31,4 +31,6 @@
     <string name="label_buy">Beli</string>
     <string name="title_vendor_description">Deskripsi Penjual</string>
     <string name="title_product_list">Daftar Jajanan</string>
+    <string name="label_not_activate">Toko Kamu Belum Aktif</string>
+    <string name="desc_not_activate">Yuk atur profil toko kamu sebelum mulai berjualan. Tekan di sini untuk mulai mengatur tokomu</string>
 </resources>

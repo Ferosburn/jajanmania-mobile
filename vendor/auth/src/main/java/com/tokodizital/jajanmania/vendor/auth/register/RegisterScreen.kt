@@ -36,10 +36,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseTextButton
-import com.tokodizital.jajanmania.ui.components.checkbox.BaseCheckBox
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextFieldType
 import com.tokodizital.jajanmania.ui.components.textfields.BasePasswordOutlinedTextField
+import com.tokodizital.jajanmania.ui.components.textfields.OutlineDropdownMenuBox
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.ui.theme.poppins
 import com.tokodizital.jajanmania.ui.uicontroller.StatusBarColor
@@ -53,12 +53,14 @@ fun RegisterScreen(
 ) {
 
     val registerUiState by registerViewModel.registerUiState.collectAsState()
-    val shopName = registerUiState.shopName
     val ownerName = registerUiState.ownerName
+    val userName = registerUiState.userName
+    val gender = registerUiState.gender
     val email = registerUiState.email
     val password = registerUiState.password
     val confirmPassword = registerUiState.confirmPassword
-    val userAgreement = registerUiState.userAgreement
+
+    val options = listOf("Male", "Female")
 
     val buttonRegisterEnabled by registerViewModel.buttonRegisterEnabled.collectAsState(initial = false)
 
@@ -76,45 +78,29 @@ fun RegisterScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 26.dp)
         ) {
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(48.dp))
             Image(
                 painter = painterResource(id = R.drawable.logo_jajan_mania),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .size(133.dp)
+                    .size(120.dp)
                     .align(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Register Vendor",
-                fontSize = 13.sp,
+                text = "Daftar Pedagang",
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontFamily = poppins
             )
-            Spacer(modifier = Modifier.height(42.dp))
-            BaseOutlinedTextField(
-                value = shopName,
-                onValueChanged = registerViewModel::updateShopName,
-                label = "Nama Toko/Warung",
-                placeholder = "Masukan nama toko/warung",
-                singleLine = true,
-                type = BaseOutlinedTextFieldType.WithClearIcon,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Next
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
-            )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             BaseOutlinedTextField(
                 value = ownerName,
                 onValueChanged = registerViewModel::updateOwnerName,
-                label = "Nama Lengkap Pemilik",
-                placeholder = "Masukan nama lengkap pemiliki",
+                label = "Nama Lengkap",
+                placeholder = "Masukan Nama Lengkap",
                 singleLine = true,
                 type = BaseOutlinedTextFieldType.WithClearIcon,
                 keyboardOptions = KeyboardOptions(
@@ -125,7 +111,23 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(4.dp))
+            BaseOutlinedTextField(
+                value = userName,
+                onValueChanged = registerViewModel::updateUserName,
+                label = "Username",
+                placeholder = "Masukan Username",
+                singleLine = true,
+                type = BaseOutlinedTextFieldType.WithClearIcon,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Next
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.CenterHorizontally),
+            )
+            Spacer(modifier = Modifier.height(4.dp))
             BaseOutlinedTextField(
                 value = email,
                 onValueChanged = registerViewModel::updateEmail,
@@ -141,7 +143,15 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(4.dp))
+            OutlineDropdownMenuBox(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                options = options,
+                label = "Jenis Kelamin",
+                placeholder = "Pilih Jenis Kelamin"
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             BasePasswordOutlinedTextField(
                 value = password,
                 onValueChanged = registerViewModel::updatePassword,
@@ -156,7 +166,7 @@ fun RegisterScreen(
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             BasePasswordOutlinedTextField(
                 value = confirmPassword,
                 onValueChanged = registerViewModel::updateConfirmPassword,
@@ -172,14 +182,8 @@ fun RegisterScreen(
                     .align(Alignment.CenterHorizontally),
             )
             Spacer(modifier = Modifier.height(16.dp))
-            BaseCheckBox(
-                text = "I agree to Terms and Conditions of Jajan Mania",
-                checked = userAgreement,
-                onCheckedChanged = registerViewModel::updateUserAgreement
-            )
-            Spacer(modifier = Modifier.height(16.dp))
             BaseButton(
-                text = "Register",
+                text = "Daftar",
                 onClicked = navigateToLoginScreen,
                 enabled = buttonRegisterEnabled,
                 containerColor = Color(0xFF343434),
@@ -191,16 +195,17 @@ fun RegisterScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Already have an account?",
+                    text = "Sudah punya akun?",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
                 BaseTextButton(
-                    text = "Click Here",
+                    text = "Masuk Disini",
                     fontSize = 12.sp,
                     onClicked = navigateToLoginScreen,
-                    contentColor = Color(0XFF17C05B),
-                    modifier = Modifier.offset(y = 2.5.dp)
+                    contentColor = MaterialTheme.colorScheme.onBackground,
+                    modifier = Modifier.offset(y = 2.5.dp),
+                    underline = true
                 )
             }
         }
