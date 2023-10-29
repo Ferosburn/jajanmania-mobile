@@ -1,17 +1,12 @@
 package com.tokodizital.jajanmania.customer.home
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material3.Icon
@@ -23,25 +18,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.tokodizital.jajanmania.core.domain.model.Category
+import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.ui.R
-import com.tokodizital.jajanmania.ui.components.cards.CategoryItemCard
+import com.tokodizital.jajanmania.ui.components.customer.CustomerNearbyVendorItem
 
 @Composable
-fun CategoryCollection(
-    title: String = "Title",
-    list: List<Category> = listOf(),
-    onMoreClick: () -> Unit = {}
+fun HomeNearbyVendorSection(
+    modifier: Modifier = Modifier,
+    list: List<NearbyVendor>,
+    onMoreClick: () -> Unit = {},
+    navigateToVendorDetailScreen: () -> Unit = {}
 ) {
-    Column {
+    val onItemClick: (NearbyVendor) -> Unit = {
+        navigateToVendorDetailScreen()
+    }
+    Column(
+        modifier = modifier
+    ) {
         Row(
             modifier = Modifier
-                .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = title,
+                text = stringResource(R.string.title_nearby_vendor),
                 modifier = Modifier.weight(1f),
                 style = MaterialTheme.typography.titleMedium,
                 maxLines = 2,
@@ -61,12 +61,12 @@ fun CategoryCollection(
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
-        LazyRow(
-            contentPadding = PaddingValues(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(list) { category ->
-                CategoryItemCard(name = category.name, isSubscribed = category.isSubscribed)
+        Column {
+            list.map { vendor ->
+                CustomerNearbyVendorItem(
+                    vendor = vendor,
+                    onClick = onItemClick
+                )
             }
         }
     }

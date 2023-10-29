@@ -20,4 +20,11 @@
     <string name="label_balance">Saldo</string>
     <string name="label_kasir">Kasir</string>
     <string name="label_toko">Toko</string>
+    <string name="balance">Saldo</string>
+    <string name="title_nearby_vendor">Penjual di Dekat Anda</string>
+    <string name="see_more">Lihat Lainnya</string>
+    <string name="title_my_notification_subscription">Langganan Notifikasi Saya</string>
+    <string name="my_notification_subscription_empty_title">Kamu Belum Berlangganan Notifikasi</string>
+    <string name="my_notification_subscription_empty_description">Yuk subscribe kategori jajanan yang kamu sukai untuk berlangganan notifikasi!</string>
+    <string name="title_category">Kategori</string>
 </resources>
