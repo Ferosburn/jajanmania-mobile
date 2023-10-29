@@ -1,6 +1,8 @@
 package com.tokodizital.jajanmania.vendor.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,12 +13,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.core.domain.model.HomeMenu
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
+import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.ui.uicontroller.StatusBarColor
 
@@ -24,19 +28,20 @@ import com.tokodizital.jajanmania.ui.uicontroller.StatusBarColor
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    navigateToCashierScreen: () -> Unit = {},
     navigateToShopScreen: () -> Unit = {},
+    navigateToHistoryScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
+    navigateToEditProfileScreen: () -> Unit = {},
 ) {
 
     val menu = listOf(
         HomeMenu(
-            icon = R.drawable.ic_cashier,
-            label = R.string.label_cashier
-        ),
-        HomeMenu(
             icon = R.drawable.ic_shop,
             label = R.string.label_toko
+        ),
+        HomeMenu(
+            icon = R.drawable.ic_history,
+            label = R.string.label_history
         ),
         HomeMenu(
             icon = R.drawable.ic_more_horizontal,
@@ -46,8 +51,8 @@ fun HomeScreen(
 
     val onMenuClicked: (HomeMenu) -> Unit = {
         when (it.label) {
-            R.string.label_cashier -> navigateToCashierScreen()
             R.string.label_toko -> navigateToShopScreen()
+            R.string.label_history -> navigateToHistoryScreen()
             R.string.label_others -> navigateToEWalletScreen()
         }
     }
@@ -86,6 +91,15 @@ fun HomeScreen(
                     balance = 345000L,
                     onMenuClicked = onMenuClicked
                 )
+            }
+
+            item{
+                Box(modifier = Modifier.clickable { navigateToEditProfileScreen() }){
+                    EmptyContentState(
+                        title = stringResource(id = R.string.label_not_activate),
+                        description = stringResource(id = R.string.desc_not_activate)
+                    )
+                }
             }
 
             item {
