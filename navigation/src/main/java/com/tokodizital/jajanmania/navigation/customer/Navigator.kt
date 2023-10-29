@@ -101,11 +101,11 @@ fun NavHostController.navigateToChangePinScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToVendorSelectionScreen() {
-    navigate(CustomerScreens.VendorSelectionScreen.route)
+fun NavHostController.navigateToNearbyVendorScreen() {
+    navigate(CustomerScreens.NearbyVendor.route)
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToVendorDetailScreen() {
-    navigate(CustomerScreens.VendorDetailScreen.route)
+fun NavHostController.navigateToNearbyVendorDetailScreen() {
+    navigate(CustomerScreens.NearbyVendorDetail.route)
 }

@@ -66,8 +66,8 @@ fun NavHostCustomer(
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
                 navigateToCategoryScreen = navController::navigateToCategoryScreen,
                 navigateToTopUpScreen = {},
-                navigateToNearbyVendorScreen = {},
-                navigateToVendorDetailScreen = {}
+                navigateToNearbyVendorScreen = {navController::navigateToNearbyVendorScreen},
+                navigateToVendorDetailScreen = {navController::navigateToNearbyVendorDetailScreen}
             )
         }
         composable(CustomerScreens.MySubscription.route) {
@@ -198,7 +198,7 @@ fun NavHostCustomer(
                 navigateToProfileScreen = navController::navigateToProfileScreen
             )
         }
-        composable(CustomerScreens.VendorSelectionScreen.route) {
+        composable(CustomerScreens.NearbyVendor.route) {
             val listVendors: List<Vendor> = remember {
                 (1..4).map {
                     Vendor(
@@ -223,7 +223,7 @@ fun NavHostCustomer(
             VendorSelectionScreen(
                 vendors = listVendors,
                 onNavigationClick = navController::navigateUp,
-                navigateToVendorDetailScreen = navController::navigateToVendorDetailScreen
+                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
             )
         }
 
