@@ -43,7 +43,8 @@ fun BaseOutlinedTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     type: BaseOutlinedTextFieldType = BaseOutlinedTextFieldType.Default,
-    errorText: String = ""
+    errorText: String = "",
+    prefix: @Composable (() -> Unit)? = null
 ) {
     OutlinedTextField(
         value = value,
@@ -82,6 +83,7 @@ fun BaseOutlinedTextField(
                     color = MaterialTheme.colorScheme.error)
             }
         },
+        prefix = prefix
     )
 }
 

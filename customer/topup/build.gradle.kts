@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.tokodizital.jajanmania.navigation"
+    namespace = "com.tokodizital.customer.topup"
     compileSdk = 34
 
     defaultConfig {
@@ -46,26 +46,8 @@ android {
 dependencies {
 
     implementation(project(":ui"))
-
-    implementation(project(":vendor:auth"))
-    implementation(project(":vendor:account"))
-    implementation(project(":vendor:cashier"))
-    implementation(project(":vendor:ewallet"))
-    implementation(project(":vendor:home"))
-    implementation(project(":vendor:shop"))
-    implementation(project(":vendor:transaction"))
     implementation(project(":core:domain"))
-
-    implementation(project(":customer:auth"))
-    implementation(project(":customer:cart"))
-    implementation(project(":customer:ewallet"))
-    implementation(project(":customer:home"))
-    implementation(project(":customer:payment"))
-    implementation(project(":customer:profile"))
-    implementation(project(":customer:subscription"))
-    implementation(project(":customer:topup"))
-    implementation(project(":customer:transaction"))
-    implementation(project(":customer:vendor"))
+    implementation(project(":common"))
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
