@@ -42,7 +42,8 @@ fun BaseOutlinedTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    type: BaseOutlinedTextFieldType = BaseOutlinedTextFieldType.Default
+    type: BaseOutlinedTextFieldType = BaseOutlinedTextFieldType.Default,
+    errorText: String = ""
 ) {
     OutlinedTextField(
         value = value,
@@ -73,7 +74,14 @@ fun BaseOutlinedTextField(
         },
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        isError = errorText.isNotBlank(),
+        supportingText = {
+            if (errorText.isNotBlank()){
+                Text(text = errorText,
+                    color = MaterialTheme.colorScheme.error)
+            }
+        },
     )
 }
 
@@ -93,7 +101,7 @@ fun PreviewBaseOutlinedTextField() {
                 modifier = Modifier.fillMaxWidth(),
                 label = "Nama Produk",
                 placeholder = "Masukan nama produk",
-                type = BaseOutlinedTextFieldType.WithClearIcon
+                type = BaseOutlinedTextFieldType.WithClearIcon,
             )
         }
     }

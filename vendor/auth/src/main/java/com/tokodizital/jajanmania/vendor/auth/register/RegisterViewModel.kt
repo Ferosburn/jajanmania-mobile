@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.vendor.auth.register
 
+import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,17 +13,17 @@ class RegisterViewModel : ViewModel() {
     val registerUiState: StateFlow<RegisterUiState> get() = _registerUiState
 
     val buttonRegisterEnabled get() = _registerUiState.map {
-        it.shopName.isNotEmpty() &&
+        it.userName.isNotEmpty() &&
         it.ownerName.isNotEmpty() &&
         it.email.isNotEmpty() &&
         it.password.length > 6 &&
         it.confirmPassword == it.password &&
-        it.userAgreement
+        isValidEmail(it.email)
     }
 
-    fun updateShopName(shopName: String) {
+    fun updateUserName(userName: String) {
         _registerUiState.update {
-            _registerUiState.value.copy(shopName = shopName)
+            _registerUiState.value.copy(userName = userName)
         }
     }
 
@@ -33,8 +34,13 @@ class RegisterViewModel : ViewModel() {
     }
 
     fun updateEmail(email: String) {
+        val errorMessage = if (!isValidEmail(email)) {
+            "Email tidak valid"
+        } else {
+            ""
+        }
         _registerUiState.update {
-            _registerUiState.value.copy(email = email)
+            it.copy(email = email, errorEmailMessage = errorMessage)
         }
     }
 
@@ -50,10 +56,7 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-    fun updateUserAgreement(userAgreement: Boolean) {
-        _registerUiState.update {
-            _registerUiState.value.copy(userAgreement = userAgreement)
-        }
+    private fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
-
 }

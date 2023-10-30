@@ -1,6 +1,8 @@
 package com.tokodizital.jajanmania.vendor.auth.login
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -56,8 +58,6 @@ fun LoginScreen(
     val loginUiState by loginViewModel.loginUiState.collectAsState()
     val email = loginUiState.email
     val password = loginUiState.password
-    val rememberMe = loginUiState.rememberMe
-
     val buttonLoginEnabled by loginViewModel.buttonLoginEnabled.collectAsState(initial = false)
 
     StatusBarColor(
@@ -72,26 +72,26 @@ fun LoginScreen(
                 .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 26.dp)
+                .padding(horizontal = 24.dp),
         ) {
-            Spacer(modifier = Modifier.height(87.dp))
+            Spacer(modifier = Modifier.height(148.dp))
             Image(
                 painter = painterResource(id = R.drawable.logo_jajan_mania),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .size(133.dp)
+                    .size(120.dp)
                     .align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Login Vendor",
-                fontSize = 13.sp,
+                text = "Masuk Pedagang",
+                fontSize = 22.sp,
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontFamily = poppins
             )
-            Spacer(modifier = Modifier.height(42.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             BaseOutlinedTextField(
                 value = email,
                 onValueChanged = loginViewModel::updateEmail,
@@ -106,8 +106,9 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = loginUiState.errorEmailMessage,
             )
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             BasePasswordOutlinedTextField(
                 value = password,
                 onValueChanged = loginViewModel::updatePassword,
@@ -122,13 +123,7 @@ fun LoginScreen(
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            BaseCheckBox(
-                text = "Remember me",
-                checked = rememberMe,
-                onCheckedChanged = loginViewModel::updateRememberMe
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             BaseButton(
                 text = "Login",
                 onClicked = navigateToDashboardScreen,
@@ -136,21 +131,21 @@ fun LoginScreen(
                 enabled = buttonLoginEnabled,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             ) {
                 Text(
-                    text = "Don't have any account?",
+                    text = "Belum punya akun?",
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium
                 )
                 BaseTextButton(
-                    text = "Register",
+                    underline = true,
+                    text = "Daftar Disini",
                     fontSize = 12.sp,
                     onClicked = navigateToRegisterScreen,
-                    contentColor = Color(0XFF17C05B),
+                    contentColor = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.offset(y = 2.5.dp)
                 )
             }
