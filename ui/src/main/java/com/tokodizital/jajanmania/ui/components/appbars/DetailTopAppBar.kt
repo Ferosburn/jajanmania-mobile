@@ -27,13 +27,13 @@ fun DetailTopAppBar(
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(
-        title = { Text(text = title) },
+        title = { Text(text = title, style = MaterialTheme.typography.titleLarge) },
         navigationIcon = {
             IconButton(onClick = onNavigationClicked) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = containerColor
         ),
         actions = actions,

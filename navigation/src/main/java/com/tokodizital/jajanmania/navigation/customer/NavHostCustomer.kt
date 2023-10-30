@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.tokodizital.customer.topup.CustomerTopUpScreen
 import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
@@ -69,7 +70,7 @@ fun NavHostCustomer(
                 navigateToEWalletScreen = navController::navigateToEWalletScreen,
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
                 navigateToCategoryScreen = navController::navigateToCategoryScreen,
-                navigateToTopUpScreen = {},
+                navigateToTopUpScreen = navController::navigateToTopUpScreen,
                 navigateToNearbyVendorScreen = navController::navigateToNearbyVendorScreen,
                 navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
             )
@@ -90,7 +91,7 @@ fun NavHostCustomer(
                 navigateToPaymentScreen = navController::navigateToPaymentScreen,
                 navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
                 navigateToEWalletSettingScreen = navController::navigateToEWalletSettingScreen,
-                navigateToTopUpScreen = {},
+                navigateToTopUpScreen = navController::navigateToTopUpScreen,
             )
         }
         composable(CustomerScreens.Payment.route) {
@@ -136,6 +137,12 @@ fun NavHostCustomer(
                 listJajanan = listItems,
                 vendorName = vendorName,
                 balance = balance
+            )
+        }
+        composable(CustomerScreens.TopUp.route) {
+            CustomerTopUpScreen(
+                navigateUp = navController::navigateUp,
+                navigateToHomeScreen = { navController.navigateToHomeScreen(route = CustomerScreens.Home.route) }
             )
         }
         composable(CustomerScreens.TransactionHistory.route) {
