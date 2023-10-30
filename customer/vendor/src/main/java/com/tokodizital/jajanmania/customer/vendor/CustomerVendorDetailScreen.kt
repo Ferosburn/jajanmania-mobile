@@ -34,6 +34,7 @@ import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.customer.CustomerVendorJajanItem
+import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
@@ -62,7 +63,8 @@ fun CustomerVendorDetailScreen(
                 BaseButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.label_buy),
-                    onClicked = navigateToCheckoutScreen
+                    onClicked = navigateToCheckoutScreen,
+                    enabled = jajanList.isNotEmpty()
                 )
             }
         }
@@ -112,6 +114,13 @@ fun CustomerVendorDetailScreen(
                         text = stringResource(R.string.title_product_list),
                         style = MaterialTheme.typography.titleMedium
                     )
+                    if (jajanList.isEmpty()) {
+                        EmptyContentState(
+                            modifier = Modifier.padding(top = 46.dp),
+                            title = "Yah, Tidak Ada Jajan : (",
+                            description = "Penjual belum menambahkan produknya nih.."
+                        )
+                    }
                     jajanList.map { jajan ->
                         CustomerVendorJajanItem(jajan = jajan)
                     }
@@ -146,6 +155,30 @@ fun PreviewCustomerVendorDetailScreen() {
                     )
                 }
             }
+            CustomerVendorDetailScreen(
+                nearbyVendor = vendor,
+                jajanList = list
+            )
+        }
+    }
+}
+@ExperimentalMaterial3Api
+@Preview
+@Composable
+fun PreviewCustomerVendorDetailScreenEmptyProduct() {
+    val vendor = remember {
+        NearbyVendor(
+            id ="",
+            jajanName = "Batagor Bang Tigor",
+            jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+        )
+    }
+    val list: List<Jajan> = remember {
+        emptyList()
+    }
+
+    JajanManiaTheme {
+        Surface {
             CustomerVendorDetailScreen(
                 nearbyVendor = vendor,
                 jajanList = list

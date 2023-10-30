@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
@@ -20,6 +21,8 @@ import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.TransactionItem
 import com.tokodizital.jajanmania.customer.auth.LoginScreenCust
 import com.tokodizital.jajanmania.customer.auth.RegisterScreenCust
+import com.tokodizital.jajanmania.customer.cart.additem.CheckoutAddItemScreen
+import com.tokodizital.jajanmania.customer.cart.home.CheckoutScreen
 import com.tokodizital.jajanmania.customer.ewallet.EWalletChangePinScreen
 import com.tokodizital.jajanmania.customer.ewallet.EWalletScreenCust
 import com.tokodizital.jajanmania.customer.ewallet.EWalletSettingScreen
@@ -240,7 +243,72 @@ fun NavHostCustomer(
                 nearbyVendor = vendor,
                 jajanList = list,
                 navigateUp = navController::navigateUp,
-                navigateToCheckoutScreen = {}
+                navigateToCheckoutScreen = navController::navigateToCheckoutScreen
+            )
+        }
+        composable(CustomerScreens.Checkout.route) {
+            var listJajanan: List<Jajan> by remember {
+                mutableStateOf(listOf(
+                    Jajan(
+                        id = 1,
+                        vendorId = 1,
+                        name = "Soto",
+                        category = "Makanan Kuah",
+                        price = 120000L,
+                        image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    ),
+                    Jajan(
+                        id = 2,
+                        vendorId = 1,
+                        name = "Batagor Isi 7",
+                        category = "Tahu Isi",
+                        price = 10000L,
+                        image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    )
+                ))
+            }
+            CheckoutScreen(
+                onNavigationClicked = navController::navigateUp,
+                navigationToAddItemScreen = navController::navigateToCheckoutAddItemScreen,
+                navigationToProcessTransactionScreen = {},
+                listJajanan = listJajanan,
+                onDecreaseClicked = {
+                    val jajanan = listJajanan.toMutableList()
+                    jajanan.remove(it)
+                    listJajanan = jajanan
+                },
+                onIncreaseClicked = {
+                    val jajanan = listJajanan.toMutableList()
+                    jajanan.add(it)
+                    listJajanan = jajanan
+                }
+            )
+        }
+        composable(CustomerScreens.CheckoutAddItem.route) {
+            val listJajanan: List<Jajan> by remember {
+                mutableStateOf(listOf(
+                    Jajan(
+                        id = 1,
+                        vendorId = 1,
+                        name = "Soto",
+                        category = "Makanan Kuah",
+                        price = 120000L,
+                        image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    ),
+                    Jajan(
+                        id = 2,
+                        vendorId = 1,
+                        name = "Batagor Isi 7",
+                        category = "Tahu Isi",
+                        price = 10000L,
+                        image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
+                    )
+                ))
+            }
+            CheckoutAddItemScreen(
+                onNavigationClicked = navController::navigateUp,
+                navigationToCheckoutScreen = navController::navigateToCheckoutScreen,
+                listJajanan = listJajanan
             )
         }
     }
