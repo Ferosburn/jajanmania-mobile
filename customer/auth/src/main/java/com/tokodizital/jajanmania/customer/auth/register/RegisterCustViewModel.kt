@@ -48,7 +48,7 @@ class RegisterCustViewModel : ViewModel() {
     }
 
     fun updateGender(gender: String) {
-        val genderErrorMessage = if (gender.equals("Pilih jenis kelamin")) {
+        val genderErrorMessage = if (gender == "Pilih jenis kelamin") {
             "Pilih salah satu"
         } else {
             ""
@@ -72,15 +72,23 @@ class RegisterCustViewModel : ViewModel() {
     }
 
     fun updatePassword(password: String) {
+        val confirmPassword = _registerCustUiState.value.confirmPassword
+
         val passwordErrorMessage = if (password.isEmpty()) {
             "Kata sandi harus diisi"
         } else if (password.length <= 6) {
             "Kata sandi kurang dari 7 karakter"
+        } else if (password != confirmPassword) {
+            "Kata sandi tidak sama"
         } else {
             ""
         }
 
-        val confirmPasswordErrorMessage = if (password != _registerCustUiState.value.confirmPassword) {
+        val confirmPasswordErrorMessage = if (confirmPassword.isEmpty()) {
+            "Kata sandi harus diisi"
+        } else if (confirmPassword.length <= 6) {
+            "Kata sandi kurang dari 7 karakter"
+        } else if (confirmPassword != password) {
             "Kata sandi tidak sama"
         } else {
             ""
@@ -92,14 +100,30 @@ class RegisterCustViewModel : ViewModel() {
     }
 
     fun updateConfirmPassword(confirmPassword: String) {
-        val confirmPasswordErrorMessage = if (confirmPassword != _registerCustUiState.value.password) {
+        val password = _registerCustUiState.value.password
+
+        val confirmPasswordErrorMessage = if (confirmPassword.isEmpty()) {
+            "Kata sandi harus diisi"
+        } else if (confirmPassword.length <= 6) {
+            "Kata sandi kurang dari 7 karakter"
+        } else if (confirmPassword != password) {
+            "Kata sandi tidak sama"
+        } else {
+            ""
+        }
+
+        val passwordErrorMessage = if (password.isEmpty()) {
+            "Kata sandi harus diisi"
+        } else if (password.length <= 6) {
+            "Kata sandi kurang dari 7 karakter"
+        } else if (password != confirmPassword) {
             "Kata sandi tidak sama"
         } else {
             ""
         }
 
         _registerCustUiState.update {
-            it.copy( confirmPassword = confirmPassword, errorConfirmPasswordMessage = confirmPasswordErrorMessage )
+            it.copy( confirmPassword = confirmPassword, errorPasswordMessage = passwordErrorMessage, errorConfirmPasswordMessage = confirmPasswordErrorMessage )
         }
     }
 
