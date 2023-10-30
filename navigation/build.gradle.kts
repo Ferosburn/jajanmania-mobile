@@ -63,6 +63,7 @@ dependencies {
     implementation(project(":customer:payment"))
     implementation(project(":customer:profile"))
     implementation(project(":customer:subscription"))
+    implementation(project(":customer:topup"))
     implementation(project(":customer:transaction"))
     implementation(project(":customer:vendor"))
 

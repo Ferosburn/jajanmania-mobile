@@ -59,6 +59,11 @@ fun NavHostController.navigateToPaymentDetailScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToTopUpScreen() {
+    navigate(CustomerScreens.TopUp.route)
+}
+
+@Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToEWalletScreen() {
     navigate(CustomerScreens.EWallet.route)
 }
