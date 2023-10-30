@@ -19,8 +19,8 @@ import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.TransactionItem
-import com.tokodizital.jajanmania.customer.auth.LoginScreenCust
-import com.tokodizital.jajanmania.customer.auth.RegisterScreenCust
+import com.tokodizital.jajanmania.customer.auth.login.LoginScreenCust
+import com.tokodizital.jajanmania.customer.auth.register.RegisterScreenCust
 import com.tokodizital.jajanmania.customer.cart.additem.CheckoutAddItemScreen
 import com.tokodizital.jajanmania.customer.cart.home.CheckoutScreen
 import com.tokodizital.jajanmania.customer.ewallet.EWalletChangePinScreen
