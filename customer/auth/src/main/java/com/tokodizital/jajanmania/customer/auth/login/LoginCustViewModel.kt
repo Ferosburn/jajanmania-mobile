@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.customer.auth.login
 
 import androidx.lifecycle.ViewModel
+import com.tokodizital.jajanmania.common.utils.isValidEmail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -16,14 +17,29 @@ class LoginCustViewModel : ViewModel() {
     }
 
     fun updateEmail(email: String) {
+        val emailErrorMessage = if ( email.isEmpty()) {
+            "Email harus diisi."
+        } else if (!email.isValidEmail()) {
+            "Email tidak valid."
+        } else {
+            ""
+        }
         _loginCustUiState.update {
-            _loginCustUiState.value.copy(email = email)
+            it.copy( email = email, errorEmailMessage = emailErrorMessage )
         }
     }
 
     fun updatePassword(password: String) {
+        val passwordErrorMessage = if (password.isEmpty()) {
+            "Kata sandi harus diisi"
+        } else if (password.length <= 6) {
+            "Kata sandi kurang dari 7 karakter"
+        } else {
+            ""
+        }
+
         _loginCustUiState.update {
-            _loginCustUiState.value.copy(password = password)
+            it.copy( password = password, errorPasswordMessage = passwordErrorMessage )
         }
     }
 }

@@ -112,6 +112,7 @@ fun RegisterScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = registerCustUiState.errorFullNameMessage,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -130,7 +131,8 @@ fun RegisterScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
-            )
+                errorText = registerCustUiState.errorUsernameMessage,
+                )
 
             Spacer(modifier = Modifier.height(20.dp))
 
@@ -148,14 +150,15 @@ fun RegisterScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
-            )
+                errorText = registerCustUiState.errorEmailMessage,
+                )
 
             Spacer(modifier = Modifier.height(20.dp))
 
             BaseDropdown(
                 items = arrayOf("Pilih jenis kelamin", "Pria", "Wanita"),
-                onItemSelected = { selectedGender ->
-                }
+                onItemSelected = registerCustViewModel::updateGender,
+                errorText = registerCustUiState.errorGenderMessage
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -173,6 +176,7 @@ fun RegisterScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = registerCustUiState.errorPasswordMessage
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -190,6 +194,7 @@ fun RegisterScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = registerCustUiState.errorConfirmPasswordMessage
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -231,7 +236,7 @@ fun RegisterScreenCust(
 @Preview
 @Composable
 fun RegisterScreenPerview() {
-    JajanManiaTheme() {
+    JajanManiaTheme {
         Surface {
             RegisterScreenCust()
         }

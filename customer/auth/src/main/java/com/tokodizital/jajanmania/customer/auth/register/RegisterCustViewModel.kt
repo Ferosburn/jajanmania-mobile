@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.customer.auth.register
 
 import androidx.lifecycle.ViewModel
+import com.tokodizital.jajanmania.common.utils.isValidEmail
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
@@ -15,38 +16,90 @@ class RegisterCustViewModel : ViewModel() {
     val buttonRegisterEnabled get() = _registerCustUiState.map {
         it.fullname.isNotEmpty() &&
                 it.email.isNotEmpty() &&
+                it.gender != "Pilih jenis kelamin" &&
                 it.username.isNotEmpty() &&
                 it.password.length > 6 &&
                 it.confirmPassword == it.password
     }
 
     fun updateFullname(fullname: String) {
+        val fullnameErrorMessage = if (fullname.isEmpty()) {
+            "Nama lengkap harus diisi"
+        } else {
+            ""
+        }
+
         _registerCustUiState.update {
-            _registerCustUiState.value.copy(fullname = fullname)
+            it.copy(fullname = fullname, errorFullNameMessage = fullnameErrorMessage)
         }
     }
 
     fun updateEmail(email: String) {
+        val emailErrorMessage = if ( email.isEmpty()) {
+            "Email harus diisi."
+        } else if (!email.isValidEmail()) {
+            "Email tidak valid."
+        } else {
+            ""
+        }
         _registerCustUiState.update {
-            _registerCustUiState.value.copy(email = email)
+            it.copy( email = email, errorEmailMessage = emailErrorMessage )
+        }
+    }
+
+    fun updateGender(gender: String) {
+        val genderErrorMessage = if (gender.equals("Pilih jenis kelamin")) {
+            "Pilih salah satu"
+        } else {
+            ""
+        }
+
+        _registerCustUiState.update {
+            it.copy( gender = gender, errorGenderMessage = genderErrorMessage)
         }
     }
 
     fun updateUsername(username: String) {
+        val usernameErrorMessage = if (username.isEmpty()) {
+            "Nama pengguna harus diisi"
+        } else {
+            ""
+        }
+
         _registerCustUiState.update {
-            _registerCustUiState.value.copy(username = username)
+            it.copy( username = username, errorUsernameMessage = usernameErrorMessage )
         }
     }
 
     fun updatePassword(password: String) {
+        val passwordErrorMessage = if (password.isEmpty()) {
+            "Kata sandi harus diisi"
+        } else if (password.length <= 6) {
+            "Kata sandi kurang dari 7 karakter"
+        } else {
+            ""
+        }
+
+        val confirmPasswordErrorMessage = if (password != _registerCustUiState.value.confirmPassword) {
+            "Kata sandi tidak sama"
+        } else {
+            ""
+        }
+
         _registerCustUiState.update {
-            _registerCustUiState.value.copy(password = password)
+            it.copy( password = password, errorPasswordMessage = passwordErrorMessage, errorConfirmPasswordMessage = confirmPasswordErrorMessage )
         }
     }
 
     fun updateConfirmPassword(confirmPassword: String) {
+        val confirmPasswordErrorMessage = if (confirmPassword != _registerCustUiState.value.password) {
+            "Kata sandi tidak sama"
+        } else {
+            ""
+        }
+
         _registerCustUiState.update {
-            _registerCustUiState.value.copy(confirmPassword = confirmPassword)
+            it.copy( confirmPassword = confirmPassword, errorConfirmPasswordMessage = confirmPasswordErrorMessage )
         }
     }
 

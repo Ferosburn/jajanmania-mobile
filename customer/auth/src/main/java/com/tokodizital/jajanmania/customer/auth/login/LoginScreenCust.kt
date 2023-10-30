@@ -109,6 +109,7 @@ fun LoginScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = loginCustUiState.errorEmailMessage
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -126,12 +127,14 @@ fun LoginScreenCust(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = loginCustUiState.errorPasswordMessage
+
             )
 
             Spacer(modifier = Modifier.height(30.dp))
 
             BaseButton(
-                text = "Daftar",
+                text = "Login",
                 onClicked = navigateToHomeScreen,
                 enabled = buttonLoginEnabled,
                 containerColor = Color(0xFF343434),
@@ -164,7 +167,7 @@ fun LoginScreenCust(
 @Preview(showBackground = true)
 @Composable
 private fun LoginScreenPreview() {
-    JajanManiaTheme() {
+    JajanManiaTheme {
         Surface {
             LoginScreenCust()
         }

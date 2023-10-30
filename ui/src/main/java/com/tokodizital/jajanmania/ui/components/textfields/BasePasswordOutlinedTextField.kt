@@ -39,6 +39,7 @@ fun BasePasswordOutlinedTextField(
     placeholder: String = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
+    errorText: String = ""
 ) {
 
     var isShowPassword by remember { mutableStateOf(false) }
@@ -85,7 +86,14 @@ fun BasePasswordOutlinedTextField(
         },
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        isError = errorText.isNotBlank(),
+        supportingText = {
+            if (errorText.isNotBlank()){
+                Text(text = errorText,
+                    color = MaterialTheme.colorScheme.error)
+            }
+        },
     )
 }
 

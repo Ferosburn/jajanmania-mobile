@@ -30,7 +30,8 @@ fun BaseDropdown(
     items: Array<String>,
     onItemSelected: (String) -> Unit,
     textColor: Color = Color.Black,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    errorText: String = ""
 ) {
 
     var expanded by remember { mutableStateOf(false) }
@@ -56,7 +57,14 @@ fun BaseDropdown(
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                 modifier = Modifier.menuAnchor()
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                isError = errorText.isNotBlank(),
+                supportingText = {
+                    if (errorText.isNotBlank()){
+                        Text(text = errorText,
+                            color = MaterialTheme.colorScheme.error)
+                    }
+                },
 
             )
 
