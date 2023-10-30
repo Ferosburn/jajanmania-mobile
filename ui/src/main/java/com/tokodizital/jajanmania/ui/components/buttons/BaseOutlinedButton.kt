@@ -21,8 +21,9 @@ fun BaseOutlinedButton(
     modifier: Modifier = Modifier,
     text: String,
     onClicked: () -> Unit = {},
-    borderColor: Color = Color(0xFF343434),
-    contentColor: Color = Color(0xFF343434),
+    borderColor: Color = MaterialTheme.colorScheme.outline,
+    contentColor: Color = MaterialTheme.colorScheme.onBackground,
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     enabled: Boolean = true
 ) {
     OutlinedButton(
@@ -33,8 +34,11 @@ fun BaseOutlinedButton(
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = contentColor
         ),
-        contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp),
-        border = BorderStroke(2.dp, borderColor),
+        contentPadding = contentPadding,
+        border = BorderStroke(
+            width = 2.dp,
+            color = if (enabled) borderColor else borderColor.copy(alpha = 0.38f)
+        ),
     ) {
         Text(
             text = text,
