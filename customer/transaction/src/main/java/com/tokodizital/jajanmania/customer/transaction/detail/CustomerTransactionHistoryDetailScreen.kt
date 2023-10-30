@@ -34,7 +34,6 @@ import com.tokodizital.jajanmania.common.utils.toLocalTime
 import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
-import com.tokodizital.jajanmania.ui.components.buttons.BaseOutlinedButton
 import com.tokodizital.jajanmania.ui.components.customer.CustomerJajanTransactionItem
 import com.tokodizital.jajanmania.ui.components.customer.CustomerTotalTransactionFooter
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -139,15 +138,6 @@ fun CustomerTransactionDetailScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text(text = "Status", style = Typography.bodyMedium)
-                            Text(text = transactionStatus, style = Typography.bodyMedium)
-                        }
-                        Spacer(modifier = Modifier.size(8.dp))
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
                             Text(text = "Waktu", style = Typography.bodyMedium)
                             Text(text = transactionTime, style = Typography.bodyMedium)
                         }
@@ -181,12 +171,6 @@ fun CustomerTransactionDetailScreen(
                 item {
                     CustomerTotalTransactionFooter(totalPrice = transactionTotal )
 
-                    Spacer(modifier = Modifier.size(16.dp))
-                    BaseOutlinedButton(
-                        text = "Tutup",
-                        modifier = Modifier.fillMaxWidth(),
-                        onClicked = onNavigationClick
-                    )
                 }
             }
         }

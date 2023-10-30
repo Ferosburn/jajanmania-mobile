@@ -20,6 +20,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,8 +52,7 @@ fun EWalletScreenCust(
     onNavigationClick: () -> Unit = {},
     navigateToTopUpScreen: () -> Unit = {},
     navigateToPaymentScreen: () -> Unit = {},
-    navigateToTransactionHistoryScreen: () -> Unit = {},
-    navigateToEWalletSettingScreen: () -> Unit = {}
+    navigateToTransactionHistoryScreen: () -> Unit = {}
 ) {
     val menu = listOf(
         EWalletMenu(
@@ -66,10 +66,6 @@ fun EWalletScreenCust(
         EWalletMenu(
             icon = R.drawable.ic_history,
             label = R.string.label_history
-        ),
-        EWalletMenu(
-            icon = R.drawable.ic_setting,
-            label = R.string.label_Pengaturan
         )
     )
 
@@ -78,7 +74,6 @@ fun EWalletScreenCust(
             R.string.label_bayar -> navigateToPaymentScreen()
             R.string.label_topUp -> navigateToTopUpScreen()
             R.string.label_history -> navigateToTransactionHistoryScreen()
-            R.string.label_Pengaturan -> navigateToEWalletSettingScreen()
         }
     }
 
@@ -150,7 +145,7 @@ fun EWalletMenuItem(
                 .clip(CircleShape)
                 .background(Color(0xFF343434))
                 .padding(8.dp)
-                .clickable { onClicked(menu) },
+                .clickable {onClicked(menu)},
             tint = Color.White
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -158,13 +153,13 @@ fun EWalletMenuItem(
             text = stringResource(id = menu.label),
             fontSize = 14.sp,
             fontFamily = FontFamily(
-                Font(R.font.poppins_medium)
-            ),
+                Font(R.font.poppins_medium)),
             color = Color(0xFF343434),
             textAlign = TextAlign.Center,
         )
     }
 }
+
 
 @Composable
 fun EWalletBalanceSection(
@@ -175,13 +170,13 @@ fun EWalletBalanceSection(
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFFDD671),
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = Color.White
         ),
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
+            modifier = Modifier.padding(horizontal = 24.dp, vertical = 24.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(

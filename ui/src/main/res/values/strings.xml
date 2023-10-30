@@ -14,12 +14,18 @@
     <string name="label_save">Simpan</string>
     <string name="label_delete">Hapus</string>
     <string name="label_bayar">Bayar</string>
-    <string name="label_topUp">TopUp</string>
+    <string name="label_topUp">Top Up</string>
     <string name="label_others">Lainnya</string>
     <string name="label_Pengaturan">Pengaturan</string>
     <string name="label_balance">Saldo</string>
     <string name="label_kasir">Kasir</string>
     <string name="label_toko">Toko</string>
+    <string-array name="label_nominal">
+        <item>10000</item>
+        <item>20000</item>
+        <item>50000</item>
+        <item>100000</item>
+    </string-array>
     <string name="balance">Saldo</string>
     <string name="title_nearby_vendor">Penjual di Dekat Anda</string>
     <string name="see_more">Lihat Lainnya</string>
