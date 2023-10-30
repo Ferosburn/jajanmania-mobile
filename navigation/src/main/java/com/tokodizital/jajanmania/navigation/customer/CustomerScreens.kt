@@ -7,6 +7,8 @@ sealed class CustomerScreens(val route: String) {
     object EWallet : CustomerScreens("e-wallet")
     object EWalletSetting : CustomerScreens("e-wallet-setting")
     object ChangePin : CustomerScreens("change-pin")
+    object NearbyVendor : CustomerScreens("nearby-vendor")
+    object NearbyVendorDetail : CustomerScreens("nearby-vendor-detail")
     object Payment : CustomerScreens("payment")
     object PaymentDetail : CustomerScreens("payment-detail")
     object TransactionHistory : CustomerScreens("transaction-history")

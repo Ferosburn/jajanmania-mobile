@@ -99,3 +99,13 @@ fun NavHostController.navigateToEWalletSettingScreen(
 fun NavHostController.navigateToChangePinScreen() {
     navigate(CustomerScreens.ChangePin.route)
 }
+
+@Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToNearbyVendorScreen() {
+    navigate(CustomerScreens.NearbyVendor.route)
+}
+
+@Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToNearbyVendorDetailScreen() {
+    navigate(CustomerScreens.NearbyVendorDetail.route)
+}

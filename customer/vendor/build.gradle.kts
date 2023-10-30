@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.tokodizital.jajanmania.customer.vendor"
-    compileSdk = 34
+    compileSdk = 33
 
     defaultConfig {
         minSdk = 24

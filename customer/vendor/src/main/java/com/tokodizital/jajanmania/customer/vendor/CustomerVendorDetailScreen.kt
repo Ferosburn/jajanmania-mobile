@@ -129,6 +129,7 @@ fun PreviewCustomerVendorDetailScreen() {
         Surface {
             val vendor = remember {
                 NearbyVendor(
+                    id ="",
                     jajanName = "Batagor Bang Tigor",
                     jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
                 )
