@@ -2,7 +2,6 @@ package com.tokodizital.jajanmania.customer.subscription
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,15 +13,14 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.core.domain.model.Subscription
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.cards.CategoryItemCard
+import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 
@@ -86,16 +84,15 @@ fun MySubscriptionScreen(
                 }
             } else {
                 // Show the empty state message
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text("Belum ada langganan")
+                EmptyContentState(
+                            modifier = Modifier.padding(start = 20.dp, top = 46.dp, end = 20.dp),
+                            title = "Kamu Belum Berlangganan Notifikasi",
+                            description = "Yuk subscribe kategori jajanan yang kamu sukai untuk berlangganan notifikasi!"
+                        )
+                    }
                 }
             }
         }
-    }
-}
 
 @ExperimentalMaterial3Api
 @Composable
