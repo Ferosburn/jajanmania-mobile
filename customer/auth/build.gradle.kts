@@ -52,6 +52,7 @@ dependencies {
     implementation ("androidx.compose.material:material-icons-extended:1.3.1")
 
     implementation(project(":ui"))
+    implementation(project(":common"))
     implementation(project(":core:domain"))
 
     testImplementation("junit:junit:4.13.2")
