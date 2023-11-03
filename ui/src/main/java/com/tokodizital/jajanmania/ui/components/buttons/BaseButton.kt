@@ -22,12 +22,15 @@ fun BaseButton(
     onClicked: () -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.primary,
     contentColor: Color = Color.White,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    isLoading: Boolean = false
 ) {
+    val buttonEnabled = if (isLoading) false else enabled
+    val buttonText = if (isLoading) "Loading..." else text
     Button(
         onClick = onClicked,
         modifier = modifier,
-        enabled = enabled,
+        enabled = buttonEnabled,
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = containerColor,
@@ -36,7 +39,7 @@ fun BaseButton(
         contentPadding = PaddingValues(horizontal = 24.dp, vertical = 10.dp)
     ) {
         Text(
-            text = text,
+            text = buttonText,
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.labelLarge
         )

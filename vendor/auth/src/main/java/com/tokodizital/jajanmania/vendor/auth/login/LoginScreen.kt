@@ -1,8 +1,6 @@
 package com.tokodizital.jajanmania.vendor.auth.login
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,12 +19,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -34,31 +34,54 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tokodizital.jajanmania.common.utils.isValidEmail
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseTextButton
-import com.tokodizital.jajanmania.ui.components.checkbox.BaseCheckBox
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextFieldType
 import com.tokodizital.jajanmania.ui.components.textfields.BasePasswordOutlinedTextField
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.ui.theme.poppins
 import com.tokodizital.jajanmania.ui.uicontroller.StatusBarColor
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
-    loginViewModel: LoginViewModel = viewModel(),
+    loginViewModel: LoginViewModel = koinViewModel(),
     navigateToRegisterScreen: () -> Unit = {},
     navigateToDashboardScreen: () -> Unit = {}
 ) {
 
+    val context = LocalContext.current
+
     val loginUiState by loginViewModel.loginUiState.collectAsState()
     val email = loginUiState.email
     val password = loginUiState.password
+    val loginResult = loginUiState.loginResult
     val buttonLoginEnabled by loginViewModel.buttonLoginEnabled.collectAsState(initial = false)
+    val buttonLoginLoading by loginViewModel.buttonLoginLoading.collectAsState(initial = false)
+
+    LaunchedEffect(key1 = loginResult) {
+        if (loginResult is Resource.Success) {
+            navigateToDashboardScreen()
+        }
+    }
+
+    val onEmailChanged: (String) -> Unit = { text ->
+        val errorMessage = if (text.isValidEmail()) R.string.empty else R.string.message_email_bad_format
+        loginViewModel.updateEmail(text)
+        loginViewModel.updateEmailErrorMessage(context.getString(errorMessage))
+    }
+
+    val onPasswordChanged: (String) -> Unit = { text ->
+        val errorMessage = if (text.length >= 6) R.string.empty else R.string.message_password_less_than_six
+        loginViewModel.updatePassword(text)
+        loginViewModel.updatePasswordErrorMessage(context.getString(errorMessage))
+    }
 
     StatusBarColor(
         color = MaterialTheme.colorScheme.background
@@ -94,7 +117,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(32.dp))
             BaseOutlinedTextField(
                 value = email,
-                onValueChanged = loginViewModel::updateEmail,
+                onValueChanged = onEmailChanged,
                 label = "Email",
                 placeholder = "Masukan email",
                 singleLine = true,
@@ -111,7 +134,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(4.dp))
             BasePasswordOutlinedTextField(
                 value = password,
-                onValueChanged = loginViewModel::updatePassword,
+                onValueChanged = onPasswordChanged,
                 label = "Password",
                 placeholder = "Masukan password",
                 singleLine = true,
@@ -122,14 +145,16 @@ fun LoginScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally),
+                errorText = loginUiState.errorPasswordMessage
             )
             Spacer(modifier = Modifier.height(32.dp))
             BaseButton(
                 text = "Login",
-                onClicked = navigateToDashboardScreen,
+                onClicked = loginViewModel::login,
                 containerColor = Color(0xFF343434),
                 enabled = buttonLoginEnabled,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                isLoading = buttonLoginLoading,
+                modifier = Modifier.align(Alignment.CenterHorizontally),
             )
             Row(
                 verticalAlignment = Alignment.CenterVertically,

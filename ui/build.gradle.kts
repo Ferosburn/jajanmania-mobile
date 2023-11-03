@@ -64,6 +64,12 @@ dependencies {
 
     api("io.coil-kt:coil-compose:2.4.0")
 
+    api("io.insert-koin:koin-bom:3.5.1")
+    api("io.insert-koin:koin-core")
+    api("io.insert-koin:koin-android")
+    api("io.insert-koin:koin-androidx-compose")
+
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
