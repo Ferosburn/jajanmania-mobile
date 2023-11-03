@@ -34,12 +34,13 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun OutlineDropdownMenuBox(
     modifier: Modifier = Modifier,
+    selectedOption: String = "",
     options: List<String>,
     label: String = "",
     placeholder: String = "",
+    onOptionSelected: (String) -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf("") }
 
     ExposedDropdownMenuBox(
         modifier = modifier,
@@ -50,8 +51,8 @@ fun OutlineDropdownMenuBox(
     ) {
         OutlinedTextField(
             readOnly = true,
-            value = selectedOptionText,
-            onValueChange = { },
+            value = selectedOption,
+            onValueChange = {},
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
                     expanded = expanded
@@ -75,17 +76,18 @@ fun OutlineDropdownMenuBox(
             onDismissRequest = {
                 expanded = false
             },
-            Modifier.background(
-                color = MaterialTheme.colorScheme.background
-            )
+            modifier = Modifier
+                .background(color = MaterialTheme.colorScheme.background)
+                .fillMaxWidth()
         ) {
             options.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(text = selectionOption) },
                     onClick = {
-                        selectedOptionText = selectionOption
+                        onOptionSelected(selectionOption)
                         expanded = false
                     },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         }

@@ -14,7 +14,10 @@ import com.tokodizital.jajanmania.core.domain.di.domainModule
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
+import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
+import org.koin.compose.KoinContext
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -22,8 +25,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            KoinApplication(moduleList = {
-                listOf(dataModule, domainModule, vendorAuthModule)
+            KoinApplication(application = {
+                androidContext(applicationContext)
+                modules(dataModule, domainModule, vendorAuthModule)
             }) {
                 JajanManiaTheme {
                     // A surface container using the 'background' color from the theme

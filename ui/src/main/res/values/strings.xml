@@ -42,6 +42,9 @@
 
     <string name="message_email_bad_format">Format email salah!</string>
     <string name="message_password_less_than_six">Password kurang dari 6 karakter!</string>
+    <string name="message_confirm_password_not_match">Password tidak sama!</string>
+    <string name="message_name_required">Nama tidak boleh kosong!</string>
+    <string name="message_username_required">Username tidak boleh kosong!</string>
     <string name="empty"> </string>
 
 </resources>

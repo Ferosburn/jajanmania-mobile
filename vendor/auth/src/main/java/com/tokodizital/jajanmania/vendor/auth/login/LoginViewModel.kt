@@ -19,7 +19,9 @@ class LoginViewModel(
     val loginUiState: StateFlow<LoginUiState> get() = _loginUiState
 
     val buttonLoginEnabled get() = loginUiState.map {
-        it.email.isNotEmpty() && it.password.length >= 6 && it.email.isValidEmail()
+        it.email.isNotEmpty() &&
+        it.email.isValidEmail() &&
+        it.password.length >= 6
     }
 
     val buttonLoginLoading get() = loginUiState.map {
@@ -27,13 +29,8 @@ class LoginViewModel(
     }
 
     fun updateEmail(email: String) {
-        val errorMessage = if (!email.isValidEmail()) {
-            "Email tidak valid"
-        } else {
-            ""
-        }
         _loginUiState.update {
-            it.copy(email = email, errorEmailMessage = errorMessage)
+            it.copy(email = email)
         }
     }
 
