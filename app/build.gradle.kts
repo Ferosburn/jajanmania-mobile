@@ -55,7 +55,9 @@ dependencies {
 
     implementation(project(":navigation"))
 
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(project(":core:data"))
+    implementation(project(":core:domain"))
+
     implementation(project(":ui"))
 
     implementation(project(":customer:ewallet"))
@@ -64,9 +66,12 @@ dependencies {
     implementation(project(":customer:auth"))
     implementation(project(":customer:transaction"))
 
+    implementation(project(":vendor:auth"))
     implementation(project(":vendor:account"))
     implementation(project(":vendor:home"))
     implementation(project(":vendor:transaction"))
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

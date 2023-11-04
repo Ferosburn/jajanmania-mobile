@@ -2,23 +2,41 @@ package com.tokodizital.jajanmania.vendor.auth.register
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.tokodizital.jajanmania.common.data.Gender
+import com.tokodizital.jajanmania.common.utils.isValidEmail
+import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.usecase.VendorUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class RegisterViewModel : ViewModel() {
+class RegisterViewModel(
+    private val vendorUseCase: VendorUseCase
+) : ViewModel() {
 
     private val _registerUiState = MutableStateFlow(RegisterUiState())
     val registerUiState: StateFlow<RegisterUiState> get() = _registerUiState
 
     val buttonRegisterEnabled get() = _registerUiState.map {
         it.userName.isNotEmpty() &&
-        it.ownerName.isNotEmpty() &&
+        it.fullName.isNotEmpty() &&
         it.email.isNotEmpty() &&
-        it.password.length > 6 &&
-        it.confirmPassword == it.password &&
-        isValidEmail(it.email)
+        it.email.isValidEmail() &&
+        it.password.length >= 6 &&
+        it.confirmPassword == it.password
+    }
+
+    val buttonRegisterLoading get() = _registerUiState.map {
+        it.registerResult is Resource.Loading || it.registerResult is Resource.Success
+    }
+
+    fun updateFullNameName(fullName: String) {
+        _registerUiState.update {
+            _registerUiState.value.copy(fullName = fullName)
+        }
     }
 
     fun updateUserName(userName: String) {
@@ -27,20 +45,15 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-    fun updateOwnerName(ownerName: String) {
+    fun updateEmail(email: String) {
         _registerUiState.update {
-            _registerUiState.value.copy(ownerName = ownerName)
+            it.copy(email = email)
         }
     }
 
-    fun updateEmail(email: String) {
-        val errorMessage = if (!isValidEmail(email)) {
-            "Email tidak valid"
-        } else {
-            ""
-        }
+    fun updateGender(gender: String) {
         _registerUiState.update {
-            it.copy(email = email, errorEmailMessage = errorMessage)
+            it.copy(gender = gender)
         }
     }
 
@@ -56,7 +69,60 @@ class RegisterViewModel : ViewModel() {
         }
     }
 
-    private fun isValidEmail(email: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    fun updateErrorFullNameMessage(message: String) {
+        _registerUiState.update {
+            _registerUiState.value.copy(errorFullNameMessage = message)
+        }
     }
+
+    fun updateErrorUserNameMessage(message: String) {
+        _registerUiState.update {
+            _registerUiState.value.copy(errorUserNameMessage = message)
+        }
+    }
+
+    fun updateErrorEmailMessage(message: String) {
+        _registerUiState.update {
+            _registerUiState.value.copy(errorEmailMessage = message)
+        }
+    }
+
+    fun updateErrorPasswordMessage(message: String) {
+        _registerUiState.update {
+            _registerUiState.value.copy(errorPasswordMessage = message)
+        }
+    }
+
+    fun updateErrorConfirmPasswordMessage(message: String) {
+        _registerUiState.update {
+            _registerUiState.value.copy(errorConfirmPasswordMessage = message)
+        }
+    }
+
+    fun register() {
+        viewModelScope.launch {
+            val genderDisplayName = registerUiState.value.gender
+            val selectedGender = Gender.values().first { it.displayName == genderDisplayName }
+
+            val fullName = registerUiState.value.fullName
+            val username = registerUiState.value.userName
+            val email = registerUiState.value.email
+            val gender = selectedGender.name
+            val password = registerUiState.value.password
+            vendorUseCase.register(
+                fullName = fullName,
+                username = username,
+                email = email,
+                gender = gender,
+                password = password
+            ).collect { result ->
+                _registerUiState.update {
+                    it.copy(
+                        registerResult = result
+                    )
+                }
+            }
+        }
+    }
+
 }

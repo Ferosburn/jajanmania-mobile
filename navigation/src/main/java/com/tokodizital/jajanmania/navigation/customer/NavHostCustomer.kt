@@ -90,7 +90,7 @@ fun NavHostCustomer(
                 onNavigationClick = navController::navigateUp,
                 navigateToPaymentScreen = navController::navigateToPaymentScreen,
                 navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
-                navigateToEWalletSettingScreen = navController::navigateToEWalletSettingScreen,
+//                navigateToEWalletSettingScreen = navController::navigateToEWalletSettingScreen,
                 navigateToTopUpScreen = navController::navigateToTopUpScreen,
             )
         }
