@@ -3,6 +3,7 @@ package com.tokodizital.jajanmania.vendor.auth.register
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tokodizital.jajanmania.common.data.Gender
 import com.tokodizital.jajanmania.common.utils.isValidEmail
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.usecase.VendorUseCase
@@ -100,11 +101,14 @@ class RegisterViewModel(
 
     fun register() {
         viewModelScope.launch {
+            val genderDisplayName = registerUiState.value.gender
+            val selectedGender = Gender.values().first { it.displayName == genderDisplayName }
+
             val fullName = registerUiState.value.fullName
-            val username = registerUiState.value.fullName
-            val email = registerUiState.value.fullName
-            val gender = registerUiState.value.fullName
-            val password = registerUiState.value.fullName
+            val username = registerUiState.value.userName
+            val email = registerUiState.value.email
+            val gender = selectedGender.name
+            val password = registerUiState.value.password
             vendorUseCase.register(
                 fullName = fullName,
                 username = username,

@@ -41,6 +41,7 @@ import com.maxkeppeker.sheets.core.CoreDialog
 import com.maxkeppeker.sheets.core.models.CoreSelection
 import com.maxkeppeker.sheets.core.models.base.SelectionButton
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.tokodizital.jajanmania.common.data.Gender
 import com.tokodizital.jajanmania.common.utils.isValidEmail
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
@@ -80,7 +81,7 @@ fun RegisterScreen(
     var registerDialogState by remember { mutableStateOf(false) }
     var registerDialogMessage by remember { mutableStateOf("") }
 
-    val options = listOf("Laki-Laki", "Wanita")
+    val options = Gender.values()
     
     LaunchedEffect(key1 = registerResult) {
         if (registerResult is Resource.Success) {
@@ -228,7 +229,7 @@ fun RegisterScreen(
             OutlineDropdownMenuBox(
                 modifier = Modifier
                     .fillMaxWidth(),
-                options = options,
+                options = options.map { it.displayName },
                 label = "Jenis Kelamin",
                 placeholder = "Pilih Jenis Kelamin",
                 selectedOption = gender,

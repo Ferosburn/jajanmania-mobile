@@ -18,11 +18,17 @@ interface VendorJajanManiaService {
     @FormUrlEncoded
     @POST("authentications/vendors/register?method=email_and_password")
     suspend fun register(
-        @Field("fullname") fullName: String,
+        @Field("fullName") fullName: String,
         @Field("username") username: String,
         @Field("email") email: String,
         @Field("gender") gender: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("address") address: String = "",
+        @Field("lastLatitude") lastLatitude: Double = 0.0,
+        @Field("lastLongitude") lastLongitude: Double = 0.0,
+        @Field("jajanImageUrl") jajanImageUrl: String = "",
+        @Field("jajanName") jajanName: String = "",
+        @Field("jajanDescription") jajanDescription: String = "",
     ): RegisterResponse
 
 }
