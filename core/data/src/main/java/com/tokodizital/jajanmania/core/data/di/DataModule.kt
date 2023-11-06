@@ -2,8 +2,11 @@ package com.tokodizital.jajanmania.core.data.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.tokodizital.jajanmania.core.data.VendorRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.CustomerRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.service.VendorJajanManiaService
+import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import okhttp3.OkHttpClient
 import org.koin.core.qualifier.named
@@ -29,5 +32,7 @@ val dataModule = module {
             .create()
     }
     single { VendorJajanManiaRemoteDataSource(get()) }
+    single { CustomerJajanManiaRemoteDataSource(get()) }
     single<VendorRepository> { VendorRepositoryImpl(get()) }
+    single<CustomerRepository> { CustomerRepositoryImpl(get()) }
 }
