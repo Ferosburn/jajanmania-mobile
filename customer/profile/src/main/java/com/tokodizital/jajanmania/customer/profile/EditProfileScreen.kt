@@ -56,7 +56,6 @@ fun EditProfileScreen(
         }
 
         var profileName by remember { mutableStateOf("") }
-        var profilePhone by remember { mutableStateOf("") }
         var profileEmail by remember { mutableStateOf("") }
         var profileAddress by remember { mutableStateOf("") }
         var profileGender by remember { mutableStateOf("") }
@@ -107,14 +106,6 @@ fun EditProfileScreen(
                         modifier = Modifier.fillMaxWidth(),
                         label = "Nama",
                         placeholder = "Masukan nama",
-                        type = BaseOutlinedTextFieldType.WithClearIcon
-                    )
-                    BaseOutlinedTextField(
-                        value = profilePhone,
-                        onValueChanged = { profilePhone = it},
-                        modifier = Modifier.fillMaxWidth(),
-                        label = "No. Telepon",
-                        placeholder = "Masukan nomor telepon",
                         type = BaseOutlinedTextFieldType.WithClearIcon
                     )
                     BaseOutlinedTextField(

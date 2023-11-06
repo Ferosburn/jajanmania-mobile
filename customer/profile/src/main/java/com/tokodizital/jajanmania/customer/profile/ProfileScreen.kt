@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,7 +47,6 @@ fun ProfileScreen(
     ) { paddingValues ->
 
         var profileName by remember { mutableStateOf("Kaedehara Kazuha") }
-        var profilePhone by remember { mutableStateOf("+81 2906212910") }
         var profileEmail by remember { mutableStateOf("mapleave@thecruxcrew.com") }
         var profileLevel by remember { mutableStateOf("Level: 3") }
 
@@ -72,7 +69,6 @@ fun ProfileScreen(
                     ) {
                         ProfileInfoCard(
                             profileName,
-                            profilePhone,
                             profileEmail,
                             profileLevel
                         )
@@ -108,24 +104,15 @@ fun ProfileScreen(
                         )
 
                         MenuButton(
-                            imageVector = Icons.Outlined.Notifications,
-                            menuTitle = "Notifikasi",
-                            menuDescription = "Atur notifikasi",
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_star),
+                            menuTitle = "Status Pelanggan",
+                            menuDescription = "Level 2",
                             showEnter = true
                         ) {
 
                         }
 
                         Divider(thickness = 8.dp)
-
-                        MenuButton(
-                            imageVector = Icons.Outlined.Settings,
-                            menuTitle = "Pengaturan Aplikasi",
-                            menuDescription = "",
-                            showEnter = true
-                        ) {
-
-                        }
 
                         MenuButton(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_event_note),
