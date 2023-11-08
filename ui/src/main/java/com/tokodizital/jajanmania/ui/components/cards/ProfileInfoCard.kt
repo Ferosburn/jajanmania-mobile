@@ -24,7 +24,6 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun ProfileInfoCard(
     name: String,
-    phone: String,
     email: String,
     level: String
 ) {
@@ -44,11 +43,6 @@ fun ProfileInfoCard(
                 text = name,
                 fontWeight = FontWeight.Bold,
                 fontSize = TextUnit(20.toFloat(), TextUnitType.Sp)
-            )
-            Text(
-                text = phone,
-                fontWeight = FontWeight.Bold,
-                fontSize = TextUnit(14.toFloat(), TextUnitType.Sp)
             )
             Text(
                 text = email,
@@ -71,14 +65,12 @@ private fun Preview() {
     JajanManiaTheme {
         Surface {
             var profileName = rememberSaveable { mutableStateOf("Elon Musk") }
-            var profilePhone = rememberSaveable { mutableStateOf("+62 852 6161 6161") }
             var profileEmail = rememberSaveable { mutableStateOf("ElonMusk@twitter.com") }
             var profileLevel = rememberSaveable { mutableStateOf("Level 1") }
 
 
             ProfileInfoCard(
                 profileName.value,
-                profilePhone.value,
                 profileEmail.value,
                 profileLevel.value
             )
