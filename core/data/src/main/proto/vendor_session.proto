@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+option java_package = "com.tokodizital.jajanmania.core.data";
+option java_multiple_files = true;
+
+message VendorSession {
+    string access_token = 1;
+    string refresh_token = 2;
+    string account_type = 3;
+    string account_id = 4;
+    string expired_at = 5;
+}

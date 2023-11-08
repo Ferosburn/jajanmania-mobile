@@ -1,36 +1,36 @@
 package com.tokodizital.jajanmania.core.data.vendor.remote.response
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
 
-	@Json(name="data")
-	val loginData: LoginData? = null,
+	@SerializedName("data")
+	val data: LoginData? = null,
 
-	@Json(name="message")
+	@SerializedName("message")
 	val message: String? = null
 )
 
 data class LoginData(
 
-	@Json(name="session")
-	val loginSession: LoginSession? = null
+	@SerializedName("session")
+	val session: LoginSession? = null
 )
 
 data class LoginSession(
 
-	@Json(name="access_token")
+	@SerializedName("access_token")
 	val accessToken: String? = null,
 
-	@Json(name="refresh_token")
+	@SerializedName("refresh_token")
 	val refreshToken: String? = null,
 
-	@Json(name="account_type")
+	@SerializedName("account_type")
 	val accountType: String? = null,
 
-	@Json(name="account_id")
+	@SerializedName("account_id")
 	val accountId: String? = null,
 
-	@Json(name="expired_at")
+	@SerializedName("expired_at")
 	val expiredAt: String? = null
 )

@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface VendorRepository {
 
+
+
     suspend fun login(
         email: String,
         password: String
@@ -19,5 +21,7 @@ interface VendorRepository {
         gender: String,
         password: String,
     ): Flow<Resource<RegisterResult>>
+
+
 
 }
