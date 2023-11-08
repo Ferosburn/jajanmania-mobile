@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.vendor.auth.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,7 +68,13 @@ fun LoginScreen(
 
     LaunchedEffect(key1 = loginResult) {
         if (loginResult is Resource.Success) {
+            loginViewModel.updateVendorSession(
+                loginResult.data
+            )
             navigateToDashboardScreen()
+        }
+        if (loginResult is Resource.Error) {
+            Toast.makeText(context, loginResult.message, Toast.LENGTH_SHORT).show()
         }
     }
 

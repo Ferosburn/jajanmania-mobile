@@ -1,19 +1,21 @@
 package com.tokodizital.jajanmania.core.data.vendor.remote.service
 
+import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RegisterResponse
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 
 interface VendorJajanManiaService {
 
-    @FormUrlEncoded
     @POST("authentications/vendors/login?method=email_and_password")
     suspend fun login(
-        @Field("email") email: String,
-        @Field("password") password: String
-    ): LoginResponse
+        @Body loginRequest: LoginRequest
+    ): NetworkResponse<LoginResponse, CommonErrorResponse>
 
     @FormUrlEncoded
     @POST("authentications/vendors/register?method=email_and_password")
@@ -29,6 +31,6 @@ interface VendorJajanManiaService {
         @Field("jajanImageUrl") jajanImageUrl: String = "",
         @Field("jajanName") jajanName: String = "",
         @Field("jajanDescription") jajanDescription: String = "",
-    ): RegisterResponse
+    ): NetworkResponse<RegisterResponse, CommonErrorResponse>
 
 }
