@@ -1,63 +1,63 @@
 package com.tokodizital.jajanmania.core.data.vendor.remote.response
 
-import com.squareup.moshi.Json
+import com.google.gson.annotations.SerializedName
 
 data class RegisterResponse(
 
-	@Json(name="data")
+	@get:SerializedName("data")
 	val data: RegisterData? = null,
 
-	@Json(name="message")
+	@get:SerializedName("message")
 	val message: String? = null
 )
 
 data class RegisterData(
 
-	@Json(name="address")
+	@get:SerializedName("address")
 	val address: String? = null,
 
-	@Json(name="gender")
+	@get:SerializedName("gender")
 	val gender: String? = null,
 
-	@Json(name="created_at")
+	@get:SerializedName("created_at")
 	val createdAt: String? = null,
 
-	@Json(name="jajan_image_url")
+	@get:SerializedName("jajan_image_url")
 	val jajanImageUrl: String? = null,
 
-	@Json(name="experience")
+	@get:SerializedName("experience")
 	val experience: Int? = null,
 
-	@Json(name="jajan_description")
+	@get:SerializedName("jajan_description")
 	val jajanDescription: String? = null,
 
-	@Json(name="full_name")
+	@get:SerializedName("full_name")
 	val fullName: String? = null,
 
-	@Json(name="last_longitude")
+	@get:SerializedName("last_longitude")
 	val lastLongitude: Int? = null,
 
-	@Json(name="balance")
+	@get:SerializedName("balance")
 	val balance: Int? = null,
 
-	@Json(name="updated_at")
+	@get:SerializedName("updated_at")
 	val updatedAt: String? = null,
 
-	@Json(name="jajan_name")
+	@get:SerializedName("jajan_name")
 	val jajanName: String? = null,
 
-	@Json(name="id")
+	@get:SerializedName("id")
 	val id: String? = null,
 
-	@Json(name="email")
+	@get:SerializedName("email")
 	val email: String? = null,
 
-	@Json(name="username")
+	@get:SerializedName("username")
 	val username: String? = null,
 
-	@Json(name="status")
+	@get:SerializedName("status")
 	val status: String? = null,
 
-	@Json(name="last_latitude")
+	@get:SerializedName("last_latitude")
 	val lastLatitude: Int? = null
 )

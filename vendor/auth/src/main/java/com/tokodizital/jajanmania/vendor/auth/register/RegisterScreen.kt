@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.vendor.auth.register
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,9 +23,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,10 +35,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.maxkeppeker.sheets.core.CoreDialog
-import com.maxkeppeker.sheets.core.models.CoreSelection
-import com.maxkeppeker.sheets.core.models.base.SelectionButton
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.tokodizital.jajanmania.common.data.Gender
 import com.tokodizital.jajanmania.common.utils.isValidEmail
 import com.tokodizital.jajanmania.core.domain.model.Resource
@@ -78,19 +72,17 @@ fun RegisterScreen(
     val buttonRegisterEnabled by registerViewModel.buttonRegisterEnabled.collectAsState(initial = false)
     val buttonRegisterLoading by registerViewModel.buttonRegisterLoading.collectAsState(initial = false)
 
-    var registerDialogState by remember { mutableStateOf(false) }
-    var registerDialogMessage by remember { mutableStateOf("") }
-
     val options = Gender.values()
     
     LaunchedEffect(key1 = registerResult) {
         if (registerResult is Resource.Success) {
-            registerDialogMessage = registerResult.data.message
-            registerDialogState = true
+            val message = registerResult.data.message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+            navigateToLoginScreen()
         }
         if (registerResult is Resource.Error) {
-            registerDialogMessage = registerResult.data?.message ?: ""
-            registerDialogState = true
+            val message = registerResult.message
+            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -127,21 +119,6 @@ fun RegisterScreen(
         registerViewModel.updateConfirmPassword(text)
         registerViewModel.updateErrorConfirmPasswordMessage(context.getString(errorMessage))
     }
-
-    CoreDialog(
-        state = rememberUseCaseState(visible = registerDialogState),
-        selection = CoreSelection(
-            negativeButton = SelectionButton(
-                text = "Kembali"
-            ),
-            onNegativeClick = { registerDialogState = false },
-            positiveButton = SelectionButton(
-                text = "Lanjut"
-            ),
-            onPositiveClick = navigateToLoginScreen
-        ),
-        body = { /*TODO*/ }
-    )
 
     StatusBarColor(
         color = MaterialTheme.colorScheme.background

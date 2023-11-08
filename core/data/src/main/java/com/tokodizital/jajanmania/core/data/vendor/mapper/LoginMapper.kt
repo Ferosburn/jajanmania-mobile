@@ -4,7 +4,7 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
 
 fun LoginResponse.toResult(): LoginResult {
-    val loginSession = loginData?.loginSession
+    val loginSession = data?.session
     return LoginResult(
         accessToken = loginSession?.accessToken ?: "",
         refreshToken = loginSession?.refreshToken ?: "",

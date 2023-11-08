@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.core.data
 
+import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.vendor.mapper.toResult
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
@@ -19,9 +20,17 @@ class VendorRepositoryImpl(
         password: String
     ): Flow<Resource<LoginResult>> = flow {
         emit(Resource.Loading)
-        val loginResponse = remoteDataSource.register(email, password)
-        val loginResult = loginResponse.toResult()
-        emit(Resource.Success(loginResult))
+        when (val loginResponse = remoteDataSource.login(email, password)) {
+            is NetworkResponse.Success -> {
+                val loginResult = loginResponse.body.toResult()
+                emit(Resource.Success(loginResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = loginResponse.body?.message
+                    ?: loginResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
     }
@@ -34,10 +43,27 @@ class VendorRepositoryImpl(
         password: String
     ): Flow<Resource<RegisterResult>> = flow {
         emit(Resource.Loading)
-        val registerResponse = remoteDataSource.register(fullName, username, email, gender, password)
-        val registerResult = registerResponse.toResult()
-        emit(Resource.Success(registerResult))
+        val registerResponse = remoteDataSource.register(
+            fullName,
+            username,
+            email,
+            gender,
+            password
+        )
+        when (registerResponse) {
+            is NetworkResponse.Success -> {
+                val registerResult = registerResponse.body.toResult()
+                emit(Resource.Success(registerResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = registerResponse.body?.message
+                    ?: registerResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
     }
+
 }
