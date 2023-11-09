@@ -11,13 +11,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
+import com.tokodizital.jajanmania.customer.vendor.di.nearbyVendorModule
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
-import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
-import org.koin.compose.KoinContext
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -27,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KoinApplication(application = {
                 androidContext(applicationContext)
-                modules(dataModule, domainModule, vendorAuthModule)
+                modules(dataModule, domainModule, vendorAuthModule, nearbyVendorModule)
             }) {
                 JajanManiaTheme {
                     // A surface container using the 'background' color from the theme

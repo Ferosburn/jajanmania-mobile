@@ -65,6 +65,7 @@ dependencies {
     implementation(project(":customer:profile"))
     implementation(project(":customer:auth"))
     implementation(project(":customer:transaction"))
+    implementation(project(":customer:vendor"))
 
     implementation(project(":vendor:auth"))
     implementation(project(":vendor:account"))

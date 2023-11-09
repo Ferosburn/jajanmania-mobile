@@ -12,28 +12,33 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.customer.CustomerNearbyVendorItem
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun CustomerVendorScreen(
     modifier: Modifier = Modifier,
+    customerVendorViewModel: CustomerVendorViewModel = koinViewModel(),
     navigateToVendorDetailScreen: () -> Unit = {},
     onNavigationClick: () -> Unit = {},
-    vendors: List<NearbyVendor> = emptyList()
 ) {
-    val onItemClick: (NearbyVendor) -> Unit = {
+    val customerVendorUiState by customerVendorViewModel.customerVendorUiState.collectAsState()
+    val vendors: List<NearbyVendorResult> = customerVendorUiState.nearbyVendors
+
+    val onItemClick: (NearbyVendorResult) -> Unit = {
         navigateToVendorDetailScreen()
     }
 
@@ -101,18 +106,9 @@ fun PreviewEmptyVendorSelectionScreen() {
 @Composable
 @Preview
 fun PreviewFilledVendorSelectionScreen() {
-    val listVendor: List<NearbyVendor> = remember {
-        (1..4).map {
-            NearbyVendor(
-                id = "fbe68aec-8119-42a9-a820-ef7e6ebf2f20$it",
-                jajanName = "Pisang Keju Pak Eko $it",
-                jajanDescription = "Spesialis pisang keju di kota Kotok $it"
-            )
-        }
-    }
     JajanManiaTheme {
         Surface {
-            CustomerVendorScreen(vendors = listVendor)
+            CustomerVendorScreen()
         }
     }
 }

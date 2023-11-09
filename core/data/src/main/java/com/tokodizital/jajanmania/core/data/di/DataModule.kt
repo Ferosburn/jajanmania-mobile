@@ -4,9 +4,13 @@ import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.tokodizital.jajanmania.core.data.VendorRepositoryImpl
 import com.tokodizital.jajanmania.core.data.VendorSessionRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.NearbyVendorRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.remote.NearbyVendorRemoteDataSource
+import com.tokodizital.jajanmania.core.data.customer.remote.service.NearbyVendorsService
 import com.tokodizital.jajanmania.core.data.vendor.datastore.VendorSessionDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.service.VendorJajanManiaService
+import com.tokodizital.jajanmania.core.domain.repository.NearbyVendorRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorSessionRepository
 import okhttp3.OkHttpClient
@@ -33,9 +37,20 @@ val dataModule = module {
             .build()
             .create()
     }
+    single<NearbyVendorsService> {
+        Retrofit.Builder()
+            .baseUrl("http://103.167.151.23:3000/")
+            .client(get(named("chucker")))
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create()
+    }
     single { VendorJajanManiaRemoteDataSource(get()) }
+    single { NearbyVendorRemoteDataSource(get()) }
     single { VendorSessionDataSource(get()) }
     single<VendorRepository> { VendorRepositoryImpl(get()) }
+    single<NearbyVendorRepository> { NearbyVendorRepositoryImpl(get()) }
     single<VendorSessionRepository> { VendorSessionRepositoryImpl(get()) }
 
 }

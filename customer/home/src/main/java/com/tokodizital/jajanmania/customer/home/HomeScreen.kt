@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.core.domain.model.Category
 import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.HomeTopAppBar
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
@@ -34,22 +34,22 @@ fun HomeScreen(
     navigateToNearbyVendorScreen: () -> Unit = {},
     navigateToVendorDetailScreen: () -> Unit = {}
 ) {
-    val nearbyVendorList: List<NearbyVendor> = remember {
+    val nearbyVendorList: List<NearbyVendorResult> = remember {
         listOf(
-            NearbyVendor(
+            NearbyVendorResult(
                 id = "1",
-                jajanName = "Batagor Bang Tigor",
-                jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+                name = "Batagor Bang Tigor",
+                description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
             ),
-            NearbyVendor(
+            NearbyVendorResult(
                 id = "2",
-                jajanName = "Klepon Pak Jadi",
-                jajanDescription = "Jual Klepon, Onde-Onde, Cenil, dan Lumpia"
+                name = "Klepon Pak Jadi",
+                description = "Jual Klepon, Onde-Onde, Cenil, dan Lumpia"
             ),
-            NearbyVendor(
+            NearbyVendorResult(
                 id = "3",
-                jajanName = "Soto Padang Meriah",
-                jajanDescription = ""
+                name = "Soto Padang Meriah",
+                description = ""
             )
         )
     }
