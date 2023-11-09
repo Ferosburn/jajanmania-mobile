@@ -47,6 +47,7 @@ fun ProfileScreen(
     ) { paddingValues ->
 
         var profileName by remember { mutableStateOf("Kaedehara Kazuha") }
+        var profileUsername by remember { mutableStateOf("@mapleave") }
         var profileEmail by remember { mutableStateOf("mapleave@thecruxcrew.com") }
         var profileLevel by remember { mutableStateOf("Level: 3") }
 
@@ -69,6 +70,7 @@ fun ProfileScreen(
                     ) {
                         ProfileInfoCard(
                             profileName,
+                            profileUsername,
                             profileEmail,
                             profileLevel
                         )

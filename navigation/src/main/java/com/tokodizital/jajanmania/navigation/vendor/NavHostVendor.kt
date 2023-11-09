@@ -78,7 +78,7 @@ fun NavHostVendor(
             composable(VendorScreens.EWallet.route) {
                 EWalletScreen(
                     onNavigationClicked = navController::navigateUp,
-                    navigateToCashierScreen = navController::navigateToCashierScreen,
+//                    navigateToCashierScreen = navController::navigateToCashierScreen,
                     navigateToTransferBankScreen = {},
                     navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
                     navigateToShopScreen = navController::navigateToShopScreen
