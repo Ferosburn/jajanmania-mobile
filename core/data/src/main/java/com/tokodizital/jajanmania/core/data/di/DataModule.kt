@@ -10,11 +10,15 @@ import com.tokodizital.jajanmania.core.data.VendorSessionRepositoryImpl
 import com.tokodizital.jajanmania.core.data.customer.datastore.CustomerSessionDataSource
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.customer.remote.service.CustomerJajanManiaService
+import com.tokodizital.jajanmania.core.data.customer.NearbyVendorRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.remote.NearbyVendorRemoteDataSource
+import com.tokodizital.jajanmania.core.data.customer.remote.service.NearbyVendorsService
 import com.tokodizital.jajanmania.core.data.vendor.datastore.VendorSessionDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.service.VendorJajanManiaService
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.repository.CustomerSessionRepository
+import com.tokodizital.jajanmania.core.domain.repository.NearbyVendorRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorSessionRepository
 import okhttp3.OkHttpClient
@@ -52,11 +56,22 @@ val dataModule = module {
             .build()
             .create()
     }
+    single<NearbyVendorsService> {
+        Retrofit.Builder()
+            .baseUrl("http://103.167.151.23:3000/")
+            .client(get(named("chucker")))
+            .addCallAdapterFactory(NetworkResponseAdapterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create()
+    }
     single { VendorJajanManiaRemoteDataSource(get()) }
+    single { NearbyVendorRemoteDataSource(get()) }
     single { VendorSessionDataSource(get()) }
     single { CustomerJajanManiaRemoteDataSource(get()) }
     single { CustomerSessionDataSource(get()) }
     single<VendorRepository> { VendorRepositoryImpl(get()) }
+    single<NearbyVendorRepository> { NearbyVendorRepositoryImpl(get()) }
     single<VendorSessionRepository> { VendorSessionRepositoryImpl(get()) }
     single<CustomerRepository> { CustomerRepositoryImpl(get()) }
     single<CustomerSessionRepository> { CustomerSessionRepositoryImpl(get()) }

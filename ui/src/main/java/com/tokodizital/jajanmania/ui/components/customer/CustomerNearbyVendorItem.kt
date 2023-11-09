@@ -19,13 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 
 @Composable
 fun CustomerNearbyVendorItem(
     modifier: Modifier = Modifier,
-    vendor: NearbyVendor,
-    onClick: (NearbyVendor) -> Unit = {}
+    vendor: NearbyVendorResult,
+    onClick: (NearbyVendorResult) -> Unit = {}
 ) {
     Column (
         modifier = modifier.clickable { onClick(vendor) }
@@ -39,10 +39,10 @@ fun CustomerNearbyVendorItem(
             )
             Spacer(modifier = Modifier.width(16.dp))
             Column {
-                Text(text = vendor.jajanName, style = MaterialTheme.typography.titleSmall)
+                Text(text = vendor.name, style = MaterialTheme.typography.titleSmall)
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = vendor.jajanDescription,
+                    text = vendor.description,
                     style = MaterialTheme.typography.labelSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis

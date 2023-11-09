@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
@@ -42,7 +42,7 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 fun CustomerVendorDetailScreen(
     modifier: Modifier = Modifier,
     jajanList: List<Jajan> = emptyList(),
-    nearbyVendor: NearbyVendor,
+    nearbyVendor: NearbyVendorResult,
     navigateUp: () -> Unit = {},
     navigateToCheckoutScreen: () -> Unit = {},
 ) {
@@ -83,14 +83,14 @@ fun CustomerVendorDetailScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.placeholder),
-                        contentDescription = nearbyVendor.jajanName,
+                        contentDescription = nearbyVendor.name,
                         modifier = Modifier
                             .size(120.dp, 120.dp)
                             .clip(CircleShape),
                         contentScale = ContentScale.Crop
                     )
                     Text(
-                        text = nearbyVendor.jajanName,
+                        text = nearbyVendor.name,
                         style = MaterialTheme.typography.headlineSmall
                     )
                 }
@@ -103,7 +103,7 @@ fun CustomerVendorDetailScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = nearbyVendor.jajanDescription,
+                        text = nearbyVendor.description,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -137,10 +137,10 @@ fun PreviewCustomerVendorDetailScreen() {
     JajanManiaTheme {
         Surface {
             val vendor = remember {
-                NearbyVendor(
+                NearbyVendorResult(
                     id ="",
-                    jajanName = "Batagor Bang Tigor",
-                    jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+                    name = "Batagor Bang Tigor",
+                    description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
                 )
             }
             val list: List<Jajan> = remember {
@@ -167,10 +167,10 @@ fun PreviewCustomerVendorDetailScreen() {
 @Composable
 fun PreviewCustomerVendorDetailScreenEmptyProduct() {
     val vendor = remember {
-        NearbyVendor(
+        NearbyVendorResult(
             id ="",
-            jajanName = "Batagor Bang Tigor",
-            jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+            name = "Batagor Bang Tigor",
+            description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
         )
     }
     val list: List<Jajan> = remember {
