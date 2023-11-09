@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,11 +13,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -24,7 +22,8 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun ProfileInfoCard(
     name: String,
-    email: String,
+    subtext1: String,
+    subtext2: String,
     level: String
 ) {
     Row(
@@ -37,22 +36,27 @@ fun ProfileInfoCard(
         Column(
             modifier = Modifier
                 .padding(start = 12.dp),
-            verticalArrangement = Arrangement.SpaceAround
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Text(
                 text = name,
-                fontWeight = FontWeight.Bold,
-                fontSize = TextUnit(20.toFloat(), TextUnitType.Sp)
+                style = MaterialTheme.typography.titleLarge,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
-                text = email,
-                fontStyle = FontStyle.Italic,
-                fontWeight = FontWeight.Bold,
-                fontSize = TextUnit(14.toFloat(), TextUnitType.Sp)
+                text = subtext1,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+            )
+            Text(
+                text = subtext2,
+                style = MaterialTheme.typography.labelMedium,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
             )
             Text(
                 text = level,
-                fontSize = TextUnit(14.toFloat(), TextUnitType.Sp)
+                style = MaterialTheme.typography.labelMedium
             )
         }
     }
@@ -65,12 +69,14 @@ private fun Preview() {
     JajanManiaTheme {
         Surface {
             var profileName = rememberSaveable { mutableStateOf("Elon Musk") }
+            var profileUsername = rememberSaveable { mutableStateOf("@username") }
             var profileEmail = rememberSaveable { mutableStateOf("ElonMusk@twitter.com") }
             var profileLevel = rememberSaveable { mutableStateOf("Level 1") }
 
 
             ProfileInfoCard(
                 profileName.value,
+                profileUsername.value,
                 profileEmail.value,
                 profileLevel.value
             )
