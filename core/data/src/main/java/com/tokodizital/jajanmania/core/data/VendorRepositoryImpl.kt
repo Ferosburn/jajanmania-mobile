@@ -147,4 +147,22 @@ class VendorRepositoryImpl(
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
     }
+
+    override suspend fun getShopStatus(token: String, id: String): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading)
+        when (val vendorResponse = remoteDataSource.getVendor(token, id)) {
+            is NetworkResponse.Success -> {
+                val vendor = vendorResponse.body.data?.toDomain() ?: Vendor()
+                val isShopActive = vendor.status.contains("ON", ignoreCase = true)
+                emit(Resource.Success(isShopActive))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = vendorResponse.body?.message
+                    ?: vendorResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
 }

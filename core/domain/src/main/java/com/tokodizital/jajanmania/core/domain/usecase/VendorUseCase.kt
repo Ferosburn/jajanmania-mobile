@@ -43,4 +43,16 @@ interface VendorUseCase {
         id: String
     ): Flow<Resource<Vendor>>
 
+    suspend fun getShopStatus(
+        token: String,
+        id: String
+    ): Flow<Resource<Boolean>>
+
+    suspend fun updateShopStatus(
+        token: String,
+        id: String,
+        status: Boolean
+    ): Flow<Resource<Boolean>>
+
+
 }

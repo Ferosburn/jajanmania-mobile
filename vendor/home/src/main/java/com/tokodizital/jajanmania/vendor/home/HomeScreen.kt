@@ -54,6 +54,7 @@ fun HomeScreen(
     navigateToHistoryScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
     navigateToEditProfileScreen: () -> Unit = {},
+    navigateToManageShopScreen: () -> Unit = {},
 ) {
 
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
@@ -65,7 +66,7 @@ fun HomeScreen(
     var balance by remember { mutableStateOf(0.0) }
 
     LaunchedEffect(key1 = Unit) {
-        homeViewModel.getVendorSession()
+//        homeViewModel.getVendorSession()
     }
 
     LaunchedEffect(key1 = vendor) {
@@ -84,7 +85,7 @@ fun HomeScreen(
             homeViewModel.getTransactionHistories(
                 token = session.accessToken,
 //                vendorId = refreshTokenResult.data.accountId
-                vendorId = "c29a5d1d-8773-43f7-a0cd-8d10a7c73df9"
+                vendorId = "21a22b9a-db06-4d4f-9e5e-32e622012485"
             )
         }
     }
@@ -173,7 +174,7 @@ fun HomeScreen(
                     description = stringResource(id = R.string.desc_not_activate),
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
-                        .clickable { navigateToEditProfileScreen() }
+                        .clickable { navigateToManageShopScreen() }
                 )
             }
 

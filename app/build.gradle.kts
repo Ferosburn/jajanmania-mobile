@@ -70,6 +70,7 @@ dependencies {
     implementation(project(":vendor:account"))
     implementation(project(":vendor:home"))
     implementation(project(":vendor:transaction"))
+    implementation(project(":vendor:shop"))
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
 
