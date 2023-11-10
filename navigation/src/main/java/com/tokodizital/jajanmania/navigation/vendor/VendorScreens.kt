@@ -22,4 +22,6 @@ sealed class VendorScreens(val route: String) {
 
     object TransactionHistory : VendorScreens("transaction-history")
 
+    object ManageShop : VendorScreens("manage-shop")
+
 }

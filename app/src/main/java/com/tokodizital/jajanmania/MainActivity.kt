@@ -15,6 +15,7 @@ import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
 import com.tokodizital.jajanmania.vendor.home.di.vendorHomeModule
+import com.tokodizital.jajanmania.vendor.shop.di.vendorShopModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
 import org.koin.core.module.Module
@@ -27,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KoinApplication(application = {
                 val coreModules = listOf(dataModule, domainModule)
-                val vendorModules = listOf(vendorAuthModule, vendorHomeModule)
+                val vendorModules = listOf(vendorAuthModule, vendorHomeModule, vendorShopModule)
                 val customerModules = listOf<Module>()
                 val allModules = coreModules + vendorModules + customerModules
                 androidContext(applicationContext)

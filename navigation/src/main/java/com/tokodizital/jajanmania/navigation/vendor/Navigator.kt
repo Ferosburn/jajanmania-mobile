@@ -68,3 +68,8 @@ fun NavHostController.navigateToAddTransactionScreen() {
 fun NavHostController.navigateToTransactionHistoryScreen() {
     navigate(VendorScreens.TransactionHistory.route)
 }
+
+@Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToManageShopScreen() {
+    navigate(VendorScreens.ManageShop.route)
+}
