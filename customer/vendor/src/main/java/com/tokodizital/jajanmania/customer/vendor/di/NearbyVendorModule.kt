@@ -8,4 +8,5 @@ import org.koin.dsl.module
 @FlowPreview
 val customerVendorModule = module {
     viewModel { CustomerVendorViewModel(get(), get()) }
+    viewModel { CustomerVendorDetailViewModel(get(), get()) }
 }

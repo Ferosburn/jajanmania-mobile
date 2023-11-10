@@ -12,9 +12,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.tokodizital.customer.topup.CustomerTopUpScreen
 import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
@@ -218,7 +220,7 @@ fun NavHostCustomer(
                 navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
-        composable(CustomerScreens.NearbyVendorDetail.route) {
+        composable("${CustomerScreens.NearbyVendorDetail.route}/{vendorId}", arguments = listOf(navArgument("vendorId") {type = NavType.StringType})) {
             val vendor = remember {
                 NearbyVendorResult(
                     id = "",
@@ -226,21 +228,8 @@ fun NavHostCustomer(
                     description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
                 )
             }
-            val list: List<Jajan> = remember {
-                (1..7).map {
-                    Jajan(
-                        id = it,
-                        vendorId = 12317414,
-                        name = "Es Teh",
-                        category = "Minuman Dingin",
-                        price = 3000L,
-                        image = ""
-                    )
-                }
-            }
             CustomerVendorDetailScreen(
                 nearbyVendor = vendor,
-                jajanList = list,
                 navigateUp = navController::navigateUp,
                 navigateToCheckoutScreen = navController::navigateToCheckoutScreen
             )

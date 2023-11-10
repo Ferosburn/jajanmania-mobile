@@ -111,8 +111,10 @@ fun NavHostController.navigateToNearbyVendorScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToNearbyVendorDetailScreen() {
-    navigate(CustomerScreens.NearbyVendorDetail.route)
+fun NavHostController.navigateToNearbyVendorDetailScreen(
+    vendorId: String
+) {
+    navigate("${ CustomerScreens.NearbyVendorDetail.route }/$vendorId")
 }
 
 @Throws(IllegalArgumentException::class)

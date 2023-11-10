@@ -19,6 +19,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +30,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
+import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
 import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.ui.R
@@ -36,6 +40,7 @@ import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.customer.CustomerVendorJajanItem
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterial3Api
 @Composable
@@ -43,9 +48,17 @@ fun CustomerVendorDetailScreen(
     modifier: Modifier = Modifier,
     jajanList: List<Jajan> = emptyList(),
     nearbyVendor: NearbyVendorResult,
+    customerVendorDetailViewModel: CustomerVendorDetailViewModel = koinViewModel(),
     navigateUp: () -> Unit = {},
     navigateToCheckoutScreen: () -> Unit = {},
 ) {
+    val customerVendorDetailUiState by customerVendorDetailViewModel.customerVendorDetailUiState.collectAsState()
+    val jajanList: List<JajanItem> = customerVendorDetailUiState.jajanItems
+    val image = customerVendorDetailUiState.image
+    val name = customerVendorDetailUiState.name
+    val description = customerVendorDetailUiState.description
+
+
     Scaffold(
         topBar = {
             DetailTopAppBar(
@@ -83,14 +96,14 @@ fun CustomerVendorDetailScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.placeholder),
-                        contentDescription = nearbyVendor.name,
+                        contentDescription = name,
                         modifier = Modifier
                             .size(120.dp, 120.dp)
                             .clip(CircleShape),
                         contentScale = ContentScale.Crop
                     )
                     Text(
-                        text = nearbyVendor.name,
+                        text = name,
                         style = MaterialTheme.typography.headlineSmall
                     )
                 }
@@ -103,7 +116,7 @@ fun CustomerVendorDetailScreen(
                     )
                     Spacer(modifier = Modifier.height(12.dp))
                     Text(
-                        text = nearbyVendor.description,
+                        text = description,
                         style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -143,21 +156,8 @@ fun PreviewCustomerVendorDetailScreen() {
                     description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
                 )
             }
-            val list: List<Jajan> = remember {
-                (1..7).map {
-                    Jajan(
-                        id = it,
-                        vendorId = 12317414,
-                        name = "Es Teh",
-                        category = "Minuman Dingin",
-                        price = 3000L,
-                        image = ""
-                    )
-                }
-            }
             CustomerVendorDetailScreen(
                 nearbyVendor = vendor,
-                jajanList = list
             )
         }
     }
@@ -173,15 +173,11 @@ fun PreviewCustomerVendorDetailScreenEmptyProduct() {
             description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
         )
     }
-    val list: List<Jajan> = remember {
-        emptyList()
-    }
 
     JajanManiaTheme {
         Surface {
             CustomerVendorDetailScreen(
                 nearbyVendor = vendor,
-                jajanList = list
             )
         }
     }
