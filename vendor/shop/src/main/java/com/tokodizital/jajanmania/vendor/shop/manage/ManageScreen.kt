@@ -97,7 +97,7 @@ fun ManageScreen(
 @ExperimentalMaterial3Api
 @Preview
 @Composable
-fun PreviewEmptyShopScreen() {
+fun PreviewManageScreen() {
     JajanManiaTheme {
         Surface {
             ManageScreen()
