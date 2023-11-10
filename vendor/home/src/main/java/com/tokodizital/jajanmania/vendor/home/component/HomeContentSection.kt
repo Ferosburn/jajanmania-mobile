@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.home
+package com.tokodizital.jajanmania.vendor.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

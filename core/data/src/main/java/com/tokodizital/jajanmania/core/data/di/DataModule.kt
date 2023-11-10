@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.data.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.tokodizital.jajanmania.core.data.VendorRepositoryImpl
 import com.tokodizital.jajanmania.core.data.VendorSessionRepositoryImpl
@@ -24,12 +25,14 @@ val dataModule = module {
             .build()
     }
 
+    single(named("gson-lenient")) { GsonBuilder().setLenient().create() }
+
     single<VendorJajanManiaService> {
         Retrofit.Builder()
             .baseUrl("http://103.167.151.23:3000/api/v1/")
             .client(get(named("chucker")))
             .addCallAdapterFactory(NetworkResponseAdapterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(get(named("gson-lenient"))))
             .build()
             .create()
     }
