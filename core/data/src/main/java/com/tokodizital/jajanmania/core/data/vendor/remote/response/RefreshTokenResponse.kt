@@ -2,22 +2,22 @@ package com.tokodizital.jajanmania.core.data.vendor.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
+data class RefreshTokenResponse(
 
-    @SerializedName("data")
+	@SerializedName("data")
 	val data: RefreshTokenData? = null,
 
-    @SerializedName("message")
+	@SerializedName("message")
 	val message: String? = null
 )
 
-data class LoginData(
+data class RefreshTokenData(
 
 	@SerializedName("session")
 	val session: RefreshTokenSession? = null
 )
 
-data class LoginSession(
+data class RefreshTokenSession(
 
 	@SerializedName("access_token")
 	val accessToken: String? = null,

@@ -18,7 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
-import com.tokodizital.jajanmania.core.domain.model.vendor.VendorSession
 import com.tokodizital.jajanmania.core.domain.usecase.VendorSessionUseCase
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.auth.login.LoginScreen
@@ -46,11 +45,12 @@ fun NavHostVendor(
 
     if (vendorSession is Resource.Success) {
 
-        val startDestination = if ((vendorSession as Resource.Success<VendorSession>).data.accessToken.isNotEmpty()) {
-            VendorScreens.Dashboard.route
-        } else {
-            VendorScreens.Login.route
-        }
+//        val startDestination = if ((vendorSession as Resource.Success<VendorSession>).data.accessToken.isNotEmpty()) {
+//            VendorScreens.Dashboard.route
+//        } else {
+//            VendorScreens.Login.route
+//        }
+        val startDestination = VendorScreens.Login.route
 
         NavHost(
             navController = navController,

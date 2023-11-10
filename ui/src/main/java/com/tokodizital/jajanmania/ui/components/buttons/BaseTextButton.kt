@@ -2,9 +2,10 @@ package com.tokodizital.jajanmania.ui.components.buttons
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.NearbyError
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -31,7 +32,8 @@ fun BaseTextButton(
     contentColor: Color = Color.White,
     enabled: Boolean = true,
     fontSize: TextUnit = 14.sp,
-    underline: Boolean = false
+    underline: Boolean = false,
+    endIcon: @Composable () -> Unit = {}
 ) {
     val annotatedString = buildAnnotatedString {
         withStyle(
@@ -58,6 +60,7 @@ fun BaseTextButton(
             fontSize = fontSize,
             fontWeight = FontWeight.Medium
         )
+        endIcon()
     }
 }
 
@@ -70,6 +73,9 @@ fun PreviewBaseTextButton() {
                 text = "Transfer Bank",
                 contentColor = Color(0XFF17C05B),
                 fontSize = 12.sp,
+                endIcon = {
+                    Icon(imageVector = Icons.Default.NearbyError, contentDescription = null)
+                }
             )
         }
     }

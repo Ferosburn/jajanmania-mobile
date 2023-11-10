@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.home
+package com.tokodizital.jajanmania.vendor.home.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -40,7 +40,7 @@ fun HomeBalanceSection(
     modifier: Modifier = Modifier,
     menu: List<HomeMenu> = emptyList(),
     onMenuClicked: (HomeMenu) -> Unit = {},
-    balance: Long = 0L
+    balance: Double = 0.0
 ) {
     Box(
         modifier = modifier
@@ -142,7 +142,7 @@ fun PreviewHomeBalanceSection() {
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 24.dp),
                 menu = menu,
-                balance = 0
+                balance = 0.0
             )
         }
     }

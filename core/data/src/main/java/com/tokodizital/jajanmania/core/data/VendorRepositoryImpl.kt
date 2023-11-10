@@ -1,11 +1,16 @@
 package com.tokodizital.jajanmania.core.data
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.vendor.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.mapper.toResult
+import com.tokodizital.jajanmania.core.data.vendor.mapper.transaction.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.RefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RegisterResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.Vendor
+import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.TransactionHistoryItem
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -66,4 +71,80 @@ class VendorRepositoryImpl(
         emit(Resource.Error(message = it.message.toString()))
     }
 
+    override suspend fun getTransactionHistory(
+        token: String,
+        page: Int,
+        pageSize: Int,
+        vendorId: String
+    ): Flow<Resource<List<TransactionHistoryItem>>> = flow {
+        emit(Resource.Loading)
+        val transactionHistoryResponse = remoteDataSource.getTransactionHistory(
+            token,
+            page,
+            pageSize,
+            vendorId
+        )
+        when (transactionHistoryResponse) {
+            is NetworkResponse.Success -> {
+                val transactionHistoryResult = transactionHistoryResponse.body.data?.transactionHistories?.map {
+                    it.toDomain()
+                } ?: emptyList()
+                emit(Resource.Success(transactionHistoryResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = transactionHistoryResponse.body?.message
+                    ?: transactionHistoryResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun refreshToken(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String
+    ): Flow<Resource<RefreshTokenResult>> = flow {
+        emit(Resource.Loading)
+        val refreshTokenResponse = remoteDataSource.refreshToken(
+            accountId,
+            accountType,
+            accessToken,
+            refreshToken,
+            expiredAt
+        )
+        when (refreshTokenResponse) {
+            is NetworkResponse.Success -> {
+                val loginResult = refreshTokenResponse.body.toResult()
+                emit(Resource.Success(loginResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = refreshTokenResponse.body?.message
+                    ?: refreshTokenResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getVendor(token: String, id: String): Flow<Resource<Vendor>> = flow {
+        emit(Resource.Loading)
+        when (val vendorResponse = remoteDataSource.getVendor(token, id)) {
+            is NetworkResponse.Success -> {
+                val vendor = vendorResponse.body.data?.toDomain() ?: Vendor()
+                emit(Resource.Success(vendor))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = vendorResponse.body?.message
+                    ?: vendorResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
 }

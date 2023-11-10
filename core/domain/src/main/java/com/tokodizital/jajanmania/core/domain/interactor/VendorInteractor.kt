@@ -2,7 +2,10 @@ package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.RefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RegisterResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.Vendor
+import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.TransactionHistoryItem
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import com.tokodizital.jajanmania.core.domain.usecase.VendorUseCase
 import kotlinx.coroutines.flow.Flow
@@ -23,5 +26,34 @@ class VendorInteractor(
         password: String
     ): Flow<Resource<RegisterResult>> {
         return vendorRepository.register(fullName, username, email, gender, password)
+    }
+
+    override suspend fun getTransactionHistory(
+        token: String,
+        page: Int,
+        pageSize: Int,
+        vendorId: String
+    ): Flow<Resource<List<TransactionHistoryItem>>> {
+        return vendorRepository.getTransactionHistory(token, page, pageSize, vendorId)
+    }
+
+    override suspend fun refreshToken(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String
+    ): Flow<Resource<RefreshTokenResult>> {
+        return vendorRepository.refreshToken(
+            accountId,
+            accountType,
+            accessToken,
+            refreshToken,
+            expiredAt
+        )
+    }
+
+    override suspend fun getVendor(token: String, id: String): Flow<Resource<Vendor>> {
+        return vendorRepository.getVendor(token, id)
     }
 }
