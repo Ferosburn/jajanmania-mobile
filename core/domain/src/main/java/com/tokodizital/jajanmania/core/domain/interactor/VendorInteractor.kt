@@ -64,8 +64,9 @@ class VendorInteractor(
     override suspend fun updateShopStatus(
         token: String,
         id: String,
-        status: Boolean
+        status: Boolean,
+        password: String
     ): Flow<Resource<Boolean>> {
-        TODO("Not yet implemented")
+        return vendorRepository.updateShopStatus(token, id, status, password)
     }
 }

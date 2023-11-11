@@ -72,6 +72,8 @@ dependencies {
     api("io.insert-koin:koin-androidx-compose")
 
     api("com.maxkeppeler.sheets-compose-dialogs:core:1.2.0")
+    api("com.maxkeppeler.sheets-compose-dialogs:input:1.2.0")
+    api("com.maxkeppeler.sheets-compose-dialogs:state:1.2.0")
 
 
     testImplementation("junit:junit:4.13.2")

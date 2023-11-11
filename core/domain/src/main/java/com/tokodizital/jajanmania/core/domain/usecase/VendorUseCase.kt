@@ -51,7 +51,8 @@ interface VendorUseCase {
     suspend fun updateShopStatus(
         token: String,
         id: String,
-        status: Boolean
+        status: Boolean,
+        password: String
     ): Flow<Resource<Boolean>>
 
 

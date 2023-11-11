@@ -25,6 +25,14 @@ class ManageShopViewModel(
         it.isShopActive is Resource.Success
     }
 
+    fun updatePassword(password: String) {
+        _manageShopUiState.update {
+            it.copy(
+                password = password
+            )
+        }
+    }
+
     fun getVendorSession() {
         viewModelScope.launch {
             vendorSessionUseCase.vendorSession
@@ -54,4 +62,24 @@ class ManageShopViewModel(
         }
     }
 
+    fun updateShopStatus() {
+        viewModelScope.launch {
+            val session = (_manageShopUiState.value.vendorSession as Resource.Success).data
+            val newShopState = (_manageShopUiState.value.isShopActive as Resource.Success).data.not()
+            val password = _manageShopUiState.value.password
+            vendorUseCase.updateShopStatus(
+                token = session.accessToken,
+                id = session.accountId,
+                status = newShopState,
+                password = password
+            ).collect { result ->
+                updatePassword("")
+                _manageShopUiState.update {
+                    it.copy(
+                        isShopActive = result
+                    )
+                }
+            }
+        }
+    }
 }
