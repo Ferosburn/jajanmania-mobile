@@ -47,7 +47,7 @@ class LoginCustViewModel(
     fun updatePassword(password: String) {
         val passwordErrorMessage = if (password.isEmpty()) {
             "Kata sandi harus diisi"
-        } else if (password.length <= 6) {
+        } else if (password.length < 6) {
             "Kata sandi kurang dari 6 karakter"
         } else {
             ""
