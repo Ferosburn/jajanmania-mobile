@@ -29,6 +29,7 @@ import com.tokodizital.jajanmania.vendor.home.HomeScreen
 import com.tokodizital.jajanmania.vendor.shop.add.FormAddProductScreen
 import com.tokodizital.jajanmania.vendor.shop.edit.FormEditProductScreen
 import com.tokodizital.jajanmania.vendor.shop.home.ShopScreen
+import com.tokodizital.jajanmania.vendor.shop.manage.ManageShopScreen
 import com.tokodizital.jajanmania.vendor.transaction.history.TransactionHistoryScreen
 import org.koin.compose.koinInject
 
@@ -72,7 +73,8 @@ fun NavHostVendor(
             composable(VendorScreens.Dashboard.route) {
                 HomeScreen(
                     navigateToShopScreen = navController::navigateToShopScreen,
-                    navigateToEWalletScreen = navController::navigateToEWalletScreen
+                    navigateToEWalletScreen = navController::navigateToEWalletScreen,
+                    navigateToManageShopScreen = navController::navigateToManageShopScreen
                 )
             }
             composable(VendorScreens.EWallet.route) {
@@ -201,6 +203,14 @@ fun NavHostVendor(
                     navigationToDetailTransactionScreen = {}
                 )
             }
+
+            composable(VendorScreens.ManageShop.route) {
+                ManageShopScreen(
+                    onNavigationClicked = navController::navigateUp,
+                    navigateManageProduct = navController::navigateToShopScreen
+                )
+            }
+
         }
     }
 }

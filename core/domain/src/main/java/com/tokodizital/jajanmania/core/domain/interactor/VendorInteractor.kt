@@ -56,4 +56,17 @@ class VendorInteractor(
     override suspend fun getVendor(token: String, id: String): Flow<Resource<Vendor>> {
         return vendorRepository.getVendor(token, id)
     }
+
+    override suspend fun getShopStatus(token: String, id: String): Flow<Resource<Boolean>> {
+        return vendorRepository.getShopStatus(token, id)
+    }
+
+    override suspend fun updateShopStatus(
+        token: String,
+        id: String,
+        status: Boolean,
+        password: String
+    ): Flow<Resource<Boolean>> {
+        return vendorRepository.updateShopStatus(token, id, status, password)
+    }
 }

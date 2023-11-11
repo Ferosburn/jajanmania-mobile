@@ -3,6 +3,7 @@ package com.tokodizital.jajanmania.core.data.vendor.remote.service
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
@@ -14,6 +15,7 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -59,6 +61,13 @@ interface VendorJajanManiaService {
     suspend fun getVendor(
         @Header("authorization") token: String,
         @Path("id") id: String
+    ): NetworkResponse<VendorResponse, CommonErrorResponse>
+
+    @PATCH("vendors/{id}")
+    suspend fun updateShopStatus(
+        @Header("authorization") token: String,
+        @Path("id") id: String,
+        @Body updateShopStatusRequest: UpdateShopStatusRequest
     ): NetworkResponse<VendorResponse, CommonErrorResponse>
 
 }
