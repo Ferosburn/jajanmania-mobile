@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tokodizital.jajanmania.common.utils.isValidEmail
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -12,7 +14,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class LoginCustViewModel(
-    private val customerUseCase: CustomerUseCase
+    private val customerUseCase: CustomerUseCase,
+    private val customerSessionUseCase: CustomerSessionUseCase
 ) : ViewModel() {
 
     private val _loginCustUiState = MutableStateFlow(LoginCustUiState())
@@ -45,7 +48,7 @@ class LoginCustViewModel(
         val passwordErrorMessage = if (password.isEmpty()) {
             "Kata sandi harus diisi"
         } else if (password.length <= 6) {
-            "Kata sandi kurang dari 7 karakter"
+            "Kata sandi kurang dari 6 karakter"
         } else {
             ""
         }
@@ -66,6 +69,19 @@ class LoginCustViewModel(
                     )
                 }
             }
+        }
+    }
+
+    fun updateCustomerSession(loginResult: CustomerLoginResult) {
+        viewModelScope.launch {
+            customerSessionUseCase.updateCustomerSession(
+                accountId = loginResult.accountId ?: "",
+                accountType = loginResult.accountType ?: "",
+                accessToken = loginResult.accessToken ?: "",
+                refreshToken = loginResult.refreshToken ?: "",
+                expiredAt = loginResult.expiredAt ?: "",
+                firebaseToken = loginResult.firebaseToken ?: ""
+            )
         }
     }
 }

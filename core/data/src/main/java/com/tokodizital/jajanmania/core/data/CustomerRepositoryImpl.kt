@@ -1,9 +1,10 @@
-package com.tokodizital.jajanmania.core.data.customer
+package com.tokodizital.jajanmania.core.data
 
+import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.LoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -15,11 +16,18 @@ class CustomerRepositoryImpl(
 
     override suspend fun login(
         email: String, password: String
-    ): Flow<Resource<LoginResult>> = flow {
+    ): Flow<Resource<CustomerLoginResult>> = flow {
         emit(Resource.Loading)
-        val loginResponse = remoteDataSource.login(email, password)
-        val loginResult = loginResponse.toResult()
-        emit(Resource.Success(loginResult))
+        when (val loginResponse = remoteDataSource.login(email, password)) {
+            is NetworkResponse.Success -> {
+                val loginResult = loginResponse.body.toResult()
+                emit(Resource.Success(loginResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = loginResponse.body?.message ?: loginResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
     }

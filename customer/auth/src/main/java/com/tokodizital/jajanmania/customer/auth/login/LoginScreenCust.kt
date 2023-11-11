@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.customer.auth.login
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,12 +20,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -32,7 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseTextButton
@@ -42,21 +44,36 @@ import com.tokodizital.jajanmania.ui.components.textfields.BasePasswordOutlinedT
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.ui.theme.poppins
 import com.tokodizital.jajanmania.ui.uicontroller.StatusBarColor
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreenCust(
     modifier: Modifier = Modifier,
-    loginCustViewModel: LoginCustViewModel = viewModel(),
+    loginCustViewModel: LoginCustViewModel = koinViewModel(),
     navigateToHomeScreen: () -> Unit = {},
     navigateToRegisterScreen: () -> Unit = {}
 ) {
 
+    val context = LocalContext.current
+
     val loginCustUiState by loginCustViewModel.loginCustUiState.collectAsState()
     val email = loginCustUiState.email
     val password = loginCustUiState.password
+    val loginResult = loginCustUiState.loginResult
 
     val buttonLoginEnabled by loginCustViewModel.buttonLoginEnabled.collectAsState(initial = false)
+    val buttonLoginLoading by loginCustViewModel.buttonLoginLoading.collectAsState(initial = false)
+
+    LaunchedEffect(key1 = loginResult) {
+        if (loginResult is Resource.Success) {
+            loginCustViewModel.updateCustomerSession(loginResult.data)
+            navigateToHomeScreen()
+        }
+        if (loginResult is Resource.Error) {
+            Toast.makeText(context, loginResult.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
     StatusBarColor(
         color = MaterialTheme.colorScheme.background
@@ -70,21 +87,18 @@ fun LoginScreenCust(
                 .padding(paddingValues)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 26.dp)
+                .padding(horizontal = 24.dp)
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
+            Spacer(modifier = Modifier.height(48.dp))
             Image(
                 painter = painterResource(id = R.drawable.logo_jajan_mania),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .size(140.dp)
+                    .size(120.dp)
                     .align(Alignment.CenterHorizontally)
             )
-
-            Spacer(modifier = Modifier.height(15.dp))
-
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = "Masuk Pengguna",
                 fontSize = 22.sp,
@@ -92,14 +106,12 @@ fun LoginScreenCust(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontFamily = poppins
             )
-
-            Spacer(modifier = Modifier.height(25.dp))
-
+            Spacer(modifier = Modifier.height(32.dp))
             BaseOutlinedTextField(
                 value = email,
                 onValueChanged = loginCustViewModel::updateEmail,
                 label = "Email",
-                placeholder = "Email",
+                placeholder = "Masukkan email",
                 singleLine = true,
                 type = BaseOutlinedTextFieldType.WithClearIcon,
                 keyboardOptions = KeyboardOptions(
@@ -111,14 +123,12 @@ fun LoginScreenCust(
                     .align(Alignment.CenterHorizontally),
                 errorText = loginCustUiState.errorEmailMessage
             )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
+            Spacer(modifier = Modifier.height(8.dp))
             BasePasswordOutlinedTextField(
                 value = password,
                 onValueChanged = loginCustViewModel::updatePassword,
                 label = "Kata Sandi",
-                placeholder = "Kata Sandi",
+                placeholder = "Masukkan kata sandi",
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -130,19 +140,15 @@ fun LoginScreenCust(
                 errorText = loginCustUiState.errorPasswordMessage
 
             )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
+            Spacer(modifier = Modifier.height(32.dp))
             BaseButton(
                 text = "Login",
-                onClicked = navigateToHomeScreen,
+                onClicked = loginCustViewModel::login,
+                containerColor = MaterialTheme.colorScheme.primary,
                 enabled = buttonLoginEnabled,
-                containerColor = Color(0xFF343434),
+                isLoading = buttonLoginLoading,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-
-            Spacer(modifier = Modifier.height(15.dp))
-
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -153,10 +159,11 @@ fun LoginScreenCust(
                     fontWeight = FontWeight.Medium
                 )
                 BaseTextButton(
+                    underline = true,
                     text = "Daftar di sini",
                     fontSize = 12.sp,
                     onClicked = navigateToRegisterScreen,
-                    contentColor = Color(0XFF000000),
+                    contentColor = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.offset(y = 2.5.dp)
                 )
             }

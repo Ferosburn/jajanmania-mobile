@@ -1,11 +1,11 @@
 package com.tokodizital.jajanmania.core.data.customer.mapper
 
-import com.tokodizital.jajanmania.core.data.customer.remote.response.LoginResponse
-import com.tokodizital.jajanmania.core.domain.model.customer.LoginResult
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 
-fun LoginResponse.toResult(): LoginResult {
-    val loginSession = loginData?.loginSession
-    return LoginResult(
+fun CustomerLoginResponse.toResult(): CustomerLoginResult {
+    val loginSession = data?.session
+    return CustomerLoginResult(
         accessToken = loginSession?.accessToken ?: "",
         refreshToken = loginSession?.refreshToken ?: "",
         accountType = loginSession?.accountType ?: "",

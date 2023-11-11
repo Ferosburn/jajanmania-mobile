@@ -1,6 +1,6 @@
 package com.tokodizital.jajanmania.core.domain.model.customer
 
-data class LoginResult(
+data class CustomerLoginResult(
     val accountId: String? = null,
     val accountType: String? = null,
     val accessToken: String? = null,
