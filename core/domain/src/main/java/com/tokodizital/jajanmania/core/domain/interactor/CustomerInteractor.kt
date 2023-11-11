@@ -2,7 +2,9 @@ package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +13,10 @@ class CustomerInteractor(
     private val customerRepository: CustomerRepository
 ) : CustomerUseCase {
 
-    override suspend fun login(email: String, password: String): Flow<Resource<CustomerLoginResult>> {
+    override suspend fun login(
+        email: String,
+        password: String
+    ): Flow<Resource<CustomerLoginResult>> {
         return customerRepository.login(email, password)
     }
 
@@ -25,4 +30,31 @@ class CustomerInteractor(
         return customerRepository.register(fullName, gender, username, email, password)
     }
 
+    override suspend fun refreshToken(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): Flow<Resource<CustomerRefreshTokenResult>> {
+        return customerRepository.refreshToken(
+            accountId,
+            accountType,
+            accessToken,
+            refreshToken,
+            expiredAt,
+            firebaseToken
+        )
+    }
+
+    override suspend fun getNearbyVendors(
+        latitude: Double,
+        longitude: Double,
+        pageNumber: Int,
+        pageSize: Int,
+        token: String
+    ): Flow<Resource<List<NearbyVendorResult>>> {
+        return customerRepository.getNearbyVendors(latitude, longitude, pageNumber, pageSize, token)
+    }
 }

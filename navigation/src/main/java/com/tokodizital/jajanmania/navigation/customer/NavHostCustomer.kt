@@ -37,9 +37,11 @@ import com.tokodizital.jajanmania.customer.subscription.MySubscriptionScreen
 import com.tokodizital.jajanmania.customer.transaction.detail.CustomerTransactionDetailScreen
 import com.tokodizital.jajanmania.customer.transaction.history.CustomerTransactionHistoryScreen
 import com.tokodizital.jajanmania.customer.vendor.CustomerVendorDetailScreen
-import com.tokodizital.jajanmania.customer.vendor.CustomerVendorScreen
+import com.tokodizital.jajanmania.customer.vendor.nearbyvendor.CustomerVendorScreen
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
@@ -212,7 +214,8 @@ fun NavHostCustomer(
         composable(CustomerScreens.NearbyVendor.route) {
             CustomerVendorScreen(
                 onNavigationClick = navController::navigateUp,
-                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
+                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.NearbyVendorDetail.route) {
@@ -310,6 +313,7 @@ fun NavHostCustomer(
     }
 }
 
+@FlowPreview
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @Preview

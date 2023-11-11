@@ -11,16 +11,18 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
+import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
+import com.tokodizital.jajanmania.customer.vendor.di.customerVendorModule
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
-import org.koin.android.ext.koin.androidContext
-import org.koin.compose.KoinApplication
-import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
-import com.tokodizital.jajanmania.customer.vendor.di.nearbyVendorModule
 import com.tokodizital.jajanmania.vendor.home.di.vendorHomeModule
 import com.tokodizital.jajanmania.vendor.shop.di.vendorShopModule
+import kotlinx.coroutines.FlowPreview
+import org.koin.android.ext.koin.androidContext
+import org.koin.compose.KoinApplication
 
+@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -30,7 +32,7 @@ class MainActivity : ComponentActivity() {
             KoinApplication(application = {
                 val coreModules = listOf(dataModule, domainModule)
                 val vendorModules = listOf(vendorAuthModule, vendorHomeModule, vendorShopModule)
-                val customerModules = listOf(customerAuthModule)
+                val customerModules = listOf(customerAuthModule, customerVendorModule)
                 val allModules = coreModules + vendorModules + customerModules
                 androidContext(applicationContext)
                 modules(allModules)
