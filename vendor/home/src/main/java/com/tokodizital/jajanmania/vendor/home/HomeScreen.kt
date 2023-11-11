@@ -66,7 +66,7 @@ fun HomeScreen(
     var balance by remember { mutableStateOf(0.0) }
 
     LaunchedEffect(key1 = Unit) {
-//        homeViewModel.getVendorSession()
+        homeViewModel.getVendorSession()
     }
 
     LaunchedEffect(key1 = vendor) {
@@ -84,8 +84,7 @@ fun HomeScreen(
             )
             homeViewModel.getTransactionHistories(
                 token = session.accessToken,
-//                vendorId = refreshTokenResult.data.accountId
-                vendorId = "21a22b9a-db06-4d4f-9e5e-32e622012485"
+                vendorId = session.accountId
             )
         }
     }
