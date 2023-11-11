@@ -48,4 +48,11 @@ interface VendorRepository {
         id: String
     ): Flow<Resource<Boolean>>
 
+    suspend fun updateShopStatus(
+        token: String,
+        id: String,
+        status: Boolean,
+        password: String
+    ): Flow<Resource<Boolean>>
+
 }

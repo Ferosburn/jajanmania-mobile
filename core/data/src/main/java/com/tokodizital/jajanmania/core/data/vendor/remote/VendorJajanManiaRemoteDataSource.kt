@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenSessionRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
@@ -74,6 +75,20 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
     ): NetworkResponse<VendorResponse, CommonErrorResponse> {
         val authorization = "Bearer $token"
         return service.getVendor(authorization, id)
+    }
+
+    suspend fun updateShopStatus(
+        token: String,
+        id: String,
+        status: Boolean,
+        password: String
+    ): NetworkResponse<VendorResponse, CommonErrorResponse> {
+        val authorization = "Bearer $token"
+        val shopStatus = if (status) "ON" else "OFF"
+        val updateShopStatusRequest = UpdateShopStatusRequest(
+            password, password, shopStatus
+        )
+        return service.updateShopStatus(authorization, id, updateShopStatusRequest)
     }
 
 }
