@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.customer.vendor.nearbyvendor
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +45,8 @@ fun CustomerVendorScreen(
     navigateToLoginScreen: () -> Unit = {},
     onNavigationClick: () -> Unit = {},
 ) {
+
+    val context = LocalContext.current
     val customerVendorUiState by customerVendorViewModel.customerVendorUiState.collectAsState()
     val latitude = customerVendorUiState.latitude
     val longitude = customerVendorUiState.longitude
@@ -83,7 +87,9 @@ fun CustomerVendorScreen(
     }
 
     LaunchedEffect(key1 = refreshTokenResult) {
-        if (refreshTokenResult is Resource.Success) {
+        if (refreshTokenResult is Resource.Success && nearbyVendorsResult is Resource.Error) {
+            Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
+        } else if (refreshTokenResult is Resource.Success) {
             val session = refreshTokenResult.data
             customerVendorViewModel.getNearbyVendors(
                 latitude, longitude, pageNumber, session.accessToken
