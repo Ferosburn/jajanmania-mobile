@@ -17,9 +17,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.tokodizital.customer.topup.CustomerTopUpScreen
 import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.TransactionItem
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.customer.auth.login.LoginScreenCust
 import com.tokodizital.jajanmania.customer.auth.register.RegisterScreenCust
 import com.tokodizital.jajanmania.customer.cart.additem.CheckoutAddItemScreen
@@ -37,9 +37,11 @@ import com.tokodizital.jajanmania.customer.subscription.MySubscriptionScreen
 import com.tokodizital.jajanmania.customer.transaction.detail.CustomerTransactionDetailScreen
 import com.tokodizital.jajanmania.customer.transaction.history.CustomerTransactionHistoryScreen
 import com.tokodizital.jajanmania.customer.vendor.CustomerVendorDetailScreen
-import com.tokodizital.jajanmania.customer.vendor.CustomerVendorScreen
+import com.tokodizital.jajanmania.customer.vendor.nearbyvendor.CustomerVendorScreen
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import kotlinx.coroutines.FlowPreview
 
+@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
@@ -210,28 +212,18 @@ fun NavHostCustomer(
             )
         }
         composable(CustomerScreens.NearbyVendor.route) {
-            val listVendors: List<NearbyVendor> = remember {
-                (1..4).map {
-                    NearbyVendor(
-                        id = "fbe68aec-8119-42a9-a820-ef7e6ebf2f20$it",
-                        jajanName = "Pisang Keju Pak Eko $it",
-                        jajanDescription = "Spesialis pisang keju di kota Kotok $it"
-                    )
-                }
-            }
-
             CustomerVendorScreen(
-                vendors = listVendors,
                 onNavigationClick = navController::navigateUp,
-                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
+                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.NearbyVendorDetail.route) {
             val vendor = remember {
-                NearbyVendor(
+                NearbyVendorResult(
                     id = "",
-                    jajanName = "Batagor Bang Tigor",
-                    jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
+                    name = "Batagor Bang Tigor",
+                    description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
                 )
             }
             val list: List<Jajan> = remember {
@@ -321,6 +313,7 @@ fun NavHostCustomer(
     }
 }
 
+@FlowPreview
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @Preview

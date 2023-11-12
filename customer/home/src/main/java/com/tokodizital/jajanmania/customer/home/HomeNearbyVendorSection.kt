@@ -18,18 +18,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
+import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.customer.CustomerNearbyVendorItem
 
 @Composable
 fun HomeNearbyVendorSection(
     modifier: Modifier = Modifier,
-    list: List<NearbyVendor>,
+    list: List<NearbyVendorResult>,
     onMoreClick: () -> Unit = {},
     navigateToVendorDetailScreen: () -> Unit = {}
 ) {
-    val onItemClick: (NearbyVendor) -> Unit = {
+    val onItemClick: (NearbyVendorResult) -> Unit = {
         navigateToVendorDetailScreen()
     }
     Column(
