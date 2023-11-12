@@ -9,6 +9,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLog
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -41,4 +42,11 @@ interface CustomerJajanManiaService {
         @Query("page_number") pageNumber: Int = 1,
         @Query("page_size") pageSize: Int = 10,
     ): NetworkResponse<NearbyVendorsResponse, CommonErrorResponse>
+
+    @GET("vendors")
+    suspend fun getVendorDetail(
+        @Header("Authorization") token: String,
+        @Query("where") where: String,
+        @Query("include") include: String,
+    ): NetworkResponse<VendorsResponse, CommonErrorResponse>
 }

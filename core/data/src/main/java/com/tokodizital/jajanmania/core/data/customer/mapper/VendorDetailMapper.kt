@@ -4,7 +4,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResp
 import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 
-fun VendorsResponse.toResult(): VendorDetail {
+fun VendorsResponse.toDomain(): VendorDetail {
     val vendorDetail = data?.vendors?.firstOrNull()
     return VendorDetail(
         id = vendorDetail?.id ?: "",

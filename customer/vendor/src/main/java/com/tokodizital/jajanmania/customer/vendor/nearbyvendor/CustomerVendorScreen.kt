@@ -41,7 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CustomerVendorScreen(
     modifier: Modifier = Modifier,
     customerVendorViewModel: CustomerVendorViewModel = koinViewModel(),
-    navigateToVendorDetailScreen: () -> Unit = {},
+    navigateToVendorDetailScreen: (String) -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
     onNavigationClick: () -> Unit = {},
 ) {
@@ -56,7 +56,7 @@ fun CustomerVendorScreen(
     val nearbyVendorsResult = customerVendorUiState.nearbyVendorsResult
 
     val onItemClick: (NearbyVendorResult) -> Unit = {
-        navigateToVendorDetailScreen()
+        navigateToVendorDetailScreen(it.id)
     }
 
     LaunchedEffect(key1 = Unit) {

@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
 import kotlinx.coroutines.flow.Flow
@@ -56,5 +57,12 @@ class CustomerInteractor(
         token: String
     ): Flow<Resource<List<NearbyVendorResult>>> {
         return customerRepository.getNearbyVendors(latitude, longitude, pageNumber, pageSize, token)
+    }
+
+    override suspend fun getVendorDetail(
+        vendorId: String,
+        token: String
+    ): Flow<Resource<VendorDetail>> {
+        return customerRepository.getVendorDetail(vendorId, token)
     }
 }

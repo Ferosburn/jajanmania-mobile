@@ -10,6 +10,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLog
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.service.CustomerJajanManiaService
 
 class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanManiaService) {
@@ -73,4 +74,13 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         )
     }
 
+    suspend fun getVendorDetail(
+        vendorId: String,
+        token: String
+    ) : NetworkResponse<VendorsResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        val where = "%7B%22id%22%3A%22$vendorId%22%7D"
+        val include = "%7B%22jajanItems%22%3A%7B%22include%22%3A%7B%22category%22%3Atrue%7D%7D%7D"
+        return service.getVendorDetail(token = bearerToken, where = where, include = include)
+    }
 }
