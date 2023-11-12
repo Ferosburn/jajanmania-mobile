@@ -87,7 +87,10 @@ fun CustomerVendorScreen(
     }
 
     LaunchedEffect(key1 = refreshTokenResult) {
-        if (refreshTokenResult is Resource.Success && nearbyVendorsResult is Resource.Error) {
+        if (refreshTokenResult is Resource.Success
+            && nearbyVendorsResult is Resource.Error
+            && nearbyVendorsResult.message.contains("authorization")
+        ) {
             Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
         } else if (refreshTokenResult is Resource.Success) {
             val session = refreshTokenResult.data
