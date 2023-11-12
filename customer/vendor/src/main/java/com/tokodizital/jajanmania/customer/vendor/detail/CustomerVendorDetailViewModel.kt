@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -27,7 +26,6 @@ class CustomerVendorDetailViewModel(
     fun getVendorDetail(vendorId: String, token: String) {
         viewModelScope.launch {
             customerUseCase.getVendorDetail(vendorId, token).collect { result ->
-                delay(1000L)
                 _customerVendorDetailUiState.update {
                     it.copy(
                         vendorDetailResult = result
