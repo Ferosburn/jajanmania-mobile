@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.defaultMinSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -18,14 +17,13 @@ import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
-fun BaseBoxShimmer(
+fun BaseTextShimmer(
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
-            .defaultMinSize(minHeight = 80.dp)
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(16.dp))
+            .defaultMinSize(minHeight = 24.dp, minWidth = 64.dp)
+            .clip(RoundedCornerShape(8.dp))
             .background(Color.Gray.copy(alpha = 0.2f))
 
     )
@@ -33,13 +31,13 @@ fun BaseBoxShimmer(
 
 @Preview
 @Composable
-fun PreviewBaseBoxShimmer() {
+fun PreviewBaseTextShimmer() {
     JajanManiaTheme {
         Surface(
             color = MaterialTheme.colorScheme.background
         ) {
             Column {
-                BaseBoxShimmer(
+                BaseTextShimmer(
                     modifier = Modifier.padding(16.dp)
                 )
             }

@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import kotlinx.coroutines.flow.Flow
 
 interface CustomerUseCase {
@@ -38,4 +39,9 @@ interface CustomerUseCase {
         pageSize: Int = 10,
         token: String
     ): Flow<Resource<List<NearbyVendorResult>>>
+
+    suspend fun getVendorDetail(
+        vendorId: String,
+        token: String
+    ) : Flow<Resource<VendorDetail>>
 }

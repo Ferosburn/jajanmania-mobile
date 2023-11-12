@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.data
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.customer.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
@@ -8,6 +9,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -114,6 +116,23 @@ class CustomerRepositoryImpl(
             is NetworkResponse.Error -> {
                 val errorMessage = nearbyVendorsResponse.body?.message
                     ?: nearbyVendorsResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getVendorDetail(vendorId: String, token: String): Flow<Resource<VendorDetail>> = flow {
+        emit(Resource.Loading)
+        when (val vendorDetailResponse = remoteDataSource.getVendorDetail(vendorId, token)) {
+            is NetworkResponse.Success -> {
+                val vendorDetail = vendorDetailResponse.body.toDomain()
+                emit(Resource.Success(vendorDetail))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    vendorDetailResponse.body?.message ?: vendorDetailResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }

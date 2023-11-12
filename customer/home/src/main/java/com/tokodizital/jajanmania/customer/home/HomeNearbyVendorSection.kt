@@ -27,10 +27,10 @@ fun HomeNearbyVendorSection(
     modifier: Modifier = Modifier,
     list: List<NearbyVendorResult>,
     onMoreClick: () -> Unit = {},
-    navigateToVendorDetailScreen: () -> Unit = {}
+    navigateToVendorDetailScreen: (String) -> Unit = {}
 ) {
     val onItemClick: (NearbyVendorResult) -> Unit = {
-        navigateToVendorDetailScreen()
+        navigateToVendorDetailScreen(it.id)
     }
     Column(
         modifier = modifier

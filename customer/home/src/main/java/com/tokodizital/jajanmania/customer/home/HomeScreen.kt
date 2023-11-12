@@ -32,22 +32,22 @@ fun HomeScreen(
     navigateToMySubscriptionScreen: () -> Unit = {},
     navigateToCategoryScreen: () -> Unit = {},
     navigateToNearbyVendorScreen: () -> Unit = {},
-    navigateToVendorDetailScreen: () -> Unit = {}
+    navigateToVendorDetailScreen: (String) -> Unit = {}
 ) {
     val nearbyVendorList: List<NearbyVendorResult> = remember {
         listOf(
             NearbyVendorResult(
-                id = "1",
+                id = "413b6758-f4b0-4692-aad6-b9d258fb1706",
                 name = "Batagor Bang Tigor",
                 description = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
             ),
             NearbyVendorResult(
-                id = "2",
+                id = "4a868a64-7be8-4863-bdd3-550fda5d686d",
                 name = "Klepon Pak Jadi",
                 description = "Jual Klepon, Onde-Onde, Cenil, dan Lumpia"
             ),
             NearbyVendorResult(
-                id = "3",
+                id = "c29a5d1d-8773-43f7-a0cd-8d10a7c73df9",
                 name = "Soto Padang Meriah",
                 description = ""
             )

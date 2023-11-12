@@ -20,12 +20,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.common.utils.toRupiah
-import com.tokodizital.jajanmania.core.domain.model.Jajan
+import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
 
 @Composable
 fun CustomerVendorJajanItem(
     modifier: Modifier = Modifier,
-    jajan: Jajan,
+    jajan: JajanItem,
 ) {
     Column(modifier = modifier) {
         Row(

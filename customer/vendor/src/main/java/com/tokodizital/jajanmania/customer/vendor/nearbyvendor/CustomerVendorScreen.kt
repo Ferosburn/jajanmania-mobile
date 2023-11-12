@@ -41,7 +41,7 @@ import org.koin.androidx.compose.koinViewModel
 fun CustomerVendorScreen(
     modifier: Modifier = Modifier,
     customerVendorViewModel: CustomerVendorViewModel = koinViewModel(),
-    navigateToVendorDetailScreen: () -> Unit = {},
+    navigateToVendorDetailScreen: (String) -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
     onNavigationClick: () -> Unit = {},
 ) {
@@ -56,7 +56,7 @@ fun CustomerVendorScreen(
     val nearbyVendorsResult = customerVendorUiState.nearbyVendorsResult
 
     val onItemClick: (NearbyVendorResult) -> Unit = {
-        navigateToVendorDetailScreen()
+        navigateToVendorDetailScreen(it.id)
     }
 
     LaunchedEffect(key1 = Unit) {
@@ -87,7 +87,10 @@ fun CustomerVendorScreen(
     }
 
     LaunchedEffect(key1 = refreshTokenResult) {
-        if (refreshTokenResult is Resource.Success && nearbyVendorsResult is Resource.Error) {
+        if (refreshTokenResult is Resource.Success
+            && nearbyVendorsResult is Resource.Error
+            && nearbyVendorsResult.message.contains("authorization")
+        ) {
             Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
         } else if (refreshTokenResult is Resource.Success) {
             val session = refreshTokenResult.data
