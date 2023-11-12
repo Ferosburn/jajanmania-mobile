@@ -72,6 +72,7 @@ dependencies {
     implementation(project(":vendor:home"))
     implementation(project(":vendor:transaction"))
     implementation(project(":vendor:shop"))
+    implementation(project(":vendor:ewallet"))
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
 

@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.ewallet
+package com.tokodizital.jajanmania.vendor.ewallet.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

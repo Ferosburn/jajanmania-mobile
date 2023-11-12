@@ -17,7 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -63,16 +63,10 @@ fun HomeScreen(
     val vendor = homeUiState.vendor
     val transactionHistory = homeUiState.transactionHistory
 
-    var balance by remember { mutableStateOf(0.0) }
+    var balance by remember { mutableDoubleStateOf(0.0) }
 
     LaunchedEffect(key1 = Unit) {
         homeViewModel.getVendorSession()
-    }
-
-    LaunchedEffect(key1 = vendor) {
-        if (vendor is Resource.Success) {
-            balance = vendor.data.balance
-        }
     }
 
     LaunchedEffect(key1 = vendorSession) {
@@ -86,6 +80,12 @@ fun HomeScreen(
                 token = session.accessToken,
                 vendorId = session.accountId
             )
+        }
+    }
+
+    LaunchedEffect(key1 = vendor) {
+        if (vendor is Resource.Success) {
+            balance = vendor.data.balance
         }
     }
 

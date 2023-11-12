@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.ewallet
+package com.tokodizital.jajanmania.vendor.ewallet.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -32,7 +32,7 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @Composable
 fun EWalletBalanceSection(
     modifier: Modifier = Modifier,
-    balance: Long = 0L,
+    balance: Double = 0.0,
     onTransferBankClicked: () -> Unit = {}
 ) {
     Card(
@@ -96,7 +96,7 @@ fun PreviewEWalletBalanceSection() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp, vertical = 24.dp),
-                balance = 0
+                balance = 0.0
             )
         }
     }
