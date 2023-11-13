@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.data
+package com.tokodizital.jajanmania.core.data.vendor
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.vendor.mapper.toDomain
