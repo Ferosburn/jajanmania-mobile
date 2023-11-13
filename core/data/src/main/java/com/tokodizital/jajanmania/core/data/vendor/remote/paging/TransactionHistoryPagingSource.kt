@@ -32,7 +32,7 @@ class TransactionHistoryPagingSource(
             when (transactionHistoryResponse) {
                 is NetworkResponse.Success -> {
                     val prevKey = if (page == 1) null else page.minus(1)
-                    val nextKey = if (transactionHistoryResponse.body.data == null) null else page.plus(1)
+                    val nextKey = if (transactionHistoryResponse.body.data?.transactionHistories?.isEmpty() == true) null else page.plus(1)
                     val transactionHistory = transactionHistoryResponse.body.data?.transactionHistories ?: emptyList()
                     LoadResult.Page(
                         data = transactionHistory,

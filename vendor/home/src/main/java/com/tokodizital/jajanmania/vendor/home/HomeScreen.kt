@@ -167,14 +167,19 @@ fun HomeScreen(
 
             item { Spacer(modifier = Modifier.height(24.dp)) }
 
-            item {
-                EmptyContentState(
-                    title = stringResource(id = R.string.label_not_activate),
-                    description = stringResource(id = R.string.desc_not_activate),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .clickable { navigateToManageShopScreen() }
-                )
+
+            if (vendor is Resource.Success) {
+                if (vendor.data.status.contains("OFF", false)) {
+                    item {
+                        EmptyContentState(
+                            title = stringResource(id = R.string.label_not_activate),
+                            description = stringResource(id = R.string.desc_not_activate),
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .clickable { navigateToManageShopScreen() }
+                        )
+                    }
+                }
             }
 
             item { Spacer(modifier = Modifier.height(24.dp)) }

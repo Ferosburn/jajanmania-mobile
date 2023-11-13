@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -25,11 +26,12 @@ class EWalletViewModel(
         viewModelScope.launch {
             vendorSessionUseCase.vendorSession
                 .debounce(1000L)
+                .distinctUntilChanged()
                 .collectLatest { result ->
-                _eWalletUiState.update {
-                    it.copy(
-                        vendorSession = result
-                    )
+                    _eWalletUiState.update {
+                        it.copy(
+                            vendorSession = result
+                        )
                 }
             }
         }
