@@ -19,6 +19,7 @@ import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
 import com.tokodizital.jajanmania.vendor.ewallet.di.vendorEWalletModule
 import com.tokodizital.jajanmania.vendor.home.di.vendorHomeModule
 import com.tokodizital.jajanmania.vendor.shop.di.vendorShopModule
+import com.tokodizital.jajanmania.vendor.transaction.di.vendorTransactionModule
 import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
@@ -36,7 +37,8 @@ class MainActivity : ComponentActivity() {
                     vendorAuthModule,
                     vendorHomeModule,
                     vendorShopModule,
-                    vendorEWalletModule
+                    vendorEWalletModule,
+                    vendorTransactionModule
                 )
                 val customerModules = listOf(customerAuthModule, customerVendorModule)
                 val allModules = coreModules + vendorModules + customerModules

@@ -5,16 +5,18 @@ import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
 import com.tokodizital.jajanmania.core.data.CustomerRepositoryImpl
 import com.tokodizital.jajanmania.core.data.CustomerSessionRepositoryImpl
-import com.tokodizital.jajanmania.core.data.VendorRepositoryImpl
-import com.tokodizital.jajanmania.core.data.VendorSessionRepositoryImpl
+import com.tokodizital.jajanmania.core.data.vendor.VendorRepositoryImpl
+import com.tokodizital.jajanmania.core.data.vendor.VendorSessionRepositoryImpl
 import com.tokodizital.jajanmania.core.data.customer.datastore.CustomerSessionDataSource
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.customer.remote.service.CustomerJajanManiaService
+import com.tokodizital.jajanmania.core.data.vendor.VendorPagedRepositoryImpl
 import com.tokodizital.jajanmania.core.data.vendor.datastore.VendorSessionDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.data.vendor.remote.service.VendorJajanManiaService
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.repository.CustomerSessionRepository
+import com.tokodizital.jajanmania.core.domain.repository.VendorPagedRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import com.tokodizital.jajanmania.core.domain.repository.VendorSessionRepository
 import okhttp3.OkHttpClient
@@ -58,6 +60,7 @@ val dataModule = module {
     single { CustomerSessionDataSource(get()) }
     single<VendorRepository> { VendorRepositoryImpl(get()) }
     single<VendorSessionRepository> { VendorSessionRepositoryImpl(get()) }
+    single<VendorPagedRepository> { VendorPagedRepositoryImpl(get()) }
     single<CustomerRepository> { CustomerRepositoryImpl(get()) }
     single<CustomerSessionRepository> { CustomerSessionRepositoryImpl(get()) }
 }

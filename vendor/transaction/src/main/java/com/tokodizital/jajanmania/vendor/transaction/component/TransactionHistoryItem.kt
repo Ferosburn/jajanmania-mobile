@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.home.component
+package com.tokodizital.jajanmania.vendor.transaction.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,7 @@ import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.TransactionHistoryItem
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
-import com.tokodizital.jajanmania.vendor.home.mapper.toDomain
+import com.tokodizital.jajanmania.vendor.transaction.mapper.toDomain
 
 @Composable
 fun TransactionHistoryItem(

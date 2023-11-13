@@ -17,3 +17,5 @@ fun TransactionHistoryResponseItem.toDomain(): TransactionHistoryItem {
         } ?: emptyList()
     )
 }
+
+

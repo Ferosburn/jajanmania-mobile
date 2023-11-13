@@ -198,7 +198,6 @@ fun NavHostVendor(
                     }
                 }
                 TransactionHistoryScreen(
-                    history = transactionHistory,
                     onNavigationClicked = navController::navigateUp,
                     navigationToDetailTransactionScreen = {}
                 )

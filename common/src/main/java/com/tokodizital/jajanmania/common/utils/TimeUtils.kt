@@ -18,3 +18,11 @@ fun Date.toLocalDate(): String {
     val dateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
     return dateFormat.format(this)
 }
+
+fun String.transactionHistoryFormat(format: String = "d MMM yyyy, HH:mm"): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale("id", "ID"))
+    val date = dateFormat.parse(this)
+    val outputFormat = SimpleDateFormat(format, Locale("id", "ID"))
+    return outputFormat.format(date)
+
+}
