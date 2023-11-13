@@ -97,7 +97,7 @@ fun TransactionHistoryScreen(
                 )
             }
             if (transactionHistory.loadState.refresh is LoadState.Loading) {
-                items(5) {
+                items(10) {
                     TransactionHistoryShimmer(
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )

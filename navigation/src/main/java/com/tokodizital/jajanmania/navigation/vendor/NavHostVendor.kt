@@ -73,7 +73,6 @@ fun NavHostVendor(
             }
             composable(VendorScreens.Dashboard.route) {
                 HomeScreen(
-                    navigateToShopScreen = navController::navigateToShopScreen,
                     navigateToEWalletScreen = navController::navigateToEWalletScreen,
                     navigateToManageShopScreen = navController::navigateToManageShopScreen,
                     navigateToHistoryScreen = navController::navigateToTransactionHistoryScreen,

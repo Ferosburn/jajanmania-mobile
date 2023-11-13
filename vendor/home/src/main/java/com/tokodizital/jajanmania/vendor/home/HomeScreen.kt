@@ -50,7 +50,6 @@ import org.koin.core.module.Module
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = koinViewModel(),
-    navigateToShopScreen: () -> Unit = {},
     navigateToHistoryScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
     navigateToAccountScreen: () -> Unit = {},
@@ -131,7 +130,7 @@ fun HomeScreen(
 
     val onMenuClicked: (HomeMenu) -> Unit = {
         when (it.label) {
-            R.string.label_toko -> navigateToShopScreen()
+            R.string.label_toko -> navigateToManageShopScreen()
             R.string.label_history -> navigateToHistoryScreen()
             R.string.label_others -> navigateToEWalletScreen()
         }
@@ -166,11 +165,9 @@ fun HomeScreen(
                 )
             }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
-
-
             if (vendor is Resource.Success) {
                 if (vendor.data.status.contains("OFF", false)) {
+                    item { Spacer(modifier = Modifier.height(24.dp)) }
                     item {
                         EmptyContentState(
                             title = stringResource(id = R.string.label_not_activate),
