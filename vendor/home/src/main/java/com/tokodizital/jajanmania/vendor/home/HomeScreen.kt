@@ -53,7 +53,7 @@ fun HomeScreen(
     navigateToShopScreen: () -> Unit = {},
     navigateToHistoryScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
-    navigateToEditProfileScreen: () -> Unit = {},
+    navigateToAccountScreen: () -> Unit = {},
     navigateToManageShopScreen: () -> Unit = {},
 ) {
 
@@ -130,7 +130,6 @@ fun HomeScreen(
     )
 
     val onMenuClicked: (HomeMenu) -> Unit = {
-//        updateToken()
         when (it.label) {
             R.string.label_toko -> navigateToShopScreen()
             R.string.label_history -> navigateToHistoryScreen()
@@ -144,7 +143,9 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            HomeTopAppBar()
+            HomeTopAppBar(
+                onProfileClicked = navigateToAccountScreen
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -186,7 +187,8 @@ fun HomeScreen(
 
             item {
                 TransactionHistoryHeaderSection(
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onSeeOtherClicked = navigateToHistoryScreen
                 )
             }
 

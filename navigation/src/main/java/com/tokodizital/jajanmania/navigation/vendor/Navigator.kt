@@ -73,3 +73,17 @@ fun NavHostController.navigateToTransactionHistoryScreen() {
 fun NavHostController.navigateToManageShopScreen() {
     navigate(VendorScreens.ManageShop.route)
 }
+
+@Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToAccountScreen(clearBackStack: Boolean = true, route: String = VendorScreens.Account.route) {
+    navigate(VendorScreens.Account.route) {
+        if (clearBackStack) {
+            popUpTo(route) { inclusive = true }
+        }
+    }
+}
+
+@Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToEditAccountScreen() {
+    navigate(VendorScreens.EditAccount.route)
+}

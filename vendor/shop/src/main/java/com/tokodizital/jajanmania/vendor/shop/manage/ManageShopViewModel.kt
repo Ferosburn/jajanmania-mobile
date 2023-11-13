@@ -22,7 +22,7 @@ class ManageShopViewModel(
     val manageShopUiState: StateFlow<ManageShopUiState> get() = _manageShopUiState
 
     val switchManageShopEnable = _manageShopUiState.map {
-        it.isShopActive is Resource.Success
+        it.isShopActive is Resource.Success || it.isShopActive is Resource.Error
     }
 
     fun updatePassword(password: String) {
@@ -62,10 +62,18 @@ class ManageShopViewModel(
         }
     }
 
+    fun updateTempStatusShop(state: Boolean) {
+        _manageShopUiState.update {
+            it.copy(
+                tempIsShopActive = state
+            )
+        }
+    }
+
     fun updateShopStatus() {
         viewModelScope.launch {
             val session = (_manageShopUiState.value.vendorSession as Resource.Success).data
-            val newShopState = (_manageShopUiState.value.isShopActive as Resource.Success).data.not()
+            val newShopState = _manageShopUiState.value.tempIsShopActive.not()
             val password = _manageShopUiState.value.password
             vendorUseCase.updateShopStatus(
                 token = session.accessToken,

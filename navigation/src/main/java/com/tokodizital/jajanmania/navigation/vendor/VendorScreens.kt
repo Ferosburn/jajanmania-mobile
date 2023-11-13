@@ -24,4 +24,8 @@ sealed class VendorScreens(val route: String) {
 
     object ManageShop : VendorScreens("manage-shop")
 
+    object Account : VendorScreens("account")
+
+    object EditAccount : VendorScreens("edit-account")
+
 }

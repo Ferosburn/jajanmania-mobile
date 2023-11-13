@@ -17,9 +17,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.usecase.VendorSessionUseCase
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.vendor.account.edit.EditAccountScreen
+import com.tokodizital.jajanmania.vendor.account.profil.AccountScreen
 import com.tokodizital.jajanmania.vendor.auth.login.LoginScreen
 import com.tokodizital.jajanmania.vendor.auth.register.RegisterScreen
 import com.tokodizital.jajanmania.vendor.cashier.addtransaction.AddTransactionScreen
@@ -74,16 +75,17 @@ fun NavHostVendor(
                 HomeScreen(
                     navigateToShopScreen = navController::navigateToShopScreen,
                     navigateToEWalletScreen = navController::navigateToEWalletScreen,
-                    navigateToManageShopScreen = navController::navigateToManageShopScreen
+                    navigateToManageShopScreen = navController::navigateToManageShopScreen,
+                    navigateToHistoryScreen = navController::navigateToTransactionHistoryScreen,
+                    navigateToAccountScreen = navController::navigateToAccountScreen
                 )
             }
             composable(VendorScreens.EWallet.route) {
                 EWalletScreen(
                     onNavigationClicked = navController::navigateUp,
-//                    navigateToCashierScreen = navController::navigateToCashierScreen,
                     navigateToTransferBankScreen = {},
                     navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
-                    navigateToShopScreen = navController::navigateToShopScreen
+                    navigateToManageShopScreen = navController::navigateToManageShopScreen
                 )
             }
             composable(VendorScreens.Shop.route) {
@@ -184,32 +186,29 @@ fun NavHostVendor(
                 )
             }
             composable(VendorScreens.TransactionHistory.route) {
-                val transactionHistory: List<TransactionHistory> = remember {
-                    (1..10).map {
-                        TransactionHistory(
-                            transactionId = "ID-09723892$it",
-                            vendorId = 1,
-                            jajanId = 1,
-                            price = 100000,
-                            image = "",
-                            status = "Pending",
-                            createdAt = "1 Okt 2023, 19:59"
-                        )
-                    }
-                }
                 TransactionHistoryScreen(
                     onNavigationClicked = navController::navigateUp,
                     navigationToDetailTransactionScreen = {}
                 )
             }
-
             composable(VendorScreens.ManageShop.route) {
                 ManageShopScreen(
                     onNavigationClicked = navController::navigateUp,
                     navigateManageProduct = navController::navigateToShopScreen
                 )
             }
-
+            composable(VendorScreens.Account.route) {
+                AccountScreen(
+                    onNavigationClicked = navController::navigateUp,
+                    navigateToEditAccount = navController::navigateToEditAccountScreen
+                )
+            }
+            composable(VendorScreens.EditAccount.route) {
+                EditAccountScreen(
+                    onNavigationClicked = navController::navigateUp,
+                    navigateToProfileScreen = navController::navigateToAccountScreen
+                )
+            }
         }
     }
 }

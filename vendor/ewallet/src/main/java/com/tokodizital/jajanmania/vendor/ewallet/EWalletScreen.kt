@@ -35,7 +35,7 @@ fun EWalletScreen(
     onNavigationClicked: () -> Unit = {},
     navigateToTransferBankScreen: () -> Unit = {},
     navigateToTransactionHistoryScreen: () -> Unit = {},
-    navigateToShopScreen: () -> Unit = {},
+    navigateToManageShopScreen: () -> Unit = {},
 ) {
 
     val eWalletUiState by eWalletViewModel.eWalletUiState.collectAsStateWithLifecycle()
@@ -83,7 +83,7 @@ fun EWalletScreen(
         when (it.label) {
             R.string.label_transfer_bank -> navigateToTransferBankScreen()
             R.string.label_history -> navigateToTransactionHistoryScreen()
-            R.string.label_manage_shop -> navigateToShopScreen()
+            R.string.label_manage_shop -> navigateToManageShopScreen()
         }
     }
 

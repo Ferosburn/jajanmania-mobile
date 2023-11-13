@@ -83,6 +83,7 @@ fun ManageShopScreen(
     LaunchedEffect(key1 = isShopActive) {
         if (isShopActive is Resource.Success) {
             isSwitchChecked = isShopActive.data
+            manageShopViewModel.updateTempStatusShop(isShopActive.data)
         }
     }
 
