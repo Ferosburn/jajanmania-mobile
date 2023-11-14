@@ -47,6 +47,9 @@ fun MySubscriptionScreen(
     val categories = subscriptionUiState.categories
     var token by remember { mutableStateOf("") }
     var userId by remember { mutableStateOf("") }
+    val loadMoreButtonIsLoading by subscriptionViewModel.loadMoreButtonIsLoading.collectAsState(
+        initial = false
+    )
 
     LaunchedEffect(key1 = Unit) {
         subscriptionViewModel.getCustomerSession()
@@ -146,10 +149,12 @@ fun MySubscriptionScreen(
                         }
                     )
                 }
-                if (subscription is Resource.Success) {
-                    item(span = { GridItemSpan(columnCount) }) {
-                        BaseButton(text = "Muat Lebih Banyak", onClicked = { loadMore() })
-                    }
+                item(span = { GridItemSpan(columnCount) }) {
+                    BaseButton(
+                        text = "Muat Lebih Banyak",
+                        onClicked = { loadMore() },
+                        isLoading = loadMoreButtonIsLoading
+                    )
                 }
             } else {
                 item(span = { GridItemSpan(columnCount) }) {
