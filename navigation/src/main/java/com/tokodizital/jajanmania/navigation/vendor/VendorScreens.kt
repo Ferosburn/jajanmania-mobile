@@ -2,6 +2,10 @@ package com.tokodizital.jajanmania.navigation.vendor
 
 sealed class VendorScreens(val route: String) {
 
+    companion object {
+        const val TRANSACTION_ID = "transactionId"
+    }
+
     object Login : VendorScreens("login")
 
     object Register : VendorScreens("register")
@@ -21,6 +25,12 @@ sealed class VendorScreens(val route: String) {
     object AddTransaction : VendorScreens("add-transaction")
 
     object TransactionHistory : VendorScreens("transaction-history")
+
+    object DetailTransaction : VendorScreens("detail-transaction/{$TRANSACTION_ID}") {
+        fun buildRoute(transactionId: String): String {
+            return "detail-transaction/$transactionId"
+        }
+    }
 
     object ManageShop : VendorScreens("manage-shop")
 

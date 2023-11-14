@@ -70,4 +70,11 @@ interface VendorJajanManiaService {
         @Body updateShopStatusRequest: UpdateShopStatusRequest
     ): NetworkResponse<VendorResponse, CommonErrorResponse>
 
+    @GET("transaction-histories")
+    suspend fun getDetailTransactionHistory(
+        @Header("authorization") token: String,
+        @Query("where") where: String,
+        @Query("include") include: String
+    ): NetworkResponse<TransactionHistoryResponse, CommonErrorResponse>
+
 }

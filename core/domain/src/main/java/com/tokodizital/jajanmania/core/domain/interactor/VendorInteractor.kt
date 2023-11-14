@@ -69,4 +69,11 @@ class VendorInteractor(
     ): Flow<Resource<Boolean>> {
         return vendorRepository.updateShopStatus(token, id, status, password)
     }
+
+    override suspend fun getDetailTransaction(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<TransactionHistoryItem?>> {
+        return vendorRepository.getDetailTransaction(token, transactionId)
+    }
 }

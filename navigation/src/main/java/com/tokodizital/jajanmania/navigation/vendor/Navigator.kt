@@ -87,3 +87,10 @@ fun NavHostController.navigateToAccountScreen(clearBackStack: Boolean = true, ro
 fun NavHostController.navigateToEditAccountScreen() {
     navigate(VendorScreens.EditAccount.route)
 }
+
+@Throws(IllegalArgumentException::class)
+fun NavHostController.navigateToDetailTransactionScreen(
+    transactionId: String
+) {
+    navigate(VendorScreens.DetailTransaction.buildRoute(transactionId))
+}

@@ -54,6 +54,7 @@ fun HomeScreen(
     navigateToEWalletScreen: () -> Unit = {},
     navigateToAccountScreen: () -> Unit = {},
     navigateToManageShopScreen: () -> Unit = {},
+    navigationToDetailTransactionScreen: (String) -> Unit = {},
 ) {
 
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
@@ -208,7 +209,7 @@ fun HomeScreen(
                 items(items = transactionHistory.data, key = { it.id }) {
                     TransactionHistoryItem(
                         transactionHistory = it,
-                        onClick = {},
+                        onClick = navigationToDetailTransactionScreen,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }

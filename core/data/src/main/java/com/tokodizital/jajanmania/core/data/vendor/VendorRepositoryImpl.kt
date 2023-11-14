@@ -189,4 +189,30 @@ class VendorRepositoryImpl(
         emit(Resource.Error(message = it.message.toString()))
     }
 
+    override suspend fun getDetailTransaction(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<TransactionHistoryItem?>> = flow {
+        emit(Resource.Loading)
+        val transactionHistoryResponse = remoteDataSource.getDetailTransactionHistory(
+            token,
+            transactionId
+        )
+        when (transactionHistoryResponse) {
+            is NetworkResponse.Success -> {
+                val transactionHistoryResult = transactionHistoryResponse.body.data?.transactionHistories?.map {
+                    it.toDomain()
+                }?.firstOrNull()
+                emit(Resource.Success(transactionHistoryResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = transactionHistoryResponse.body?.message
+                    ?: transactionHistoryResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
 }

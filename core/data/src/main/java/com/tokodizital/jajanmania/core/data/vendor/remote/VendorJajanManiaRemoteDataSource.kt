@@ -91,4 +91,18 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
         return service.updateShopStatus(authorization, id, updateShopStatusRequest)
     }
 
+    suspend fun getDetailTransactionHistory(
+        token: String,
+        transactionId: String,
+    ): NetworkResponse<TransactionHistoryResponse, CommonErrorResponse> {
+        val authorization = "Bearer $token"
+        val whereParams = "%7B%22id%22%3A%22$transactionId%22%7D"
+        val includeParams = "%7B%22transactionItems%22%3A%7B%22include%22%3A%7B%22jajanItem%22%3Atrue%7D%7D%7D"
+        return service.getDetailTransactionHistory(
+            authorization,
+            whereParams,
+            includeParams
+        )
+    }
+
 }

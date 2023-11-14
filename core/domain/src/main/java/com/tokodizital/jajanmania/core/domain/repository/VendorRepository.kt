@@ -55,4 +55,9 @@ interface VendorRepository {
         password: String
     ): Flow<Resource<Boolean>>
 
+    suspend fun getDetailTransaction(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<TransactionHistoryItem?>>
+
 }
