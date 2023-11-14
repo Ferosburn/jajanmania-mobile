@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.data
+package com.tokodizital.jajanmania.core.data.customer
 
 import com.tokodizital.jajanmania.core.data.customer.datastore.CustomerSessionDataSource
 import com.tokodizital.jajanmania.core.data.customer.mapper.toDomain

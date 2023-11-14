@@ -80,7 +80,8 @@ fun NavHostCustomer(
         }
         composable(CustomerScreens.MySubscription.route) {
             MySubscriptionScreen(
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.Categories.route) {

@@ -33,6 +33,8 @@ fun CategoryItemCard(
     name: String,
     icon: String = "",
     isSubscribed: Boolean,
+    onSubscribeClick: () -> Unit = {},
+    onUnsubscribeClick: () -> Unit = {},
 ) {
     Card(
         modifier = Modifier
@@ -65,7 +67,7 @@ fun CategoryItemCard(
             )
             if (isSubscribed) {
                 BaseOutlinedButton(
-                    onClicked = {},
+                    onClicked = onUnsubscribeClick,
                     text = stringResource(id = R.string.unsubscribe),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -73,7 +75,8 @@ fun CategoryItemCard(
                 BaseButton(
                     text = stringResource(id = R.string.subscribe),
                     modifier = Modifier.fillMaxWidth(),
-                    containerColor = Color(0xFF343434)
+                    containerColor = Color(0xFF343434),
+                    onClicked = onSubscribeClick
                 )
             }
         }

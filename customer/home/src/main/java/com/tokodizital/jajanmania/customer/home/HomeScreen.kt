@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.tokodizital.jajanmania.core.domain.model.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.ui.R

@@ -3,8 +3,8 @@ package com.tokodizital.jajanmania.core.data.di
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.google.gson.GsonBuilder
 import com.haroldadmin.cnradapter.NetworkResponseAdapterFactory
-import com.tokodizital.jajanmania.core.data.CustomerRepositoryImpl
-import com.tokodizital.jajanmania.core.data.CustomerSessionRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.CustomerRepositoryImpl
+import com.tokodizital.jajanmania.core.data.customer.CustomerSessionRepositoryImpl
 import com.tokodizital.jajanmania.core.data.vendor.VendorRepositoryImpl
 import com.tokodizital.jajanmania.core.data.vendor.VendorSessionRepositoryImpl
 import com.tokodizital.jajanmania.core.data.customer.datastore.CustomerSessionDataSource
