@@ -41,8 +41,10 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
 @Composable
-fun EditProfileVendor(
-    modifier: Modifier = Modifier
+fun EditAccountScreen(
+    modifier: Modifier = Modifier,
+    onNavigationClicked: () -> Unit = {},
+    navigateToProfileScreen: () -> Unit = {},
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -62,8 +64,8 @@ fun EditProfileVendor(
 
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Edit Profil")
-                 },
+            DetailTopAppBar(title = "Edit Profil", onNavigationClicked = onNavigationClicked)
+        },
         modifier = modifier
     ) { paddingValues ->
         Column(
@@ -172,9 +174,7 @@ fun EditProfileVendor(
                         text = "Simpan",
                         modifier = Modifier.fillMaxWidth(),
                         containerColor = MaterialTheme.colorScheme.primary,
-                        onClicked = {
-
-                        }
+                        onClicked = navigateToProfileScreen
                     )
                 }
             }
@@ -188,7 +188,7 @@ fun EditProfileVendor(
 private fun PreviewEditProfileScreen() {
     JajanManiaTheme {
         Surface {
-            EditProfileVendor()
+            EditAccountScreen()
         }
     }
 }

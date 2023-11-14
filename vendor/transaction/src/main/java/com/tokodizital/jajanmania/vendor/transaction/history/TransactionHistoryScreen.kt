@@ -44,7 +44,7 @@ fun TransactionHistoryScreen(
     modifier: Modifier = Modifier,
     transactionHistoryViewModel: TransactionHistoryViewModel = koinViewModel(),
     onNavigationClicked: () -> Unit = {},
-    navigationToDetailTransactionScreen: () -> Unit = {},
+    navigationToDetailTransactionScreen: (String) -> Unit = {},
 ) {
 
     val transactionHistoryUiState by transactionHistoryViewModel.transactionHistory.collectAsStateWithLifecycle()
@@ -97,7 +97,7 @@ fun TransactionHistoryScreen(
                 )
             }
             if (transactionHistory.loadState.refresh is LoadState.Loading) {
-                items(5) {
+                items(10) {
                     TransactionHistoryShimmer(
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
@@ -127,7 +127,7 @@ fun TransactionHistoryScreen(
                 if (history != null) {
                     TransactionHistoryItem(
                         transactionHistory = history,
-                        onClick = { navigationToDetailTransactionScreen() },
+                        onClick = { navigationToDetailTransactionScreen(it) },
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }

@@ -50,11 +50,11 @@ import org.koin.core.module.Module
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: HomeViewModel = koinViewModel(),
-    navigateToShopScreen: () -> Unit = {},
     navigateToHistoryScreen: () -> Unit = {},
     navigateToEWalletScreen: () -> Unit = {},
-    navigateToEditProfileScreen: () -> Unit = {},
+    navigateToAccountScreen: () -> Unit = {},
     navigateToManageShopScreen: () -> Unit = {},
+    navigationToDetailTransactionScreen: (String) -> Unit = {},
 ) {
 
     val homeUiState by homeViewModel.homeUiState.collectAsStateWithLifecycle()
@@ -130,9 +130,8 @@ fun HomeScreen(
     )
 
     val onMenuClicked: (HomeMenu) -> Unit = {
-//        updateToken()
         when (it.label) {
-            R.string.label_toko -> navigateToShopScreen()
+            R.string.label_toko -> navigateToManageShopScreen()
             R.string.label_history -> navigateToHistoryScreen()
             R.string.label_others -> navigateToEWalletScreen()
         }
@@ -144,7 +143,9 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            HomeTopAppBar()
+            HomeTopAppBar(
+                onProfileClicked = navigateToAccountScreen
+            )
         },
         modifier = modifier
     ) { paddingValues ->
@@ -165,11 +166,9 @@ fun HomeScreen(
                 )
             }
 
-            item { Spacer(modifier = Modifier.height(24.dp)) }
-
-
             if (vendor is Resource.Success) {
                 if (vendor.data.status.contains("OFF", false)) {
+                    item { Spacer(modifier = Modifier.height(24.dp)) }
                     item {
                         EmptyContentState(
                             title = stringResource(id = R.string.label_not_activate),
@@ -186,7 +185,8 @@ fun HomeScreen(
 
             item {
                 TransactionHistoryHeaderSection(
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    onSeeOtherClicked = navigateToHistoryScreen
                 )
             }
 
@@ -209,7 +209,7 @@ fun HomeScreen(
                 items(items = transactionHistory.data, key = { it.id }) {
                     TransactionHistoryItem(
                         transactionHistory = it,
-                        onClick = {},
+                        onClick = navigationToDetailTransactionScreen,
                         modifier = Modifier.padding(horizontal = 16.dp)
                     )
                 }

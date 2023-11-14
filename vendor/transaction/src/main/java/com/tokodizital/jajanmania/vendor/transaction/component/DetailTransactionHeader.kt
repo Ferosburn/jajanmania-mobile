@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.vendor.transaction.detail
+package com.tokodizital.jajanmania.vendor.transaction.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

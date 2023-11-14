@@ -42,7 +42,9 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 @ExperimentalMaterial3Api
 @Composable
 fun AccountScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNavigationClicked: () -> Unit = {},
+    navigateToEditAccount: () -> Unit = {},
 ) {
 
     var vendorName by remember { mutableStateOf("Batagor Tigor") }
@@ -52,7 +54,7 @@ fun AccountScreen(
 
     Scaffold(
         topBar = {
-            DetailTopAppBar(title = "Profilku")
+            DetailTopAppBar(title = "Profilku", onNavigationClicked = onNavigationClicked)
         },
         modifier = modifier
     ) { paddingValues ->
@@ -85,7 +87,7 @@ fun AccountScreen(
                             .background(Color.Black, CircleShape)
                     ) {
                         IconButton(
-                            onClick = {{ }},
+                            onClick = navigateToEditAccount,
                             modifier = Modifier.fillMaxSize(),
                         ) {
                             Icon(
