@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
 import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
+import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionModule
 import com.tokodizital.jajanmania.customer.vendor.di.customerVendorModule
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -40,7 +41,7 @@ class MainActivity : ComponentActivity() {
                     vendorEWalletModule,
                     vendorTransactionModule
                 )
-                val customerModules = listOf(customerAuthModule, customerVendorModule)
+                val customerModules = listOf(customerAuthModule, customerVendorModule, customerSubscriptionModule)
                 val allModules = coreModules + vendorModules + customerModules
                 androidContext(applicationContext)
                 modules(allModules)

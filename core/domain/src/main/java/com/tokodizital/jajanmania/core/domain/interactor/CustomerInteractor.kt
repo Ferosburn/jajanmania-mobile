@@ -1,10 +1,12 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
+import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
@@ -64,5 +66,39 @@ class CustomerInteractor(
         token: String
     ): Flow<Resource<VendorDetail>> {
         return customerRepository.getVendorDetail(vendorId, token)
+    }
+
+    override suspend fun getMySubscriptions(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+        userId: String
+    ): Flow<Resource<List<Category>>> {
+        return customerRepository.getMySubscriptions(token, pageNumber, pageSize, userId)
+    }
+
+    override suspend fun getCategories(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+        userId: String
+    ): Flow<Resource<List<Category>>> {
+        return customerRepository.getCategories(token, pageNumber, pageSize, userId)
+    }
+
+    override suspend fun subscribe(
+        token: String,
+        userId: String,
+        categoryId: String
+    ): Flow<Resource<SubscriptionResult>> {
+        return customerRepository.subscribe(token, userId, categoryId)
+    }
+
+    override suspend fun unsubscribe(
+        token: String,
+        userId: String,
+        categoryId: String
+    ): Flow<Resource<SubscriptionResult>> {
+        return customerRepository.unsubscribe(token, userId, categoryId)
     }
 }

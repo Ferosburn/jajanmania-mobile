@@ -9,9 +9,9 @@ data class VendorDetail(
 )
 
 data class JajanItem(
-    val id: String,
-    val name: String,
-    val price: Long,
-    val imageUrl: String,
-    val category: String
+    val id: String = "",
+    val name: String = "",
+    val price: Long = 0L,
+    val imageUrl: String = "",
+    val category: String = ""
 )
