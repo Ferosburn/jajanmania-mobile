@@ -2,6 +2,7 @@ package com.tokodizital.jajanmania.core.domain.usecase
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
@@ -34,6 +35,11 @@ interface CustomerUseCase {
         firebaseToken: String
     ): Flow<Resource<CustomerRefreshTokenResult>>
 
+    suspend fun getCustomerAccount(
+        token: String,
+        userId: String
+    ): Flow<Resource<CustomerAccount>>
+
     suspend fun getNearbyVendors(
         latitude: Double,
         longitude: Double,
@@ -49,14 +55,14 @@ interface CustomerUseCase {
 
     suspend fun getMySubscriptions(
         token: String,
-        pageNumber: Int = 10,
+        pageNumber: Int = 1,
         pageSize: Int = 10,
         userId: String,
     ) : Flow<Resource<List<Category>>>
 
     suspend fun getCategories(
         token: String,
-        pageNumber: Int = 10,
+        pageNumber: Int = 1,
         pageSize: Int = 10,
         userId: String,
     ) : Flow<Resource<List<Category>>>

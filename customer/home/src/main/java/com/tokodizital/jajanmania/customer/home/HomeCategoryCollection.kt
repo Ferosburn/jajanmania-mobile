@@ -31,7 +31,9 @@ import com.tokodizital.jajanmania.ui.components.cards.CategoryItemCard
 fun CategoryCollection(
     title: String = "Title",
     list: List<Category> = listOf(),
-    onMoreClick: () -> Unit = {}
+    onMoreClick: () -> Unit = {},
+    onSubscribeClick: (Category) -> Unit = {},
+    onUnsubscribeClick: (Category) -> Unit = {},
 ) {
     Column {
         Row(
@@ -66,7 +68,12 @@ fun CategoryCollection(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(list) { category ->
-                CategoryItemCard(name = category.name, isSubscribed = category.isSubscribed)
+                CategoryItemCard(
+                    name = category.name,
+                    isSubscribed = category.isSubscribed,
+                    onSubscribeClick = { onSubscribeClick(category) },
+                    onUnsubscribeClick = { onUnsubscribeClick(category) }
+                )
             }
         }
     }

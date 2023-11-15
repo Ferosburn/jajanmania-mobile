@@ -6,6 +6,7 @@ import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
@@ -94,6 +95,30 @@ class CustomerRepositoryImpl(
             is NetworkResponse.Error -> {
                 val errorMessage = refreshTokenResponse.body?.message
                     ?: refreshTokenResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getCustomerAccount(
+        token: String,
+        userId: String
+    ): Flow<Resource<CustomerAccount>> = flow {
+        emit(Resource.Loading)
+        val customerAccountResponse = remoteDataSource.getCustomerAccount(
+            token = token,
+            userId = userId
+        )
+        when (customerAccountResponse) {
+            is NetworkResponse.Success -> {
+                val customerAccount = customerAccountResponse.body.toDomain()
+                emit(Resource.Success(customerAccount))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = customerAccountResponse.body?.message
+                    ?: customerAccountResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }
