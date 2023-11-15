@@ -2,6 +2,7 @@ package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
@@ -49,6 +50,13 @@ class CustomerInteractor(
             expiredAt,
             firebaseToken
         )
+    }
+
+    override suspend fun getCustomerAccount(
+        token: String,
+        userId: String
+    ): Flow<Resource<CustomerAccount>> {
+        return customerRepository.getCustomerAccount(token, userId)
     }
 
     override suspend fun getNearbyVendors(

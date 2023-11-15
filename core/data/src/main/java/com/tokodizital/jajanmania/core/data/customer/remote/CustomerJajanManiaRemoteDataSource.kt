@@ -8,6 +8,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegi
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
@@ -58,6 +59,14 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
             )
         )
         return service.refreshToken(refreshTokenRequest)
+    }
+
+    suspend fun getCustomerAccount(
+        token: String,
+        userId: String
+    ) :NetworkResponse<CustomerAccountResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.getCustomerAccount(token = bearerToken, id = userId)
     }
 
     suspend fun getNearbyVendors(

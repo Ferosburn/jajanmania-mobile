@@ -7,6 +7,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegi
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
@@ -18,6 +19,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface CustomerJajanManiaService {
@@ -36,6 +38,12 @@ interface CustomerJajanManiaService {
     suspend fun refreshToken(
         @Body refreshTokenRequest: CustomerRefreshTokenRequest
     ): NetworkResponse<CustomerRefreshTokenResponse, CommonErrorResponse>
+
+    @GET("users/{id}")
+    suspend fun getCustomerAccount(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): NetworkResponse<CustomerAccountResponse, CommonErrorResponse>
 
     @GET("vendors/locations")
     suspend fun getNearbyVendors(

@@ -56,6 +56,7 @@ dependencies {
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
+    api("androidx.compose.material:material")
     api("androidx.compose.material:material-icons-extended:1.5.3")
 
     api("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
