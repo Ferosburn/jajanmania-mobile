@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -22,6 +23,7 @@ class SubscriptionViewModel(
 
     private val _subscriptionUiState = MutableStateFlow(SubscriptionUiState())
     val subscriptionUiState: StateFlow<SubscriptionUiState> get() = _subscriptionUiState
+    val loadMoreButtonIsLoading get() = subscriptionUiState.map { it.subscription is Resource.Loading }
 
     fun getMySubscriptions(
         token: String,

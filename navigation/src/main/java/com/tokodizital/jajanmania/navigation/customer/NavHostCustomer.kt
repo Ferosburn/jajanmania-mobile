@@ -86,7 +86,8 @@ fun NavHostCustomer(
         }
         composable(CustomerScreens.Categories.route) {
             CategoryScreen(
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.EWallet.route) {
