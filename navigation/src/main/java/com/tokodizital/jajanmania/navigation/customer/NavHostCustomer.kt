@@ -31,7 +31,7 @@ import com.tokodizital.jajanmania.customer.ewallet.EWalletSettingScreen
 import com.tokodizital.jajanmania.customer.home.HomeScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentDetailScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentScreen
-import com.tokodizital.jajanmania.customer.profile.EditProfileScreen
+import com.tokodizital.jajanmania.customer.profile.manage.ManageProfileScreen
 import com.tokodizital.jajanmania.customer.profile.ProfileScreen
 import com.tokodizital.jajanmania.customer.subscription.CategoryScreen
 import com.tokodizital.jajanmania.customer.subscription.MySubscriptionScreen
@@ -207,7 +207,7 @@ fun NavHostCustomer(
             )
         }
         composable(CustomerScreens.EditProfile.route) {
-            EditProfileScreen(
+            ManageProfileScreen(
                 onNavigationClick = navController::navigateUp,
                 navigateToProfileScreen = navController::navigateToProfileScreen
             )

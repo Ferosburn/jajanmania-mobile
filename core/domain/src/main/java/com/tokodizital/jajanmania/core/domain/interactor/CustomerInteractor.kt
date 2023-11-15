@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
@@ -64,5 +65,12 @@ class CustomerInteractor(
         token: String
     ): Flow<Resource<VendorDetail>> {
         return customerRepository.getVendorDetail(vendorId, token)
+    }
+
+    override suspend fun getCustomer(
+        token: String,
+        id: String
+    ): Flow<Resource<Customer>> {
+        return customerRepository.getCustomer(token, id)
     }
 }

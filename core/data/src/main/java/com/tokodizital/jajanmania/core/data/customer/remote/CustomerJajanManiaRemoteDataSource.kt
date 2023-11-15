@@ -5,10 +5,13 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLogi
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenSessionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.service.CustomerJajanManiaService
@@ -82,5 +85,30 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         val where = "%7B%22id%22%3A%22$vendorId%22%7D"
         val include = "%7B%22jajanItems%22%3A%7B%22include%22%3A%7B%22category%22%3Atrue%7D%7D%7D"
         return service.getVendorDetail(token = bearerToken, where = where, include = include)
+    }
+
+    suspend fun getCustomer(
+        token: String,
+        customerId: String
+    ) : NetworkResponse<CustomerResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.getCustomer(token = bearerToken, customerId = customerId)
+    }
+
+    suspend fun updateCustomerProfile(
+        customerId: String,
+        customerFullName: String,
+        customerGender: String,
+        customerAddress: String,
+        token: String
+    ) : NetworkResponse<CustomerUpdateResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        val request = CustomerUpdateProfileRequest(
+            fullName = customerFullName,
+            gender = customerGender,
+            address = customerAddress
+        )
+
+        return service.updateCustomerProfile(token = bearerToken, customerId, customerUpdateProfileRequest = request)
     }
 }

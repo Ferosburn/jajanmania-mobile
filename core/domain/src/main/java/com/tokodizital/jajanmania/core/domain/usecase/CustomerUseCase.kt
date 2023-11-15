@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.domain.usecase
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
@@ -44,4 +45,10 @@ interface CustomerUseCase {
         vendorId: String,
         token: String
     ) : Flow<Resource<VendorDetail>>
+
+    suspend fun getCustomer(
+        token: String,
+        id: String
+    ): Flow<Resource<Customer>>
+
 }
