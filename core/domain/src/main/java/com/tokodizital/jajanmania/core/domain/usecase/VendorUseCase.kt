@@ -2,6 +2,7 @@ package com.tokodizital.jajanmania.core.domain.usecase
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.LogoutResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RegisterResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Vendor
@@ -59,5 +60,13 @@ interface VendorUseCase {
         token: String,
         transactionId: String
     ): Flow<Resource<TransactionHistoryItem?>>
+
+    suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String
+    ): Flow<Resource<LogoutResult>>
 
 }

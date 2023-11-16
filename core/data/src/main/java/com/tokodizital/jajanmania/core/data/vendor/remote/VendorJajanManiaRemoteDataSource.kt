@@ -2,11 +2,14 @@ package com.tokodizital.jajanmania.core.data.vendor.remote
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutDataSessionRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenSessionRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RegisterResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.VendorResponse
@@ -102,6 +105,26 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
             authorization,
             whereParams,
             includeParams
+        )
+    }
+
+    suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String
+    ): NetworkResponse<LogoutResponse, CommonErrorResponse> {
+        val authorization = "Bearer $accessToken"
+        val refreshTokenSessionRequest = LogoutDataSessionRequest(
+            accessToken, refreshToken, accountType, accountId, expiredAt
+        )
+        val refreshTokenRequest = LogoutRequest(
+            session = refreshTokenSessionRequest
+        )
+        return service.logout(
+            authorization,
+            refreshTokenRequest
         )
     }
 

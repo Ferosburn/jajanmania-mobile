@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.navigation.vendor
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
@@ -10,6 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -163,9 +165,20 @@ fun NavHostVendor(
                 )
             }
             composable(VendorScreens.Account.route) {
+                val context = LocalContext.current
+                val underConstructionToast: () -> Unit = {
+                    Toast.makeText(context, "Halaman masih dalam pengerjaan", Toast.LENGTH_SHORT)
+                        .show()
+                }
                 AccountScreen(
                     onNavigationClicked = navController::navigateUp,
-                    navigateToEditAccount = navController::navigateToEditAccountScreen
+                    navigateToEditAccountScreen = navController::navigateToEditAccountScreen,
+                    navigateToManageShopScreen = navController::navigateToManageShopScreen,
+                    navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
+                    navigateToTermAndConditionScreen = underConstructionToast,
+                    navigateToHelpCenterScreen = underConstructionToast,
+                    navigateToLevelScreen = underConstructionToast,
+                    navigateToLoginScreen = { navController.navigateToLoginScreen(route = VendorScreens.Dashboard.route)}
                 )
             }
             composable(VendorScreens.EditAccount.route) {

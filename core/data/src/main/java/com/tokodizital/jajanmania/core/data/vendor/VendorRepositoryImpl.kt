@@ -7,6 +7,7 @@ import com.tokodizital.jajanmania.core.data.vendor.mapper.transaction.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.LogoutResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RegisterResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Vendor
@@ -215,4 +216,33 @@ class VendorRepositoryImpl(
         emit(Resource.Error(message = it.message.toString()))
     }
 
+    override suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String
+    ): Flow<Resource<LogoutResult>> = flow {
+        emit(Resource.Loading)
+        val logoutResponse = remoteDataSource.logout(
+            accountId,
+            accountType,
+            accessToken,
+            refreshToken,
+            expiredAt
+        )
+        when (logoutResponse) {
+            is NetworkResponse.Success -> {
+                val logoutResult = logoutResponse.body.toResult()
+                emit(Resource.Success(logoutResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = logoutResponse.body?.message
+                    ?: logoutResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
 }
