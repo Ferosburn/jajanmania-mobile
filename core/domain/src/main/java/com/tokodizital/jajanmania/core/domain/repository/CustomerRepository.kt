@@ -62,6 +62,7 @@ interface CustomerRepository {
     suspend fun updateCustomerProfile(
         customerId: String,
         customerFullName: String,
+        customerEmail: String,
         customerGender: String,
         customerAddress: String,
         customerOldPassword: String,

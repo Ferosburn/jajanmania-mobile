@@ -289,6 +289,7 @@ class CustomerRepositoryImpl(
     override suspend fun updateCustomerProfile(
         customerId: String,
         customerFullName: String,
+        customerEmail: String,
         customerGender: String,
         customerAddress: String,
         customerOldPassword: String,
@@ -297,7 +298,7 @@ class CustomerRepositoryImpl(
     ): Flow<Resource<Customer>> = flow {
         emit(Resource.Loading)
         val updateCustomerProfileResponse = remoteDataSource.updateCustomerProfile(
-            customerId, customerFullName, customerGender, customerAddress, customerOldPassword, customerNewPassword, token
+            customerId, customerFullName, customerEmail, customerGender, customerAddress, customerOldPassword, customerNewPassword, token
         )
 
         when (updateCustomerProfileResponse) {

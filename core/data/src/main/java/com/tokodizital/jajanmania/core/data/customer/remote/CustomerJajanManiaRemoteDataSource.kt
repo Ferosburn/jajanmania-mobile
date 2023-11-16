@@ -169,6 +169,7 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
     suspend fun updateCustomerProfile(
         customerId: String,
         customerFullName: String,
+        customerEmail: String,
         customerGender: String,
         customerAddress: String,
         customerOldPassword: String,
@@ -178,6 +179,7 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         val bearerToken = "Bearer $token"
         val request = CustomerUpdateProfileRequest(
             fullName = customerFullName,
+            email = customerEmail,
             gender = customerGender,
             address = customerAddress,
             password = customerNewPassword,

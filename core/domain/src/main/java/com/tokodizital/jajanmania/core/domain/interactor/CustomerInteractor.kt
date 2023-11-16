@@ -88,6 +88,7 @@ class CustomerInteractor(
         token: String,
         id: String,
         fullName: String,
+        email: String,
         address: String,
         gender: String,
         oldPassword: String,
@@ -96,6 +97,7 @@ class CustomerInteractor(
         return customerRepository.updateCustomerProfile(
             customerId = id,
             customerFullName = fullName,
+            customerEmail = email,
             customerGender = gender,
             customerAddress = address,
             customerOldPassword = oldPassword,

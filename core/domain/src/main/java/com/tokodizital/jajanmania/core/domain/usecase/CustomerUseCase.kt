@@ -63,6 +63,7 @@ interface CustomerUseCase {
         token: String,
         id: String,
         fullName: String,
+        email: String,
         address: String,
         gender: String,
         oldPassword: String,

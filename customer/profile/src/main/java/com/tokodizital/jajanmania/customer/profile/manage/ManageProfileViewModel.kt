@@ -4,6 +4,7 @@ package com.tokodizital.jajanmania.customer.profile.manage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tokodizital.jajanmania.common.data.Gender
+import com.tokodizital.jajanmania.common.utils.isValidEmail
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
@@ -32,7 +33,7 @@ class ManageProfileViewModel(
         get() = _manageProfileUiState.map {
             it.fullName.isNotEmpty() &&
                     it.address.isNotEmpty() &&
-                    it.email.isNotEmpty() &&
+                    it.email.isNotEmpty() && it.email.isValidEmail() &&
                     it.gender.isNotEmpty() &&
                     it.oldPassword.length >= 6 &&
                     it.newPassword.length >= 6 &&
@@ -100,6 +101,7 @@ class ManageProfileViewModel(
 
     fun updateCustomer(
         fullName: String,
+        email: String,
         address: String,
         gender: String,
         oldPassword: String,
@@ -110,6 +112,7 @@ class ManageProfileViewModel(
                 token = _accessToken,
                 id = _accountId,
                 fullName = fullName,
+                email = email,
                 address = address,
                 gender = gender,
                 oldPassword = oldPassword,
@@ -184,6 +187,11 @@ class ManageProfileViewModel(
             _manageProfileUiState.value.copy(errorFullNameMessage = message)
         }
     }
+    fun updateErrorEmailMessage(message: String) {
+        _manageProfileUiState.update {
+            _manageProfileUiState.value.copy(errorEmailMessage = message)
+        }
+    }
     fun updateErrorAddressMessage(message: String) {
         _manageProfileUiState.update {
             _manageProfileUiState.value.copy(errorAddressMessage = message)
@@ -212,5 +220,6 @@ class ManageProfileViewModel(
     fun saveId(id: String) {
         _accountId = id
     }
+
 
 }

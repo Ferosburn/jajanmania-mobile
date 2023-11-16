@@ -16,6 +16,7 @@ data class ManageProfileUiState(
     val newPassword: String = "",
     val newPasswordConfirm: String = "",
     val errorFullNameMessage: String = "",
+    val errorEmailMessage: String = "",
     val errorAddressMessage: String = "",
     val errorOldPasswordMessage: String = "",
     val errorNewPasswordMessage: String = "",
