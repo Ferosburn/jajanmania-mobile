@@ -25,6 +25,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableLongStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,23 +43,54 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tokodizital.jajanmania.common.utils.toRupiah
 import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import org.koin.androidx.compose.koinViewModel
 
 
 @ExperimentalMaterial3Api
 @Composable
 fun EWalletScreenCust(
     modifier: Modifier = Modifier,
+    eWalletCustViewModel: EWalletCustViewModel = koinViewModel(),
     onNavigationClick: () -> Unit = {},
     navigateToTopUpScreen: () -> Unit = {},
     navigateToPaymentScreen: () -> Unit = {},
     navigateToTransactionHistoryScreen: () -> Unit = {}
 ) {
+
+    val eWalletCustUiState by eWalletCustViewModel.eWalletCustUiState.collectAsStateWithLifecycle()
+    val customerSession = eWalletCustUiState.customerSession
+    val customer = eWalletCustUiState.customer
+
+    var balance by remember { mutableLongStateOf(0L) }
+
+    LaunchedEffect(key1 = Unit) {
+        eWalletCustViewModel.getCustomerSession()
+    }
+
+    LaunchedEffect(key1 = customerSession) {
+        if (customerSession is Resource.Success) {
+            val session = customerSession.data
+            eWalletCustViewModel.getCustomer(
+                token = session.accessToken,
+                id = session.accountId
+            )
+        }
+    }
+
+    LaunchedEffect(key1 = customer) {
+        if (customer is Resource.Success) {
+            balance = customer.data.balance
+        }
+    }
+
     val menu = listOf(
         EWalletMenu(
             icon = R.drawable.ic_bayar,
@@ -91,7 +128,7 @@ fun EWalletScreenCust(
             item {
                 EWalletBalanceSection(
                     modifier = Modifier.fillMaxWidth(),
-                    balance = 500000L
+                    balance =  balance
                 )
             }
             item {
