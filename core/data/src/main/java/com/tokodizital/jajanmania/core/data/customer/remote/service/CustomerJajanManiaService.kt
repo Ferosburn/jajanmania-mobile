@@ -4,6 +4,7 @@ import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLoginRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
@@ -11,6 +12,8 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAcc
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -18,6 +21,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResp
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PATCH
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -61,6 +65,19 @@ interface CustomerJajanManiaService {
         @Query("where") where: String,
         @Query("include") include: String,
     ): NetworkResponse<VendorsResponse, CommonErrorResponse>
+
+    @GET("users/{userId}")
+    suspend fun getCustomer(
+        @Header("Authorization") token: String,
+        @Path("userId") customerId: String
+    ): NetworkResponse<CustomerResponse, CommonErrorResponse>
+
+    @PATCH("users/{userId}")
+    suspend fun updateCustomerProfile(
+        @Header("Authorization") token: String,
+        @Path("userId") userId: String,
+        @Body customerUpdateProfileRequest: CustomerUpdateProfileRequest
+    ): NetworkResponse<CustomerUpdateResponse, CommonErrorResponse>
 
     @GET("categories")
     suspend fun getMySubscriptions(

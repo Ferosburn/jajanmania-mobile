@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
@@ -74,6 +75,35 @@ class CustomerInteractor(
         token: String
     ): Flow<Resource<VendorDetail>> {
         return customerRepository.getVendorDetail(vendorId, token)
+    }
+
+    override suspend fun getCustomer(
+        token: String,
+        id: String
+    ): Flow<Resource<Customer>> {
+        return customerRepository.getCustomer(token, id)
+    }
+
+    override suspend fun updateCustomer(
+        token: String,
+        id: String,
+        fullName: String,
+        email: String,
+        address: String,
+        gender: String,
+        oldPassword: String,
+        newPassword: String
+    ): Flow<Resource<Customer>> {
+        return customerRepository.updateCustomerProfile(
+            customerId = id,
+            customerFullName = fullName,
+            customerEmail = email,
+            customerGender = gender,
+            customerAddress = address,
+            customerOldPassword = oldPassword,
+            customerNewPassword = newPassword,
+            token = token
+        )
     }
 
     override suspend fun getMySubscriptions(
