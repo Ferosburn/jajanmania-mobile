@@ -89,4 +89,10 @@ class EWalletCustViewModel (
         }
     }
 
+    fun deleteCustomerSession() {
+        viewModelScope.launch {
+            customerSessionUseCase.deleteCustomerSession()
+        }
+    }
+
 }

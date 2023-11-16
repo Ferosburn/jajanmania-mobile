@@ -1,5 +1,7 @@
 package com.tokodizital.jajanmania.customer.ewallet
 
+
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +29,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -52,6 +53,8 @@ import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.ui.platform.LocalContext
+
 
 
 @ExperimentalMaterial3Api
@@ -62,12 +65,16 @@ fun EWalletScreenCust(
     onNavigationClick: () -> Unit = {},
     navigateToTopUpScreen: () -> Unit = {},
     navigateToPaymentScreen: () -> Unit = {},
+    navigateToLoginScreen: () -> Unit = {},
     navigateToTransactionHistoryScreen: () -> Unit = {}
 ) {
-
+    val context = LocalContext.current
     val eWalletCustUiState by eWalletCustViewModel.eWalletCustUiState.collectAsStateWithLifecycle()
     val customerSession = eWalletCustUiState.customerSession
     val customer = eWalletCustUiState.customer
+
+    val refreshTokenResult = eWalletCustUiState.customerRefreshToken
+
 
     var balance by remember { mutableLongStateOf(0L) }
 
@@ -88,6 +95,38 @@ fun EWalletScreenCust(
     LaunchedEffect(key1 = customer) {
         if (customer is Resource.Success) {
             balance = customer.data.balance
+        }
+    }
+
+    LaunchedEffect(key1 = customer) {
+        if (customer is Resource.Error && customerSession is Resource.Success) {
+            val session = customerSession.data
+            eWalletCustViewModel.refreshToken(
+                accountId = session.accountId,
+                accountType = session.accountType,
+                accessToken = session.accessToken,
+                refreshToken = session.refreshToken,
+                expiredAt = session.expiredAt,
+                firebaseToken = session.firebaseToken,
+            )
+        }
+    }
+
+    LaunchedEffect(key1 = refreshTokenResult) {
+        if (refreshTokenResult is Resource.Success
+            && customer is Resource.Error
+        ) {
+            Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
+        } else if (refreshTokenResult is Resource.Success) {
+            val session = refreshTokenResult.data
+            eWalletCustViewModel.getCustomer(
+                token = session.accessToken, id = session.accountId
+            )
+            eWalletCustViewModel.updateCustomerSession(session)
+        }
+        if (refreshTokenResult is Resource.Error) {
+            eWalletCustViewModel.deleteCustomerSession()
+            navigateToLoginScreen()
         }
     }
 
