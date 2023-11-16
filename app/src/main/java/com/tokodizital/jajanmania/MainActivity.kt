@@ -52,6 +52,7 @@ class MainActivity : ComponentActivity() {
                     customerAuthModule,
                     customerHomeModule,
                     customerVendorModule,
+                    customerProfileModule,
                     customerEwalletModule,
                     customerSubscriptionModule
                 )

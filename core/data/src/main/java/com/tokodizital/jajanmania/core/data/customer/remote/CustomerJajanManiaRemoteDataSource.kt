@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLogi
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenSessionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
@@ -12,6 +13,8 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAcc
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -153,5 +156,36 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
             token = bearerToken,
             unsubscribeRequest = subscriptionRequest,
         )
+    }
+
+    suspend fun getCustomer(
+        token: String,
+        customerId: String
+    ) : NetworkResponse<CustomerResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.getCustomer(token = bearerToken, customerId = customerId)
+    }
+
+    suspend fun updateCustomerProfile(
+        customerId: String,
+        customerFullName: String,
+        customerEmail: String,
+        customerGender: String,
+        customerAddress: String,
+        customerOldPassword: String,
+        customerNewPassword: String,
+        token: String
+    ) : NetworkResponse<CustomerUpdateResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        val request = CustomerUpdateProfileRequest(
+            fullName = customerFullName,
+            email = customerEmail,
+            gender = customerGender,
+            address = customerAddress,
+            password = customerNewPassword,
+            oldPassword = customerOldPassword
+        )
+
+        return service.updateCustomerProfile(token = bearerToken, customerId, customerUpdateProfileRequest = request)
     }
 }

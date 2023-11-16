@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.domain.repository
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
@@ -52,6 +53,22 @@ interface CustomerRepository {
         vendorId: String,
         token: String
     ) : Flow<Resource<VendorDetail>>
+
+    suspend fun getCustomer(
+        token: String,
+        customerId: String
+    ): Flow<Resource<Customer>>
+
+    suspend fun updateCustomerProfile(
+        customerId: String,
+        customerFullName: String,
+        customerEmail: String,
+        customerGender: String,
+        customerAddress: String,
+        customerOldPassword: String,
+        customerNewPassword: String,
+        token: String
+    ) : Flow<Resource<Customer>>
 
     suspend fun getMySubscriptions(
         token: String,

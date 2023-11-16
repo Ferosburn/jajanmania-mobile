@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.data.customer.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
@@ -266,5 +267,49 @@ class CustomerRepositoryImpl(
         }
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getCustomer(token: String, customerId: String): Flow<Resource<Customer>> = flow {
+        emit(Resource.Loading)
+        when (val customerResponse = remoteDataSource.getCustomer(token, customerId)) {
+            is NetworkResponse.Success -> {
+                val customer = customerResponse.body.toResult()
+                emit(Resource.Success(customer))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    customerResponse.body?.message ?: customerResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun updateCustomerProfile(
+        customerId: String,
+        customerFullName: String,
+        customerEmail: String,
+        customerGender: String,
+        customerAddress: String,
+        customerOldPassword: String,
+        customerNewPassword: String,
+        token: String
+    ): Flow<Resource<Customer>> = flow {
+        emit(Resource.Loading)
+        val updateCustomerProfileResponse = remoteDataSource.updateCustomerProfile(
+            customerId, customerFullName, customerEmail, customerGender, customerAddress, customerOldPassword, customerNewPassword, token
+        )
+
+        when (updateCustomerProfileResponse) {
+            is NetworkResponse.Success -> {
+                val customer = updateCustomerProfileResponse.body.toResult()
+                emit(Resource.Success(customer))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = updateCustomerProfileResponse.body?.message ?: updateCustomerProfileResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
     }
 }
