@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
                     vendorEWalletModule,
                     vendorTransactionModule
                 )
-                val customerModules = listOf(customerAuthModule, customerVendorModule)
+                val customerModules = listOf(customerAuthModule, customerVendorModule, customerProfileModule)
                 val allModules = coreModules + vendorModules + customerModules
                 androidContext(applicationContext)
                 modules(allModules)

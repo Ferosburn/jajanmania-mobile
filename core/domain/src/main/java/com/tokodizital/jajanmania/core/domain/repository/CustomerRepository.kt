@@ -56,6 +56,8 @@ interface CustomerRepository {
         customerFullName: String,
         customerGender: String,
         customerAddress: String,
+        customerOldPassword: String,
+        customerNewPassword: String,
         token: String
     ) : Flow<Resource<Customer>>
 }

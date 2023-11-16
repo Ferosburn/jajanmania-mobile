@@ -100,13 +100,17 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         customerFullName: String,
         customerGender: String,
         customerAddress: String,
+        customerOldPassword: String,
+        customerNewPassword: String,
         token: String
     ) : NetworkResponse<CustomerUpdateResponse, CommonErrorResponse> {
         val bearerToken = "Bearer $token"
         val request = CustomerUpdateProfileRequest(
             fullName = customerFullName,
             gender = customerGender,
-            address = customerAddress
+            address = customerAddress,
+            password = customerNewPassword,
+            oldPassword = customerOldPassword
         )
 
         return service.updateCustomerProfile(token = bearerToken, customerId, customerUpdateProfileRequest = request)

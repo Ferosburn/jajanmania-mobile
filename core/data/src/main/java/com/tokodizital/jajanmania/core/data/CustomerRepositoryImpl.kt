@@ -163,15 +163,13 @@ class CustomerRepositoryImpl(
         customerFullName: String,
         customerGender: String,
         customerAddress: String,
+        customerOldPassword: String,
+        customerNewPassword: String,
         token: String
     ): Flow<Resource<Customer>> = flow {
         emit(Resource.Loading)
         val updateCustomerProfileResponse = remoteDataSource.updateCustomerProfile(
-            customerId,
-            customerFullName,
-            customerGender,
-            customerAddress,
-            token
+            customerId, customerFullName, customerGender, customerAddress, customerOldPassword, customerNewPassword, token
         )
 
         when (updateCustomerProfileResponse) {

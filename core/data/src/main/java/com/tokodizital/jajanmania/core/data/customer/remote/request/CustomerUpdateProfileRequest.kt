@@ -5,8 +5,13 @@ import com.google.gson.annotations.SerializedName
 data class CustomerUpdateProfileRequest(
     @SerializedName("full_name")
     val fullName: String,
+    @SerializedName("address")
+    val address: String,
     @SerializedName("gender")
     val gender: String,
-    @SerializedName("address")
-    val address: String
+    @SerializedName("old_password")
+    val oldPassword: String,
+    @SerializedName("password")
+    val password: String,
+
 )

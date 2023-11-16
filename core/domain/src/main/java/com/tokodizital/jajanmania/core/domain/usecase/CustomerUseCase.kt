@@ -51,4 +51,14 @@ interface CustomerUseCase {
         id: String
     ): Flow<Resource<Customer>>
 
+    suspend fun updateCustomer(
+        token: String,
+        id: String,
+        fullName: String,
+        address: String,
+        gender: String,
+        oldPassword: String,
+        newPassword: String
+    ): Flow<Resource<Customer>>
+
 }

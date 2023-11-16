@@ -73,4 +73,24 @@ class CustomerInteractor(
     ): Flow<Resource<Customer>> {
         return customerRepository.getCustomer(token, id)
     }
+
+    override suspend fun updateCustomer(
+        token: String,
+        id: String,
+        fullName: String,
+        address: String,
+        gender: String,
+        oldPassword: String,
+        newPassword: String
+    ): Flow<Resource<Customer>> {
+        return customerRepository.updateCustomerProfile(
+            customerId = id,
+            customerFullName = fullName,
+            customerGender = gender,
+            customerAddress = address,
+            customerOldPassword = oldPassword,
+            customerNewPassword = newPassword,
+            token = token
+        )
+    }
 }
