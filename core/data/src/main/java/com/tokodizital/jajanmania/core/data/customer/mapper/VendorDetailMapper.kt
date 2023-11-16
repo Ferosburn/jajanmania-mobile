@@ -17,7 +17,7 @@ fun VendorsResponse.toDomain(): VendorDetail {
                 name = jajanItem.name ?: "",
                 price = jajanItem.price ?: 0L,
                 imageUrl = jajanItem.imageUrl ?: "",
-                category = jajanItem.category?.categoryName ?: "",
+                category = jajanItem.category?.name ?: "",
             )
         } ?: listOf()
     )

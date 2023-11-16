@@ -2,10 +2,12 @@ package com.tokodizital.jajanmania.core.data.vendor.remote.service
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RegisterResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.VendorResponse
@@ -76,5 +78,11 @@ interface VendorJajanManiaService {
         @Query("where") where: String,
         @Query("include") include: String
     ): NetworkResponse<TransactionHistoryResponse, CommonErrorResponse>
+
+    @POST("authentications/vendors/logout")
+    suspend fun logout(
+        @Header("authorization") token: String,
+        @Body logoutRequest: LogoutRequest
+    ): NetworkResponse<LogoutResponse, CommonErrorResponse>
 
 }

@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.data
+package com.tokodizital.jajanmania.core.data.customer
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.customer.mapper.toDomain
@@ -6,10 +6,13 @@ import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.Customer
+import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
+import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import kotlinx.coroutines.flow.Flow
@@ -100,6 +103,30 @@ class CustomerRepositoryImpl(
         emit(Resource.Error(message = it.message.toString()))
     }
 
+    override suspend fun getCustomerAccount(
+        token: String,
+        userId: String
+    ): Flow<Resource<CustomerAccount>> = flow {
+        emit(Resource.Loading)
+        val customerAccountResponse = remoteDataSource.getCustomerAccount(
+            token = token,
+            userId = userId
+        )
+        when (customerAccountResponse) {
+            is NetworkResponse.Success -> {
+                val customerAccount = customerAccountResponse.body.toDomain()
+                emit(Resource.Success(customerAccount))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = customerAccountResponse.body?.message
+                    ?: customerAccountResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
     override suspend fun getNearbyVendors(
         latitude: Double,
         longitude: Double,
@@ -124,7 +151,10 @@ class CustomerRepositoryImpl(
         emit(Resource.Error(message = it.message.toString()))
     }
 
-    override suspend fun getVendorDetail(vendorId: String, token: String): Flow<Resource<VendorDetail>> = flow {
+    override suspend fun getVendorDetail(
+        vendorId: String,
+        token: String
+    ): Flow<Resource<VendorDetail>> = flow {
         emit(Resource.Loading)
         when (val vendorDetailResponse = remoteDataSource.getVendorDetail(vendorId, token)) {
             is NetworkResponse.Success -> {
@@ -134,6 +164,104 @@ class CustomerRepositoryImpl(
             is NetworkResponse.Error -> {
                 val errorMessage =
                     vendorDetailResponse.body?.message ?: vendorDetailResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getMySubscriptions(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+        userId: String
+    ): Flow<Resource<List<Category>>> = flow {
+        emit(Resource.Loading)
+        val mySubscriptionResponse = remoteDataSource.getMySubscriptions(
+            token = token,
+            userId = userId,
+            pageNumber = pageNumber,
+            pageSize = pageSize,
+        )
+        when (mySubscriptionResponse) {
+            is NetworkResponse.Success -> {
+                val mySubscription = mySubscriptionResponse.body.toDomain()
+                emit(Resource.Success(mySubscription))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    mySubscriptionResponse.body?.message ?: mySubscriptionResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getCategories(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+        userId: String
+    ): Flow<Resource<List<Category>>> = flow {
+        emit(Resource.Loading)
+        val categoriesResponse = remoteDataSource.getCategories(
+            token = token,
+            userId = userId,
+            pageNumber = pageNumber,
+            pageSize = pageSize,
+        )
+        when (categoriesResponse) {
+            is NetworkResponse.Success -> {
+                val categories = categoriesResponse.body.toDomain()
+                emit(Resource.Success(categories))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    categoriesResponse.body?.message ?: categoriesResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun subscribe(
+        token: String,
+        userId: String,
+        categoryId: String
+    ): Flow<Resource<SubscriptionResult>> = flow {
+        emit(Resource.Loading)
+        when (val subscribeResponse = remoteDataSource.subscribe(token, userId, categoryId)) {
+            is NetworkResponse.Success -> {
+                val response = subscribeResponse.body.toResult()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    subscribeResponse.body?.message ?: subscribeResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun unsubscribe(
+        token: String,
+        userId: String,
+        categoryId: String
+    ): Flow<Resource<SubscriptionResult>> = flow {
+        emit(Resource.Loading)
+        when (val subscribeResponse = remoteDataSource.unsubscribe(token, userId, categoryId)) {
+            is NetworkResponse.Success -> {
+                val response = subscribeResponse.body.toResult()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    subscribeResponse.body?.message ?: subscribeResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }

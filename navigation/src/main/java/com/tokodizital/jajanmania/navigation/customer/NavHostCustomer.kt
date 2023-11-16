@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.navigation.customer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -42,6 +43,7 @@ import com.tokodizital.jajanmania.customer.vendor.nearbyvendor.CustomerVendorScr
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import kotlinx.coroutines.FlowPreview
 
+@ExperimentalMaterialApi
 @FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
@@ -69,6 +71,7 @@ fun NavHostCustomer(
         }
         composable(CustomerScreens.Home.route) {
             HomeScreen(
+                navigateToLoginScreen = navController::navigateToLoginScreen,
                 navigateToProfileScreen = navController::navigateToProfileScreen,
                 navigateToEWalletScreen = navController::navigateToEWalletScreen,
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
@@ -80,12 +83,14 @@ fun NavHostCustomer(
         }
         composable(CustomerScreens.MySubscription.route) {
             MySubscriptionScreen(
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.Categories.route) {
             CategoryScreen(
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.EWallet.route) {
@@ -294,6 +299,7 @@ fun NavHostCustomer(
     }
 }
 
+@ExperimentalMaterialApi
 @FlowPreview
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi

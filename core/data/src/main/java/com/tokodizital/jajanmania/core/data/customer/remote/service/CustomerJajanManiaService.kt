@@ -5,13 +5,18 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLogi
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -37,6 +42,12 @@ interface CustomerJajanManiaService {
     suspend fun refreshToken(
         @Body refreshTokenRequest: CustomerRefreshTokenRequest
     ): NetworkResponse<CustomerRefreshTokenResponse, CommonErrorResponse>
+
+    @GET("users/{id}")
+    suspend fun getCustomerAccount(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): NetworkResponse<CustomerAccountResponse, CommonErrorResponse>
 
     @GET("vendors/locations")
     suspend fun getNearbyVendors(
@@ -67,4 +78,34 @@ interface CustomerJajanManiaService {
         @Path("userId") userId: String,
         @Body customerUpdateProfileRequest: CustomerUpdateProfileRequest
     ): NetworkResponse<CustomerUpdateResponse, CommonErrorResponse>
+
+    @GET("categories")
+    suspend fun getMySubscriptions(
+        @Header("Authorization") token: String,
+        @Query("page_number") pageNumber: Int = 1,
+        @Query("page_size") pageSize: Int = 10,
+        @Query("where") where: String,
+        @Query("include") include: String? = null,
+    ): NetworkResponse<MySubscriptionResponse, CommonErrorResponse>
+
+    @GET("categories")
+    suspend fun getCategories(
+        @Header("Authorization") token: String,
+        @Query("page_number") pageNumber: Int = 1,
+        @Query("page_size") pageSize: Int = 10,
+        @Query("where") where: String,
+        @Query("include") include: String? = null,
+    ): NetworkResponse<CategoriesResponse, CommonErrorResponse>
+
+    @POST("user-subscriptions/subscribe")
+    suspend fun subscribe(
+        @Header("Authorization") token: String,
+        @Body subscribeRequest: SubscriptionRequest,
+    ): NetworkResponse<SubscriptionResponse, CommonErrorResponse>
+
+    @POST("user-subscriptions/unsubscribe")
+    suspend fun unsubscribe(
+        @Header("Authorization") token: String,
+        @Body unsubscribeRequest: SubscriptionRequest,
+    ): NetworkResponse<SubscriptionResponse, CommonErrorResponse>
 }
