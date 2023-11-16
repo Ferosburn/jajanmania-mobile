@@ -18,6 +18,7 @@ import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionM
 import com.tokodizital.jajanmania.customer.vendor.di.customerVendorModule
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.vendor.account.di.vendorAccountModule
 import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
 import com.tokodizital.jajanmania.vendor.ewallet.di.vendorEWalletModule
 import com.tokodizital.jajanmania.vendor.home.di.vendorHomeModule
@@ -42,7 +43,8 @@ class MainActivity : ComponentActivity() {
                     vendorHomeModule,
                     vendorShopModule,
                     vendorEWalletModule,
-                    vendorTransactionModule
+                    vendorTransactionModule,
+                    vendorAccountModule
                 )
                 val customerModules = listOf(
                     customerAuthModule,
