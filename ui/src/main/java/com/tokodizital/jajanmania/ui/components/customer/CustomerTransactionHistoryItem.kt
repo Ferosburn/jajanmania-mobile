@@ -13,30 +13,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.tokodizital.jajanmania.common.utils.parseIso8601
 import com.tokodizital.jajanmania.common.utils.toLocalDate
 import com.tokodizital.jajanmania.common.utils.toLocalTime
 import com.tokodizital.jajanmania.common.utils.toRupiah
-import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
-import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 
 @Composable
 fun CustomerTransactionHistoryItem(
     modifier: Modifier = Modifier,
-    transactionHistory: TransactionHistory,
-    onClick: (TransactionHistory) -> Unit
+    transactionHistory: CustomerTransaction,
+    onClick: (CustomerTransaction) -> Unit
 ) {
-    val historyDateTime = transactionHistory.createdAt.parseIso8601()
+    val historyDateTime = transactionHistory.transactionDatetime.parseIso8601()
     val createdAt = "${historyDateTime!!.toLocalDate()}, ${historyDateTime!!.toLocalTime()}"
     
     Column(
@@ -72,7 +69,7 @@ fun CustomerTransactionHistoryItem(
                 modifier = Modifier.weight(1f)
             ) {
                 Text(
-                    text = transactionHistory.transactionId,
+                    text = transactionHistory.vendorName,
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
@@ -88,37 +85,12 @@ fun CustomerTransactionHistoryItem(
                 horizontalAlignment = Alignment.End
             ) {
                 Text(
-                    text = transactionHistory.price.toRupiah(),
+                    text = transactionHistory.totalPrice.toRupiah(),
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium
                 )
             }
         }
         Divider()
-    }
-}
-
-@Preview
-@Composable
-fun PreviewCustomerTransactionHistoryItem() {
-    JajanManiaTheme {
-        Surface {
-            val transactionHistory = TransactionHistory(
-                transactionId = "ID-09723892",
-                vendorId = 1,
-                jajanId = 1,
-                price = 100000,
-                image = "",
-                status = "Pending",
-                createdAt = "2023-10-06T13:22:16.698Z"
-            )
-            CustomerTransactionHistoryItem(
-                transactionHistory = transactionHistory,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                onClick = {}
-            )
-        }
     }
 }

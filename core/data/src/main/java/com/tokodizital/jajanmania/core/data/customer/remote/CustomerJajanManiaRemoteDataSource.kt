@@ -13,6 +13,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAcc
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerTransactionHistoryResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
@@ -187,5 +188,23 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         )
 
         return service.updateCustomerProfile(token = bearerToken, customerId, customerUpdateProfileRequest = request)
+    }
+
+    suspend fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int,
+    ): NetworkResponse<CustomerTransactionHistoryResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        val where = "%7B%22userId%22%3A%22$userId%22%7D"
+        val include = "%7B%22transactionItems%22%3A%7B%22include%22%3A%7B%22jajanItem%22%3A%7B%22include%22%3A%7B%22vendor%22%3Atrue%7D%7D%7D%7D%7D"
+        return service.getTransactionHistory(
+            token = bearerToken,
+            pageNumber = pageNumber,
+            pageSize = pageSize,
+            where = where,
+            include = include
+        )
     }
 }
