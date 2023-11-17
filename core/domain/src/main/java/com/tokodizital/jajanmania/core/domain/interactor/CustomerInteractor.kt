@@ -1,8 +1,8 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
@@ -148,5 +148,12 @@ class CustomerInteractor(
         pageSize: Int
     ): Flow<Resource<List<CustomerTransaction>>> {
         return customerRepository.getTransactionHistory(token, userId, pageNumber, pageSize)
+    }
+
+    override suspend fun getTransactionDetail(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<CustomerTransaction>> {
+        return customerRepository.getTransactionDetail(token, transactionId)
     }
 }

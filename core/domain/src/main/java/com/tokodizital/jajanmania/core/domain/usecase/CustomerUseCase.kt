@@ -1,8 +1,8 @@
 package com.tokodizital.jajanmania.core.domain.usecase
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
@@ -104,4 +104,9 @@ interface CustomerUseCase {
         pageNumber: Int = 1,
         pageSize: Int = 10,
     ) : Flow<Resource<List<CustomerTransaction>>>
+
+    suspend fun getTransactionDetail(
+        token: String,
+        transactionId: String,
+    ) : Flow<Resource<CustomerTransaction>>
 }

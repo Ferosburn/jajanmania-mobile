@@ -85,7 +85,7 @@ fun NavHostController.navigateToTransactionHistoryScreen() {
 
 @Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToTransactionDetailScreen(transactionId: String) {
-    navigate(CustomerScreens.TransactionDetail.route)
+    navigate(CustomerScreens.TransactionDetail.buildRoute(transactionId))
 }
 
 @Throws(IllegalArgumentException::class)
@@ -111,10 +111,8 @@ fun NavHostController.navigateToNearbyVendorScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToNearbyVendorDetailScreen(
-    vendorId: String
-) {
-    navigate("${ CustomerScreens.NearbyVendorDetail.route }/$vendorId")
+fun NavHostController.navigateToNearbyVendorDetailScreen(vendorId: String) {
+    navigate(CustomerScreens.NearbyVendorDetail.buildRoute(vendorId))
 }
 
 @Throws(IllegalArgumentException::class)

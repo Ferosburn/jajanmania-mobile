@@ -20,7 +20,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.tokodizital.customer.topup.CustomerTopUpScreen
 import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.TransactionItem
 import com.tokodizital.jajanmania.customer.auth.login.LoginScreenCust
 import com.tokodizital.jajanmania.customer.auth.register.RegisterScreenCust
@@ -160,21 +159,17 @@ fun NavHostCustomer(
                 navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
-        composable(CustomerScreens.TransactionDetail.route) {
-            val transaction = remember {
-                TransactionHistory(
-                    transactionId = "ID-097238921",
-                    vendorId = 1,
-                    jajanId = 1,
-                    price = 100000,
-                    image = "",
-                    status = "Selesai",
-                    createdAt = "2023-10-06T13:22:16.698Z"
-                )
-            }
+        composable(
+            route = CustomerScreens.TransactionDetail.route,
+            arguments = listOf(
+                navArgument(CustomerScreens.TRANSACTION_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
             CustomerTransactionDetailScreen(
-                transaction = transaction,
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.EWalletSetting.route) {
@@ -211,7 +206,12 @@ fun NavHostCustomer(
                 navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
-        composable("${CustomerScreens.NearbyVendorDetail.route}/{vendorId}", arguments = listOf(navArgument("vendorId") {type = NavType.StringType})) {
+        composable(
+            route = CustomerScreens.NearbyVendorDetail.route,
+            arguments = listOf(
+                navArgument(CustomerScreens.VENDOR_ID) {type = NavType.StringType}
+            )
+        ) {
             CustomerVendorDetailScreen(
                 navigateUp = navController::navigateUp,
                 navigateToCheckoutScreen = navController::navigateToCheckoutScreen,

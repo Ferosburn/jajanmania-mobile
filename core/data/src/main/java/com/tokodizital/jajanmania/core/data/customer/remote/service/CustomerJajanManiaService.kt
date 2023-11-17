@@ -13,8 +13,8 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLog
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerTransactionHistoryResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
