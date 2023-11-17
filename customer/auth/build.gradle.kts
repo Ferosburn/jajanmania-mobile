@@ -45,12 +45,6 @@ android {
 
 dependencies {
 
-    val nav_version = "2.5.3"
-
-    implementation("androidx.navigation:navigation-compose:$nav_version")
-
-    implementation ("androidx.compose.material:material-icons-extended:1.3.1")
-
     implementation(project(":ui"))
     implementation(project(":common"))
     implementation(project(":core:domain"))
@@ -58,5 +52,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    debugImplementation("androidx.compose.ui:ui-tooling")
 }

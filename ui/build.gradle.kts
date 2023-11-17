@@ -56,11 +56,14 @@ dependencies {
     api("androidx.compose.ui:ui-graphics")
     api("androidx.compose.ui:ui-tooling-preview")
     api("androidx.compose.material3:material3")
+    api("androidx.compose.material:material")
     api("androidx.compose.material:material-icons-extended:1.5.3")
 
     api("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
 
     api("androidx.navigation:navigation-compose:2.7.4")
+
+    api("androidx.lifecycle:lifecycle-runtime-compose:2.6.2")
 
     api("io.coil-kt:coil-compose:2.4.0")
 
@@ -70,6 +73,9 @@ dependencies {
     api("io.insert-koin:koin-androidx-compose")
 
     api("com.maxkeppeler.sheets-compose-dialogs:core:1.2.0")
+    api("com.maxkeppeler.sheets-compose-dialogs:input:1.2.0")
+    api("com.maxkeppeler.sheets-compose-dialogs:state:1.2.0")
+    api("com.maxkeppeler.sheets-compose-dialogs:info:1.2.0")
 
 
     testImplementation("junit:junit:4.13.2")

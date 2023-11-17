@@ -65,11 +65,15 @@ dependencies {
     implementation(project(":customer:profile"))
     implementation(project(":customer:auth"))
     implementation(project(":customer:transaction"))
+    implementation(project(":customer:subscription"))
+    implementation(project(":customer:vendor"))
 
     implementation(project(":vendor:auth"))
     implementation(project(":vendor:account"))
     implementation(project(":vendor:home"))
     implementation(project(":vendor:transaction"))
+    implementation(project(":vendor:shop"))
+    implementation(project(":vendor:ewallet"))
 
     implementation("androidx.navigation:navigation-compose:$nav_version")
 

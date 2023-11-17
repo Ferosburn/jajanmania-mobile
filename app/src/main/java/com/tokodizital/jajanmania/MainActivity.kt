@@ -5,20 +5,34 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
+import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
+import com.tokodizital.jajanmania.customer.home.di.customerHomeModule
+import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionModule
+import com.tokodizital.jajanmania.customer.vendor.di.customerVendorModule
+import com.tokodizital.jajanmania.customer.ewallet.di.customerEwalletModule
+import com.tokodizital.jajanmania.customer.profile.di.customerProfileModule
+import com.tokodizital.jajanmania.navigation.customer.NavHostCustomer
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.vendor.account.di.vendorAccountModule
 import com.tokodizital.jajanmania.vendor.auth.di.vendorAuthModule
-import org.koin.android.ext.android.getKoin
+import com.tokodizital.jajanmania.vendor.ewallet.di.vendorEWalletModule
+import com.tokodizital.jajanmania.vendor.home.di.vendorHomeModule
+import com.tokodizital.jajanmania.vendor.shop.di.vendorShopModule
+import com.tokodizital.jajanmania.vendor.transaction.di.vendorTransactionModule
+import kotlinx.coroutines.FlowPreview
 import org.koin.android.ext.koin.androidContext
 import org.koin.compose.KoinApplication
-import org.koin.compose.KoinContext
 
+@ExperimentalMaterialApi
+@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 class MainActivity : ComponentActivity() {
@@ -26,8 +40,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KoinApplication(application = {
+                val coreModules = listOf(dataModule, domainModule)
+                val vendorModules = listOf(
+                    vendorAuthModule,
+                    vendorHomeModule,
+                    vendorShopModule,
+                    vendorEWalletModule,
+                    vendorTransactionModule,
+                    vendorAccountModule
+                )
+                val customerModules = listOf(
+                    customerAuthModule,
+                    customerHomeModule,
+                    customerVendorModule,
+                    customerEwalletModule,
+                    customerProfileModule,
+                    customerSubscriptionModule
+                )
+                val allModules = coreModules + vendorModules + customerModules
                 androidContext(applicationContext)
-                modules(dataModule, domainModule, vendorAuthModule)
+                modules(allModules)
             }) {
                 JajanManiaTheme {
                     // A surface container using the 'background' color from the theme

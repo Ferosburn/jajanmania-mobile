@@ -9,23 +9,60 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tokodizital.jajanmania.core.domain.model.EWalletMenu
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.vendor.ewallet.component.EWalletBalanceSection
+import com.tokodizital.jajanmania.vendor.ewallet.component.EWalletMenuSection
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun EWalletScreen(
     modifier: Modifier = Modifier,
+    eWalletViewModel: EWalletViewModel = koinViewModel(),
     onNavigationClicked: () -> Unit = {},
     navigateToTransferBankScreen: () -> Unit = {},
     navigateToTransactionHistoryScreen: () -> Unit = {},
-    navigateToShopScreen: () -> Unit = {},
+    navigateToManageShopScreen: () -> Unit = {},
 ) {
+
+    val eWalletUiState by eWalletViewModel.eWalletUiState.collectAsStateWithLifecycle()
+    val vendorSession = eWalletUiState.vendorSession
+    val vendor = eWalletUiState.vendor
+
+    var balance by remember { mutableDoubleStateOf(0.0) }
+
+    LaunchedEffect(key1 = Unit) {
+        eWalletViewModel.getVendorSession()
+    }
+
+    LaunchedEffect(key1 = vendorSession) {
+        if (vendorSession is Resource.Success) {
+            val session = vendorSession.data
+            eWalletViewModel.getVendor(
+                token = session.accessToken,
+                id = session.accountId
+            )
+        }
+    }
+
+    LaunchedEffect(key1 = vendor) {
+        if (vendor is Resource.Success) {
+            balance = vendor.data.balance
+        }
+    }
 
     val menu = listOf(
         EWalletMenu(
@@ -46,7 +83,7 @@ fun EWalletScreen(
         when (it.label) {
             R.string.label_transfer_bank -> navigateToTransferBankScreen()
             R.string.label_history -> navigateToTransactionHistoryScreen()
-            R.string.label_manage_shop -> navigateToShopScreen()
+            R.string.label_manage_shop -> navigateToManageShopScreen()
         }
     }
 
@@ -67,7 +104,7 @@ fun EWalletScreen(
             item {
                 EWalletBalanceSection(
                     modifier = Modifier.fillMaxWidth(),
-                    balance = 500000L,
+                    balance = balance,
                     onTransferBankClicked = navigateToTransferBankScreen
                 )
             }

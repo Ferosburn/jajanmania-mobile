@@ -54,6 +54,7 @@ dependencies {
     implementation(project(":vendor:home"))
     implementation(project(":vendor:shop"))
     implementation(project(":vendor:transaction"))
+
     implementation(project(":core:domain"))
 
     implementation(project(":customer:auth"))

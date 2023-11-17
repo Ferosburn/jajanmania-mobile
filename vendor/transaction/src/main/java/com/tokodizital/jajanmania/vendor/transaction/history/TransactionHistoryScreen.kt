@@ -2,10 +2,11 @@ package com.tokodizital.jajanmania.vendor.transaction.history
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -14,7 +15,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -23,22 +25,43 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
-import com.tokodizital.jajanmania.ui.components.vendor.TransactionHistoryItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import com.tokodizital.jajanmania.vendor.transaction.component.TransactionHistoryItem
+import com.tokodizital.jajanmania.vendor.transaction.component.TransactionHistoryShimmer
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun TransactionHistoryScreen(
     modifier: Modifier = Modifier,
-    history: List<TransactionHistory> = emptyList(),
+    transactionHistoryViewModel: TransactionHistoryViewModel = koinViewModel(),
     onNavigationClicked: () -> Unit = {},
-    navigationToDetailTransactionScreen: () -> Unit = {}
+    navigationToDetailTransactionScreen: (String) -> Unit = {},
 ) {
+
+    val transactionHistoryUiState by transactionHistoryViewModel.transactionHistory.collectAsStateWithLifecycle()
+    val transactionHistory = transactionHistoryViewModel.transactionHistoryPaged.collectAsLazyPagingItems()
+    val vendorSession = transactionHistoryUiState.vendorSession
+
+    LaunchedEffect(key1 = Unit) {
+        transactionHistoryViewModel.getVendorSession()
+    }
+
+    LaunchedEffect(key1 = vendorSession) {
+        if (vendorSession is Resource.Success) {
+            val session = vendorSession.data
+            transactionHistoryViewModel.setVendorSession(session)
+        }
+    }
+
     Scaffold(
         topBar = {
             DetailTopAppBar(
@@ -73,7 +96,24 @@ fun TransactionHistoryScreen(
                         .padding(horizontal = 20.dp, vertical = 16.dp)
                 )
             }
-            if (history.isEmpty()) {
+            if (transactionHistory.loadState.refresh is LoadState.Loading) {
+                items(10) {
+                    TransactionHistoryShimmer(
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+            if (transactionHistory.loadState.refresh is LoadState.Error) {
+                val errorMessage = transactionHistory.loadState.refresh as LoadState.Error
+                item {
+                    Text(
+                        text = errorMessage.error.message.toString(),
+                        modifier = Modifier.padding(start = 20.dp, top = 46.dp, end = 20.dp)
+                    )
+                }
+            }
+            if (transactionHistory.loadState.refresh is LoadState.NotLoading && transactionHistory.itemCount == 0) {
                 item {
                     EmptyContentState(
                         modifier = Modifier.padding(start = 20.dp, top = 46.dp, end = 20.dp),
@@ -82,12 +122,15 @@ fun TransactionHistoryScreen(
                     )
                 }
             }
-            items(items = history, key = { it.transactionId }) {
-                TransactionHistoryItem(
-                    transactionHistory = it,
-                    onClick = { navigationToDetailTransactionScreen() },
-                    modifier = Modifier.padding(horizontal = 16.dp)
-                )
+            items(transactionHistory.itemCount, key = { it }) {
+                val history = transactionHistory[it]
+                if (history != null) {
+                    TransactionHistoryItem(
+                        transactionHistory = history,
+                        onClick = { navigationToDetailTransactionScreen(it) },
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                    )
+                }
             }
         }
     }
@@ -112,22 +155,7 @@ fun PreviewEmptyTransactionHistoryScreen() {
 fun PreviewFilledTransactionHistoryScreen() {
     JajanManiaTheme {
         Surface {
-            val listJajanan: List<TransactionHistory> = remember {
-                (1..10).map {
-                    TransactionHistory(
-                        transactionId = "ID-09723892$it",
-                        vendorId = 1,
-                        jajanId = 1,
-                        price = 100000,
-                        image = "",
-                        status = "Pending",
-                        createdAt = "1 Okt 2023, 19:59"
-                    )
-                }
-            }
-            TransactionHistoryScreen(
-                history = listJajanan
-            )
+            TransactionHistoryScreen()
         }
     }
 }

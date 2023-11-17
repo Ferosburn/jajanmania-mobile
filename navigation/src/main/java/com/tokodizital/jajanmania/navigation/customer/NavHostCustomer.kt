@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.navigation.customer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -12,12 +13,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.tokodizital.customer.topup.CustomerTopUpScreen
 import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.core.domain.model.NearbyVendor
 import com.tokodizital.jajanmania.core.domain.model.TransactionHistory
 import com.tokodizital.jajanmania.core.domain.model.TransactionItem
 import com.tokodizital.jajanmania.customer.auth.login.LoginScreenCust
@@ -30,16 +32,19 @@ import com.tokodizital.jajanmania.customer.ewallet.EWalletSettingScreen
 import com.tokodizital.jajanmania.customer.home.HomeScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentDetailScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentScreen
-import com.tokodizital.jajanmania.customer.profile.EditProfileScreen
+import com.tokodizital.jajanmania.customer.profile.manage.ManageProfileScreen
 import com.tokodizital.jajanmania.customer.profile.ProfileScreen
 import com.tokodizital.jajanmania.customer.subscription.CategoryScreen
 import com.tokodizital.jajanmania.customer.subscription.MySubscriptionScreen
 import com.tokodizital.jajanmania.customer.transaction.detail.CustomerTransactionDetailScreen
 import com.tokodizital.jajanmania.customer.transaction.history.CustomerTransactionHistoryScreen
-import com.tokodizital.jajanmania.customer.vendor.CustomerVendorDetailScreen
-import com.tokodizital.jajanmania.customer.vendor.CustomerVendorScreen
+import com.tokodizital.jajanmania.customer.vendor.detail.CustomerVendorDetailScreen
+import com.tokodizital.jajanmania.customer.vendor.nearbyvendor.CustomerVendorScreen
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import kotlinx.coroutines.FlowPreview
 
+@ExperimentalMaterialApi
+@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
@@ -66,6 +71,7 @@ fun NavHostCustomer(
         }
         composable(CustomerScreens.Home.route) {
             HomeScreen(
+                navigateToLoginScreen = navController::navigateToLoginScreen,
                 navigateToProfileScreen = navController::navigateToProfileScreen,
                 navigateToEWalletScreen = navController::navigateToEWalletScreen,
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
@@ -77,12 +83,14 @@ fun NavHostCustomer(
         }
         composable(CustomerScreens.MySubscription.route) {
             MySubscriptionScreen(
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.Categories.route) {
             CategoryScreen(
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.EWallet.route) {
@@ -204,53 +212,23 @@ fun NavHostCustomer(
             )
         }
         composable(CustomerScreens.EditProfile.route) {
-            EditProfileScreen(
+            ManageProfileScreen(
                 onNavigationClick = navController::navigateUp,
                 navigateToProfileScreen = navController::navigateToProfileScreen
             )
         }
         composable(CustomerScreens.NearbyVendor.route) {
-            val listVendors: List<NearbyVendor> = remember {
-                (1..4).map {
-                    NearbyVendor(
-                        id = "fbe68aec-8119-42a9-a820-ef7e6ebf2f20$it",
-                        jajanName = "Pisang Keju Pak Eko $it",
-                        jajanDescription = "Spesialis pisang keju di kota Kotok $it"
-                    )
-                }
-            }
-
             CustomerVendorScreen(
-                vendors = listVendors,
                 onNavigationClick = navController::navigateUp,
-                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen
+                navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
-        composable(CustomerScreens.NearbyVendorDetail.route) {
-            val vendor = remember {
-                NearbyVendor(
-                    id = "",
-                    jajanName = "Batagor Bang Tigor",
-                    jajanDescription = "Batagor renyah di luar, lembut di dalam, mantap bumbunya"
-                )
-            }
-            val list: List<Jajan> = remember {
-                (1..7).map {
-                    Jajan(
-                        id = it,
-                        vendorId = 12317414,
-                        name = "Es Teh",
-                        category = "Minuman Dingin",
-                        price = 3000L,
-                        image = ""
-                    )
-                }
-            }
+        composable("${CustomerScreens.NearbyVendorDetail.route}/{vendorId}", arguments = listOf(navArgument("vendorId") {type = NavType.StringType})) {
             CustomerVendorDetailScreen(
-                nearbyVendor = vendor,
-                jajanList = list,
                 navigateUp = navController::navigateUp,
-                navigateToCheckoutScreen = navController::navigateToCheckoutScreen
+                navigateToCheckoutScreen = navController::navigateToCheckoutScreen,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.Checkout.route) {
@@ -321,6 +299,8 @@ fun NavHostCustomer(
     }
 }
 
+@ExperimentalMaterialApi
+@FlowPreview
 @ExperimentalMaterial3Api
 @ExperimentalFoundationApi
 @Preview
