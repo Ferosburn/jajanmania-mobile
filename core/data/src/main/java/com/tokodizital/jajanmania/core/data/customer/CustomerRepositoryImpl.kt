@@ -343,4 +343,28 @@ class CustomerRepositoryImpl(
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
     }
+
+    override suspend fun getTransactionDetail(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<CustomerTransaction>> = flow {
+        emit(Resource.Loading)
+        val transactionDetailResponse = remoteDataSource.getTransactionDetail(
+            token = token,
+            transactionId = transactionId,
+        )
+        when (transactionDetailResponse) {
+            is NetworkResponse.Success -> {
+                val response = transactionDetailResponse.body.toResult()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    transactionDetailResponse.body?.message ?: transactionDetailResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
 }

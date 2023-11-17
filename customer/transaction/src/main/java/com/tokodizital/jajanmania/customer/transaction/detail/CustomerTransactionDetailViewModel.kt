@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.customer.vendor.detail
+package com.tokodizital.jajanmania.customer.transaction.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -13,22 +13,28 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CustomerVendorDetailViewModel(
+class CustomerTransactionDetailViewModel(
     savedStateHandle: SavedStateHandle,
     private val customerUseCase: CustomerUseCase,
     private val customerSessionUseCase: CustomerSessionUseCase
 ) : ViewModel() {
 
-    private val _customerVendorDetailUiState = MutableStateFlow(CustomerVendorDetailUiState())
-    val customerVendorDetailUiState: StateFlow<CustomerVendorDetailUiState> get() = _customerVendorDetailUiState
-    val vendorId: String = savedStateHandle["vendorId"] ?: ""
+    private val _customerTransactionDetailUiState = MutableStateFlow(CustomerTransactionDetailUiState())
+    val customerTransactionDetailUiState: StateFlow<CustomerTransactionDetailUiState> get() = _customerTransactionDetailUiState
+    val transactionId: String = savedStateHandle["transactionId"] ?: ""
 
-    fun getVendorDetail(vendorId: String, token: String) {
+    fun getTransactionDetail(
+        token: String,
+        transactionId: String,
+    ) {
         viewModelScope.launch {
-            customerUseCase.getVendorDetail(vendorId, token).collect { result ->
-                _customerVendorDetailUiState.update {
+            customerUseCase.getTransactionDetail(
+                token = token,
+                transactionId = transactionId,
+            ).collect { result ->
+                _customerTransactionDetailUiState.update {
                     it.copy(
-                        vendorDetailResult = result
+                        transactionDetailResult = result
                     )
                 }
             }
@@ -40,7 +46,7 @@ class CustomerVendorDetailViewModel(
             customerSessionUseCase.customerSession
                 .debounce(1000L)
                 .collectLatest { result ->
-                    _customerVendorDetailUiState.update {
+                    _customerTransactionDetailUiState.update {
                         it.copy(customerSession = result)
                     }
                 }
@@ -64,7 +70,7 @@ class CustomerVendorDetailViewModel(
                 expiredAt = expiredAt,
                 firebaseToken = firebaseToken
             ).collectLatest { result ->
-                _customerVendorDetailUiState.update {
+                _customerTransactionDetailUiState.update {
                     it.copy(refreshTokenResult = result)
                 }
             }
