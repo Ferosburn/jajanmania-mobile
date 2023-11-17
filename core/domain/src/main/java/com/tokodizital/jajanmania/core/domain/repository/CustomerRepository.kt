@@ -94,4 +94,8 @@ interface CustomerRepository {
         userId: String,
         categoryId: String
     ) : Flow<Resource<SubscriptionResult>>
+
+    suspend fun checkout(
+        token: String,
+    )
 }

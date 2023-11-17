@@ -269,6 +269,10 @@ class CustomerRepositoryImpl(
         emit(Resource.Error(message = it.message.toString()))
     }
 
+    override suspend fun checkout(token: String) {
+        //TODO("Not yet implemented")
+    }
+
     override suspend fun getCustomer(token: String, customerId: String): Flow<Resource<Customer>> = flow {
         emit(Resource.Loading)
         when (val customerResponse = remoteDataSource.getCustomer(token, customerId)) {

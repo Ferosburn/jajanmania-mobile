@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.data.customer.remote.service
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerCheckoutRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLoginRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
@@ -9,11 +10,14 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.Subscription
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerCheckoutResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.JajanItemSingleResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.JajanItemsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -108,4 +112,25 @@ interface CustomerJajanManiaService {
         @Header("Authorization") token: String,
         @Body unsubscribeRequest: SubscriptionRequest,
     ): NetworkResponse<SubscriptionResponse, CommonErrorResponse>
+
+    @GET("jajan-items/{jajanId}")
+    suspend fun getJajanItemById(
+        @Header("Authorization") token: String,
+        @Path("jajanId") jajanId: String
+    ): NetworkResponse<JajanItemSingleResponse, CommonErrorResponse>
+
+    @GET("jajan-items")
+    suspend fun getManyJajanItems(
+        @Header("Authorization") token: String,
+        @Query("page_number") pageNumber: Int = 1,
+        @Query("page_size") pageSize: Int = 10,
+        @Query("where") where: String,
+        @Query("include") include: String? = null,
+    ): NetworkResponse<JajanItemsResponse, CommonErrorResponse>
+
+    @POST("transactions/checkout")
+    suspend fun checkout(
+        @Header("Authorization") token: String,
+        @Body customerCheckoutRequest: CustomerCheckoutRequest
+    ): NetworkResponse<CustomerCheckoutResponse, CommonErrorResponse>
 }

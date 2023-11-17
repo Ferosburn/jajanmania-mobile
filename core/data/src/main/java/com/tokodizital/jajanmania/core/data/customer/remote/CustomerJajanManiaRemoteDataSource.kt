@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.data.customer.remote
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerCheckoutRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLoginRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenSessionRequest
@@ -10,11 +11,13 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.Subscription
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerCheckoutResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.JajanItemsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -185,5 +188,26 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         )
 
         return service.updateCustomerProfile(token = bearerToken, customerId, customerUpdateProfileRequest = request)
+    }
+
+    suspend fun getManyJajanItemsByVendor(
+        token: String,
+        vendorId: String,
+        pageNumber: Int,
+        pageSize: Int
+
+    ) : NetworkResponse<JajanItemsResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        val where = "%7B%22id%22%3A%22$vendorId%22%7D"
+
+        return service.getManyJajanItems(bearerToken, pageNumber, pageSize, where)
+    }
+
+    suspend fun checkout(
+        token: String,
+        customerCheckoutRequest: CustomerCheckoutRequest
+    ) : NetworkResponse<CustomerCheckoutResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.checkout(bearerToken, customerCheckoutRequest)
     }
 }

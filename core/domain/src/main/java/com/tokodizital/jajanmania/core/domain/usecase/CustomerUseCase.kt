@@ -4,6 +4,7 @@ import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerCheckoutResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
@@ -95,4 +96,13 @@ interface CustomerUseCase {
         userId: String,
         categoryId: String
     ) : Flow<Resource<SubscriptionResult>>
+
+//    suspend fun getManyJajanItems(
+//
+//    ) : Flow<Resource<>>
+//
+//    suspend fun checkout(
+//        token: String
+//
+//    ) : Flow<Resource<CustomerCheckoutResult>>
 }
