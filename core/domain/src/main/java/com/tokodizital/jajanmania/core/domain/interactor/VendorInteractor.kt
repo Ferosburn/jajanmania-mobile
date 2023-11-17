@@ -1,15 +1,19 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.UploadPictureResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.Category
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.LogoutResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RegisterResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Vendor
+import com.tokodizital.jajanmania.core.domain.model.vendor.jajan.AddJajanItemResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.TransactionHistoryItem
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import com.tokodizital.jajanmania.core.domain.usecase.VendorUseCase
 import kotlinx.coroutines.flow.Flow
+import java.io.File
 
 class VendorInteractor(
     private val vendorRepository: VendorRepository
@@ -76,6 +80,41 @@ class VendorInteractor(
         transactionId: String
     ): Flow<Resource<TransactionHistoryItem?>> {
         return vendorRepository.getDetailTransaction(token, transactionId)
+    }
+
+    override suspend fun postAddJajan(
+        token: String,
+        id: String,
+        category: String,
+        name: String,
+        price: Int,
+        picture: String
+    ): Flow<Resource<AddJajanItemResult>> {
+        return vendorRepository.postAddJajan(
+            token,
+            id,
+            category,
+            name,
+            price,
+            picture
+        )
+    }
+
+    override suspend fun postPicture(
+        token: String,
+        imageFile: File
+    ): Flow<Resource<UploadPictureResult>> {
+        return vendorRepository.postPicture(token, imageFile)
+    }
+
+    override suspend fun getCategories(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+    ): Flow<Resource<List<Category>>> {
+        return vendorRepository.getCategories(
+            token, pageNumber, pageSize
+        )
     }
 
     override suspend fun logout(

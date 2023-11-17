@@ -20,7 +20,7 @@ import com.tokodizital.jajanmania.ui.R
 @Composable
 fun ImageProductSection(
     modifier: Modifier = Modifier,
-    image: Uri? = null,
+    image: Uri = Uri.EMPTY,
     openGallery: () -> Unit = {}
 ) {
     Box(
@@ -31,7 +31,7 @@ fun ImageProductSection(
             .clickable { openGallery() },
         contentAlignment = Alignment.Center
     ) {
-        if (image == null) {
+        if (image == Uri.EMPTY) {
             AsyncImage(
                 model = R.drawable.ic_image,
                 contentDescription = null,
