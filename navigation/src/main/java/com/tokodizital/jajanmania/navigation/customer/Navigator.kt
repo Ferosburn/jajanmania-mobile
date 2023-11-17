@@ -84,7 +84,7 @@ fun NavHostController.navigateToTransactionHistoryScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToTransactionDetailScreen() {
+fun NavHostController.navigateToTransactionDetailScreen(transactionId: String) {
     navigate(CustomerScreens.TransactionDetail.route)
 }
 

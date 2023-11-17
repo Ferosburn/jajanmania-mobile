@@ -32,8 +32,8 @@ import com.tokodizital.jajanmania.customer.ewallet.EWalletSettingScreen
 import com.tokodizital.jajanmania.customer.home.HomeScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentDetailScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentScreen
-import com.tokodizital.jajanmania.customer.profile.manage.ManageProfileScreen
 import com.tokodizital.jajanmania.customer.profile.ProfileScreen
+import com.tokodizital.jajanmania.customer.profile.manage.ManageProfileScreen
 import com.tokodizital.jajanmania.customer.subscription.CategoryScreen
 import com.tokodizital.jajanmania.customer.subscription.MySubscriptionScreen
 import com.tokodizital.jajanmania.customer.transaction.detail.CustomerTransactionDetailScreen
@@ -154,23 +154,10 @@ fun NavHostCustomer(
             )
         }
         composable(CustomerScreens.TransactionHistory.route) {
-            val listJajanan: List<TransactionHistory> = remember {
-                (1..10).map {
-                    TransactionHistory(
-                        transactionId = "ID-09723892$it",
-                        vendorId = 1,
-                        jajanId = 1,
-                        price = 100000,
-                        image = "",
-                        status = "Pending",
-                        createdAt = "2023-10-06T13:22:16.698Z"
-                    )
-                }
-            }
             CustomerTransactionHistoryScreen(
-                history = listJajanan,
                 navigateToTransactionDetailScreen = navController::navigateToTransactionDetailScreen,
-                onNavigationClick = navController::navigateUp
+                onNavigationClick = navController::navigateUp,
+                navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }
         composable(CustomerScreens.TransactionDetail.route) {

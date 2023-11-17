@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
 import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
-import com.tokodizital.jajanmania.customer.home.di.customerHomeModule
-import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionModule
-import com.tokodizital.jajanmania.customer.vendor.di.customerVendorModule
 import com.tokodizital.jajanmania.customer.ewallet.di.customerEwalletModule
+import com.tokodizital.jajanmania.customer.home.di.customerHomeModule
 import com.tokodizital.jajanmania.customer.profile.di.customerProfileModule
-import com.tokodizital.jajanmania.navigation.customer.NavHostCustomer
+import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionModule
+import com.tokodizital.jajanmania.customer.transaction.di.customerTransactionModule
+import com.tokodizital.jajanmania.customer.vendor.di.customerVendorModule
 import com.tokodizital.jajanmania.navigation.vendor.NavHostVendor
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.vendor.account.di.vendorAccountModule
@@ -51,11 +51,12 @@ class MainActivity : ComponentActivity() {
                 )
                 val customerModules = listOf(
                     customerAuthModule,
-                    customerHomeModule,
-                    customerVendorModule,
                     customerEwalletModule,
+                    customerHomeModule,
                     customerProfileModule,
-                    customerSubscriptionModule
+                    customerSubscriptionModule,
+                    customerTransactionModule,
+                    customerVendorModule,
                 )
                 val allModules = coreModules + vendorModules + customerModules
                 androidContext(applicationContext)

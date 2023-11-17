@@ -14,6 +14,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRef
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerTransactionHistoryResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -108,4 +109,13 @@ interface CustomerJajanManiaService {
         @Header("Authorization") token: String,
         @Body unsubscribeRequest: SubscriptionRequest,
     ): NetworkResponse<SubscriptionResponse, CommonErrorResponse>
+
+    @GET("transaction-histories")
+    suspend fun getTransactionHistory(
+        @Header("Authorization") token: String,
+        @Query("page_number") pageNumber: Int = 1,
+        @Query("page_size") pageSize: Int = 10,
+        @Query("where") where: String,
+        @Query("include") include: String,
+    ): NetworkResponse<CustomerTransactionHistoryResponse, CommonErrorResponse>
 }

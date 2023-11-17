@@ -5,12 +5,13 @@ import com.tokodizital.jajanmania.core.data.customer.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
@@ -311,5 +312,35 @@ class CustomerRepositoryImpl(
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<List<CustomerTransaction>>> = flow {
+        emit(Resource.Loading)
+        val transactionResponse = remoteDataSource.getTransactionHistory(
+            token = token,
+            userId = userId,
+            pageNumber = pageNumber,
+            pageSize = pageSize,
+        )
+        when (transactionResponse) {
+            is NetworkResponse.Success -> {
+                val response = transactionResponse.body.toDomain()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    transactionResponse.body?.message ?: transactionResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
     }
 }

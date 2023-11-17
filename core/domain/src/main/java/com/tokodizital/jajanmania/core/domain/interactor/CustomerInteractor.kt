@@ -7,6 +7,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
@@ -138,5 +139,14 @@ class CustomerInteractor(
         categoryId: String
     ): Flow<Resource<SubscriptionResult>> {
         return customerRepository.unsubscribe(token, userId, categoryId)
+    }
+
+    override suspend fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<List<CustomerTransaction>>> {
+        return customerRepository.getTransactionHistory(token, userId, pageNumber, pageSize)
     }
 }
