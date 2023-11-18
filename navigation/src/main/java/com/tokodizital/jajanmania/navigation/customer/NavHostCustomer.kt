@@ -1,6 +1,5 @@
 package com.tokodizital.jajanmania.navigation.customer
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -291,14 +290,6 @@ fun NavHostCustomer(
                 listJajanan = listJajanan
             )
         }
-    }
-    navController.addOnDestinationChangedListener { controller, _, _ ->
-        val routes = controller
-            .currentBackStack.value
-            .map { it.destination.route }
-            .joinToString(", ")
-
-        Log.d("BackStackLog", "BackStackCustomer: $routes")
     }
 }
 

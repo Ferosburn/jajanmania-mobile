@@ -1,6 +1,5 @@
 package com.tokodizital.jajanmania.navigation.app
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,13 +61,5 @@ fun NavHostApp(
         composable(VendorScreens.Dashboard.route) {
             NavHostVendor(startDestination = VendorScreens.Dashboard.route)
         }
-    }
-    navController.addOnDestinationChangedListener { controller, _, _ ->
-        val routes = controller
-            .currentBackStack.value
-            .map { it.destination.route }
-            .joinToString(", ")
-
-        Log.d("BackStackLog", "BackStackApp: $routes")
     }
 }

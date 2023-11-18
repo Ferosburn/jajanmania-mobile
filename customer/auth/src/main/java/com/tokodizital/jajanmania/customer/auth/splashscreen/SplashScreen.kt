@@ -81,8 +81,7 @@ fun SplashScreen(
                 refreshToken = session.refreshToken,
                 expiredAt = session.expiredAt,
             )
-        }
-        if ((customerSession is Resource.Success && customerSession.data.accessToken.isEmpty()) || (vendorSession is Resource.Success && vendorSession.data.accessToken.isEmpty())) {
+        } else if ((customerSession is Resource.Success && customerSession.data.accessToken.isEmpty()) || (vendorSession is Resource.Success && vendorSession.data.accessToken.isEmpty())) {
             navigateToLoginOptionScreen()
         }
     }
@@ -140,7 +139,7 @@ fun SplashScreen(
 @Preview
 @Composable
 private fun SplashScreenPreview() {
-    JajanManiaTheme() {
+    JajanManiaTheme {
         Surface {
             SplashScreen()
         }
