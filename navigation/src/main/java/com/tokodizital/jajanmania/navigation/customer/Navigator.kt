@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.navigation.customer
 
 import androidx.navigation.NavHostController
+import com.tokodizital.jajanmania.navigation.app.AppScreen
 
 @Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToRegisterScreen() {
@@ -8,9 +9,9 @@ fun NavHostController.navigateToRegisterScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToLoginScreen(
+fun NavHostController.navigateToCustomerLoginScreen(
     clearBackStack: Boolean = true,
-    route: String = CustomerScreens.Login.route
+    route: String = AppScreen.LoginOption.route
 ) {
     navigate(CustomerScreens.Login.route) {
         if (clearBackStack) {
@@ -22,7 +23,7 @@ fun NavHostController.navigateToLoginScreen(
 @Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToHomeScreen(
     clearBackStack: Boolean = true,
-    route: String = CustomerScreens.Login.route
+    route: String = AppScreen.SplashScreen.route
 ) {
     navigate(CustomerScreens.Home.route) {
         if (clearBackStack) {

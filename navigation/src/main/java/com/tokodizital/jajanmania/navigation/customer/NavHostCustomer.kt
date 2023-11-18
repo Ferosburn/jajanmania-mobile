@@ -45,34 +45,31 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import kotlinx.coroutines.FlowPreview
 
 @ExperimentalMaterialApi
-@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun NavHostCustomer(
     modifier: Modifier = Modifier,
-    navController: NavHostController = rememberNavController()
+    navController: NavHostController = rememberNavController(),
+    startDestination: String = CustomerScreens.Login.route
 ) {
-
-    val startDestination = CustomerScreens.Login.route
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
     ) {
         composable(CustomerScreens.Register.route) {
-            RegisterScreenCust(navigateToLoginScreen = navController::navigateToLoginScreen)
+            RegisterScreenCust(navigateToLoginScreen = navController::navigateToCustomerLoginScreen)
         }
         composable(CustomerScreens.Login.route) {
             LoginScreenCust(
-                navigateToHomeScreen = navController::navigateToHomeScreen,
+                navigateToHomeScreen = { navController.navigateToHomeScreen(route = CustomerScreens.Login.route) },
                 navigateToRegisterScreen = navController::navigateToRegisterScreen
             )
         }
         composable(CustomerScreens.Home.route) {
             HomeScreen(
-                navigateToLoginScreen = navController::navigateToLoginScreen,
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen,
                 navigateToProfileScreen = navController::navigateToProfileScreen,
                 navigateToEWalletScreen = navController::navigateToEWalletScreen,
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
@@ -85,13 +82,13 @@ fun NavHostCustomer(
         composable(CustomerScreens.MySubscription.route) {
             MySubscriptionScreen(
                 onNavigationClick = navController::navigateUp,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(CustomerScreens.Categories.route) {
             CategoryScreen(
                 onNavigationClick = navController::navigateUp,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(CustomerScreens.EWallet.route) {
@@ -158,7 +155,7 @@ fun NavHostCustomer(
             CustomerTransactionHistoryScreen(
                 navigateToTransactionDetailScreen = navController::navigateToTransactionDetailScreen,
                 onNavigationClick = navController::navigateUp,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(
@@ -171,7 +168,7 @@ fun NavHostCustomer(
         ) {
             CustomerTransactionDetailScreen(
                 onNavigationClick = navController::navigateUp,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(CustomerScreens.EWalletSetting.route) {
@@ -200,7 +197,7 @@ fun NavHostCustomer(
                 navigateToTermAndConditionScreen = underConstructionToast,
                 navigateToHelpCenterScreen = underConstructionToast,
                 navigateToLevelScreen = underConstructionToast,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = { navController.navigateToCustomerLoginScreen(route = CustomerScreens.Home.route)}
             )
         }
         composable(CustomerScreens.EditProfile.route) {
@@ -213,7 +210,7 @@ fun NavHostCustomer(
             CustomerVendorScreen(
                 onNavigationClick = navController::navigateUp,
                 navigateToVendorDetailScreen = navController::navigateToNearbyVendorDetailScreen,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(
@@ -225,7 +222,7 @@ fun NavHostCustomer(
             CustomerVendorDetailScreen(
                 navigateUp = navController::navigateUp,
                 navigateToCheckoutScreen = navController::navigateToCheckoutScreen,
-                navigateToLoginScreen = navController::navigateToLoginScreen
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(CustomerScreens.Checkout.route) {
