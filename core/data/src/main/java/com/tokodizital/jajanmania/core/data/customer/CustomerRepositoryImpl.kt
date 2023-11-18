@@ -14,6 +14,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterRes
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
+import com.tokodizital.jajanmania.core.domain.model.customer.TopUpResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import kotlinx.coroutines.flow.Flow
@@ -366,5 +367,29 @@ class CustomerRepositoryImpl(
         }
     }.catch {
         emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun topUp(
+        token: String,
+        userId: String,
+        amount: String
+    ): Flow<Resource<TopUpResult>> = flow {
+        emit(Resource.Loading)
+        val topUpResponse = remoteDataSource.topUpCustomer(
+            token = token,
+            userId = userId,
+            amount = amount
+        )
+        when (topUpResponse) {
+            is NetworkResponse.Success -> {
+                val response = topUpResponse.body.toResult()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    topUpResponse.body?.message ?: topUpResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
     }
 }

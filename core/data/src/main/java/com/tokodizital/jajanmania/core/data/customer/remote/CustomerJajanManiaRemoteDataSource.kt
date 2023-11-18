@@ -7,6 +7,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefr
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.TopUpRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
@@ -19,6 +20,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpd
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.TopUpResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.service.CustomerJajanManiaService
 
@@ -219,6 +221,19 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
             token = bearerToken,
             where = where,
             include = include
+        )
+    }
+
+    suspend fun topUpCustomer(
+        token: String,
+        userId: String,
+        amount: String
+    ) : NetworkResponse<TopUpResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        val topUpRequest = TopUpRequest(userId, amount)
+        return service.topUps(
+            token = bearerToken,
+            topUpRequest = topUpRequest
         )
     }
 }

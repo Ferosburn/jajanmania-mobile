@@ -6,6 +6,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefr
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.TopUpRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
@@ -18,6 +19,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpd
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.TopUpResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -118,4 +120,10 @@ interface CustomerJajanManiaService {
         @Query("where") where: String,
         @Query("include") include: String,
     ): NetworkResponse<CustomerTransactionHistoryResponse, CommonErrorResponse>
+
+    @POST("top-ups")
+    suspend fun topUps(
+        @Header("Authorization") token: String,
+        @Body topUpRequest: TopUpRequest,
+    ): NetworkResponse<TopUpResponse, CommonErrorResponse>
 }

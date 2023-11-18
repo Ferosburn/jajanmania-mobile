@@ -67,6 +67,7 @@ dependencies {
     implementation(project(":customer:transaction"))
     implementation(project(":customer:subscription"))
     implementation(project(":customer:vendor"))
+    implementation(project(":customer:topup"))
 
     implementation(project(":vendor:auth"))
     implementation(project(":vendor:account"))
