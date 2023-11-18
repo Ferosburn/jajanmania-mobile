@@ -12,6 +12,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesR
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLogoutResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
@@ -23,6 +24,8 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.Subscriptio
 import com.tokodizital.jajanmania.core.data.customer.remote.response.TopUpResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.service.CustomerJajanManiaService
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLogoutRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.LogoutDataSessionRequest
 
 class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanManiaService) {
 
@@ -35,6 +38,26 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         return service.login(loginRequest)
     }
 
+    suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): NetworkResponse<CustomerLogoutResponse, CommonErrorResponse> {
+        val authorization = "Bearer $accessToken"
+        val refreshTokenSessionRequest = LogoutDataSessionRequest(
+            accessToken, refreshToken, accountType, accountId, expiredAt, firebaseToken
+        )
+        val refreshTokenRequest = CustomerLogoutRequest(
+            session = refreshTokenSessionRequest
+        )
+        return service.logout(
+            authorization,
+            refreshTokenRequest
+        )
+    }
     suspend fun register(
         fullName : String,
         gender : String,

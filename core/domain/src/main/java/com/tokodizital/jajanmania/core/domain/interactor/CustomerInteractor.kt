@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLogoutResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
@@ -25,6 +26,17 @@ class CustomerInteractor(
         password: String
     ): Flow<Resource<CustomerLoginResult>> {
         return customerRepository.login(email, password)
+    }
+
+    override suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): Flow<Resource<CustomerLogoutResult>> {
+        return customerRepository.logout(accountId, accountType, accessToken, refreshToken, expiredAt, firebaseToken)
     }
 
     override suspend fun register(

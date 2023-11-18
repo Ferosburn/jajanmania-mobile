@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.navigation.customer
 
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -185,11 +187,19 @@ fun NavHostCustomer(
             )
         }
         composable(CustomerScreens.Profile.route) {
+            val context = LocalContext.current
+            val underConstructionToast: () -> Unit = {
+                Toast.makeText(context, "Halaman masih dalam pengerjaan", Toast.LENGTH_SHORT)
+                    .show()
+            }
             ProfileScreen(
                 onNavigationClick = navController::navigateUp,
                 navigateToEditProfileScreen = navController::navigateToEditProfileScreen,
                 navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
                 navigateToMySubscriptionScreen = navController::navigateToMySubscriptionScreen,
+                navigateToTermAndConditionScreen = underConstructionToast,
+                navigateToHelpCenterScreen = underConstructionToast,
+                navigateToLevelScreen = underConstructionToast,
                 navigateToLoginScreen = navController::navigateToLoginScreen
             )
         }

@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLogoutResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
@@ -109,6 +110,15 @@ interface CustomerRepository {
         token: String,
         transactionId: String,
     ) : Flow<Resource<CustomerTransaction>>
+
+    suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): Flow<Resource<CustomerLogoutResult>>
 
     suspend fun topUp(
         token: String,

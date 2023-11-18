@@ -2,6 +2,7 @@ package com.tokodizital.jajanmania.core.data.customer.remote.service
 
 import com.haroldadmin.cnradapter.NetworkResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLoginRequest
+import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerLogoutRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegisterRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
@@ -11,6 +12,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesR
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLogoutResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
@@ -35,6 +37,12 @@ interface CustomerJajanManiaService {
     suspend fun login(
         @Body loginRequest: CustomerLoginRequest
     ): NetworkResponse<CustomerLoginResponse, CommonErrorResponse>
+
+    @POST("authentications/users/logout")
+    suspend fun logout(
+        @Header("authorization") token: String,
+        @Body logoutRequest: CustomerLogoutRequest
+    ): NetworkResponse<CustomerLogoutResponse, CommonErrorResponse>
 
     @POST("authentications/users/register?method=email_and_password")
     suspend fun register(

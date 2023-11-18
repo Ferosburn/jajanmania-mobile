@@ -9,6 +9,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.Category
 import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLogoutResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
@@ -36,6 +37,38 @@ class CustomerRepositoryImpl(
             }
             is NetworkResponse.Error -> {
                 val errorMessage = loginResponse.body?.message ?: loginResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): Flow<Resource<CustomerLogoutResult>> = flow {
+        emit(Resource.Loading)
+        val logoutResponse = remoteDataSource.logout(
+            accountId,
+            accountType,
+            accessToken,
+            refreshToken,
+            expiredAt,
+            firebaseToken
+        )
+        when (logoutResponse) {
+            is NetworkResponse.Success -> {
+                val logoutResult = logoutResponse.body.toResult()
+                emit(Resource.Success(logoutResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = logoutResponse.body?.message
+                    ?: logoutResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }
