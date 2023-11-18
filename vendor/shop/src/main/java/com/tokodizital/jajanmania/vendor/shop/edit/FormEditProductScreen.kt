@@ -47,7 +47,7 @@ fun FormEditProductScreen(
 ) {
 
     val focusManager = LocalFocusManager.current
-    var image by remember { mutableStateOf<Uri?>(null) }
+    var image = Uri.EMPTY
 
     val imageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()

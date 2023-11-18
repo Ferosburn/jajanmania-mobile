@@ -1,21 +1,25 @@
 package com.tokodizital.jajanmania.core.data.vendor
 
 import com.haroldadmin.cnradapter.NetworkResponse
-import com.tokodizital.jajanmania.core.data.vendor.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.mapper.toResult
+import com.tokodizital.jajanmania.core.data.vendor.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.mapper.transaction.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.UploadPictureResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.Category
 import com.tokodizital.jajanmania.core.domain.model.vendor.LoginResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.LogoutResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.RegisterResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Vendor
+import com.tokodizital.jajanmania.core.domain.model.vendor.jajan.AddJajanItemResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.TransactionHistoryItem
 import com.tokodizital.jajanmania.core.domain.repository.VendorRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import java.io.File
 
 class VendorRepositoryImpl(
     private val remoteDataSource: VendorJajanManiaRemoteDataSource
@@ -209,6 +213,86 @@ class VendorRepositoryImpl(
             is NetworkResponse.Error -> {
                 val errorMessage = transactionHistoryResponse.body?.message
                     ?: transactionHistoryResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun postAddJajan(
+        token: String,
+        id: String,
+        category: String,
+        name: String,
+        price: Int,
+        picture: String
+    ): Flow<Resource<AddJajanItemResult>> = flow {
+        emit(Resource.Loading)
+        val postJajanResponse = remoteDataSource.postAddJajan(
+            token,
+            id,
+            category,
+            name,
+            price,
+            picture
+        )
+        when (postJajanResponse) {
+            is NetworkResponse.Success -> {
+                val addJajanItemResult = postJajanResponse.body.toResult()
+                emit(Resource.Success(addJajanItemResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = postJajanResponse.body?.message
+                    ?: postJajanResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun postPicture(
+        token: String,
+        imageFile: File
+    ): Flow<Resource<UploadPictureResult>> = flow {
+        emit(Resource.Loading)
+        val postImageResponse = remoteDataSource.postPicture(
+            token,
+            imageFile
+        )
+        when (postImageResponse) {
+            is NetworkResponse.Success -> {
+                val addJajanItemResult = postImageResponse.body.toResult()
+                emit(Resource.Success(addJajanItemResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = postImageResponse.body?.message
+                    ?: postImageResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getCategories(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+    ): Flow<Resource<List<Category>>> = flow {
+        emit(Resource.Loading)
+        val categoryResponse = remoteDataSource.getCategories(
+            token, pageNumber, pageSize
+        )
+        when (categoryResponse) {
+            is NetworkResponse.Success -> {
+                val categoryResult = categoryResponse.body.toDomain()
+                emit(Resource.Success(categoryResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = categoryResponse.body?.message
+                    ?: categoryResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }
