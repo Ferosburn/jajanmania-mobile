@@ -45,7 +45,8 @@ import org.koin.compose.koinInject
 fun NavHostVendor(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
-    vendorSessionUseCase: VendorSessionUseCase = koinInject()
+    vendorSessionUseCase: VendorSessionUseCase = koinInject(),
+    startDestination: String = VendorScreens.Login.route
 ) {
 
     val vendorSession by vendorSessionUseCase.vendorSession.collectAsState(Resource.Empty)
@@ -57,7 +58,6 @@ fun NavHostVendor(
 //        } else {
 //            VendorScreens.Login.route
 //        }
-        val startDestination = VendorScreens.Login.route
 
         NavHost(
             navController = navController,

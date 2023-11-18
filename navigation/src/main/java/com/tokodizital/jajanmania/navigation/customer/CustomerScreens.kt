@@ -5,8 +5,8 @@ sealed class CustomerScreens(val route: String) {
         const val TRANSACTION_ID = "transactionId"
         const val VENDOR_ID = "vendorId"
     }
-    object Login : CustomerScreens("login")
-    object Register : CustomerScreens("register")
+    object Login : CustomerScreens("customer-login")
+    object Register : CustomerScreens("customer-register")
     object Home : CustomerScreens("home")
     object EWallet : CustomerScreens("e-wallet")
     object EWalletSetting : CustomerScreens("e-wallet-setting")
@@ -22,7 +22,7 @@ sealed class CustomerScreens(val route: String) {
     object CheckoutAddItem : CustomerScreens("checkout-add-item")
     object Payment : CustomerScreens("payment")
     object PaymentDetail : CustomerScreens("payment-detail")
-    object TransactionHistory : CustomerScreens("transaction-history")
+    object TransactionHistory : CustomerScreens("customer-transaction-history")
     object TransactionDetail : CustomerScreens("transaction-detail/{$TRANSACTION_ID}") {
         fun buildRoute(transactionId: String): String {
             return "transaction-detail/$transactionId"

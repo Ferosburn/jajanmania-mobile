@@ -1,7 +1,7 @@
 package com.tokodizital.jajanmania.navigation.vendor
 
 import androidx.navigation.NavHostController
-import kotlin.jvm.Throws
+import com.tokodizital.jajanmania.navigation.app.AppScreen
 
 @Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToRegisterScreen() {
@@ -9,7 +9,7 @@ fun NavHostController.navigateToRegisterScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToLoginScreen(clearBackStack: Boolean = true, route: String = VendorScreens.Login.route) {
+fun NavHostController.navigateToLoginScreen(clearBackStack: Boolean = true, route: String = AppScreen.LoginOption.route) {
     navigate(VendorScreens.Login.route) {
         if (clearBackStack) {
             popUpTo(route) { inclusive = true }
