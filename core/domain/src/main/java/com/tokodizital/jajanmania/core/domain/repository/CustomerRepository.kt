@@ -10,6 +10,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterRes
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
+import com.tokodizital.jajanmania.core.domain.model.customer.TopUpResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import kotlinx.coroutines.flow.Flow
 
@@ -108,4 +109,10 @@ interface CustomerRepository {
         token: String,
         transactionId: String,
     ) : Flow<Resource<CustomerTransaction>>
+
+    suspend fun topUp(
+        token: String,
+        userId: String,
+        amount: String
+    ) : Flow<Resource<TopUpResult>>
 }

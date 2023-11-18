@@ -10,6 +10,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterRes
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
+import com.tokodizital.jajanmania.core.domain.model.customer.TopUpResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
@@ -155,5 +156,13 @@ class CustomerInteractor(
         transactionId: String
     ): Flow<Resource<CustomerTransaction>> {
         return customerRepository.getTransactionDetail(token, transactionId)
+    }
+
+    override suspend fun topUp(
+        token: String,
+        userId: String,
+        amount: String
+    ): Flow<Resource<TopUpResult>> {
+        return customerRepository.topUp(token, userId, amount)
     }
 }
