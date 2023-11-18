@@ -38,6 +38,8 @@ data class JajanItem(
     val category: Category? = null,
     @SerializedName("image_url")
     val imageUrl: String? = null,
+    @SerializedName("vendor")
+    val vendor: VendorDetail? = null,
 )
 
 data class Category(

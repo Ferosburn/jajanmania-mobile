@@ -1,12 +1,13 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
@@ -138,5 +139,21 @@ class CustomerInteractor(
         categoryId: String
     ): Flow<Resource<SubscriptionResult>> {
         return customerRepository.unsubscribe(token, userId, categoryId)
+    }
+
+    override suspend fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<List<CustomerTransaction>>> {
+        return customerRepository.getTransactionHistory(token, userId, pageNumber, pageSize)
+    }
+
+    override suspend fun getTransactionDetail(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<CustomerTransaction>> {
+        return customerRepository.getTransactionDetail(token, transactionId)
     }
 }

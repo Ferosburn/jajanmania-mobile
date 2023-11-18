@@ -1,8 +1,8 @@
-package com.tokodizital.jajanmania.customer.vendor.detail
+package com.tokodizital.jajanmania.customer.transaction.history
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
@@ -10,26 +10,53 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CustomerVendorDetailViewModel(
-    savedStateHandle: SavedStateHandle,
+class CustomerTransactionHistoryViewModel(
     private val customerUseCase: CustomerUseCase,
     private val customerSessionUseCase: CustomerSessionUseCase
 ) : ViewModel() {
 
-    private val _customerVendorDetailUiState = MutableStateFlow(CustomerVendorDetailUiState())
-    val customerVendorDetailUiState: StateFlow<CustomerVendorDetailUiState> get() = _customerVendorDetailUiState
-    val vendorId: String = savedStateHandle["vendorId"] ?: ""
+    private val _customerTransactionHistoryUiState =
+        MutableStateFlow(CustomerTransactionHistoryUiState())
+    val customerTransactionHistoryUiState: StateFlow<CustomerTransactionHistoryUiState> get() = _customerTransactionHistoryUiState
+    val loadMoreButtonIsLoading get() = customerTransactionHistoryUiState.map { it.transactionHistory is Resource.Loading }
 
-    fun getVendorDetail(vendorId: String, token: String) {
+    fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int = 1,
+    ) {
         viewModelScope.launch {
-            customerUseCase.getVendorDetail(vendorId, token).collect { result ->
-                _customerVendorDetailUiState.update {
-                    it.copy(
-                        vendorDetailResult = result
-                    )
+            customerUseCase.getTransactionHistory(
+                token = token,
+                userId = userId,
+                pageNumber = pageNumber,
+            ).collect { result ->
+                _customerTransactionHistoryUiState.update {
+                    val items = if (result is Resource.Success) result.data else listOf()
+                    it.copy(transactionHistory = result, transactionHistoryList = items, pageNumber = pageNumber)
+                }
+            }
+        }
+    }
+
+    fun loadMore(
+        token: String,
+        userId: String,
+    ) {
+        viewModelScope.launch {
+            val pageNumber = customerTransactionHistoryUiState.value.pageNumber + 1
+            customerUseCase.getTransactionHistory(
+                token = token,
+                userId = userId,
+                pageNumber = pageNumber,
+            ).collect { result ->
+                _customerTransactionHistoryUiState.update {
+                    val items = it.transactionHistoryList + if (result is Resource.Success) result.data else listOf()
+                    it.copy(transactionHistory = result, transactionHistoryList = items, pageNumber = pageNumber)
                 }
             }
         }
@@ -40,7 +67,7 @@ class CustomerVendorDetailViewModel(
             customerSessionUseCase.customerSession
                 .debounce(1000L)
                 .collectLatest { result ->
-                    _customerVendorDetailUiState.update {
+                    _customerTransactionHistoryUiState.update {
                         it.copy(customerSession = result)
                     }
                 }
@@ -64,7 +91,7 @@ class CustomerVendorDetailViewModel(
                 expiredAt = expiredAt,
                 firebaseToken = firebaseToken
             ).collectLatest { result ->
-                _customerVendorDetailUiState.update {
+                _customerTransactionHistoryUiState.update {
                     it.copy(refreshTokenResult = result)
                 }
             }
