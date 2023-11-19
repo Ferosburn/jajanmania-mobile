@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.data.customer.remote.response
+package com.tokodizital.jajanmania.core.data.customer.remote.response.subscription
 
 import com.google.gson.annotations.SerializedName
 
@@ -7,9 +7,4 @@ data class MySubscriptionResponse(
     val data: CategoryResponseData? = null,
     @SerializedName("message")
     val message: String? = null,
-)
-
-data class CategoryResponseData(
-    @SerializedName("categories")
-    val categories: List<Category>? = null,
 )
