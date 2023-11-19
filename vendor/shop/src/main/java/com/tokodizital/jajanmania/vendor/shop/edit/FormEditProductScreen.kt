@@ -44,6 +44,7 @@ fun FormEditProductScreen(
     modifier: Modifier = Modifier,
     onNavigationClicked: () -> Unit = {},
     navigationToShopScreen: () -> Unit = {},
+    jajanId: String = ""
 ) {
 
     val focusManager = LocalFocusManager.current

@@ -87,8 +87,8 @@ fun JajanTransactionItem(
 @Composable
 fun PreviewJajanTransactionItem() {
     val jajan = Jajan(
-        id = 1,
-        vendorId = 1,
+        id = "1",
+        vendorId = "1",
         name = "Soto",
         category = "Makanan Kuah",
         price = 120000L,

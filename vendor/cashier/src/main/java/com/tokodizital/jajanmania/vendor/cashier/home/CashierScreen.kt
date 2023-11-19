@@ -214,16 +214,16 @@ fun PreviewFilledCashierScreen() {
             var listJajanan: List<Jajan> by remember {
                 mutableStateOf(listOf(
                     Jajan(
-                        id = 1,
-                        vendorId = 1,
+                        id = "1",
+                        vendorId = "1",
                         name = "Soto",
                         category = "Makanan Kuah",
                         price = 120000L,
                         image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
                     ),
                     Jajan(
-                        id = 2,
-                        vendorId = 1,
+                        id = "2",
+                        vendorId = "1",
                         name = "Batagor Isi 7",
                         category = "Tahu Isi",
                         price = 10000L,
