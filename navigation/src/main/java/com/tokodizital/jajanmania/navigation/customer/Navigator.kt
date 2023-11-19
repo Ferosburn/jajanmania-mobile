@@ -118,8 +118,13 @@ fun NavHostController.navigateToNearbyVendorDetailScreen(
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToCheckoutScreen(clearBackStack: Boolean = true, route: String = CustomerScreens.Checkout.route) {
-    navigate(CustomerScreens.Checkout.route) {
+fun NavHostController.navigateToCheckoutScreen(
+    vendorId: String,
+    clearBackStack: Boolean = true,
+    route: String = CustomerScreens.Checkout.route
+) {
+    navigate("$route/$vendorId")
+    {
         if (clearBackStack) {
             popUpTo(route) { inclusive = true }
         }
@@ -127,6 +132,8 @@ fun NavHostController.navigateToCheckoutScreen(clearBackStack: Boolean = true, r
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToCheckoutAddItemScreen() {
-    navigate(CustomerScreens.CheckoutAddItem.route)
+fun NavHostController.navigateToCheckoutAddItemScreen(
+    vendorId: String
+) {
+    navigate("${ CustomerScreens.CheckoutAddItem.route }/$vendorId")
 }

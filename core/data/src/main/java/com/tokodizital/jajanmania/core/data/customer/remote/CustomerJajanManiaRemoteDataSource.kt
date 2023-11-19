@@ -17,7 +17,7 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRef
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.JajanItemsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorJajanItemsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -190,15 +190,14 @@ class CustomerJajanManiaRemoteDataSource(private val service: CustomerJajanMania
         return service.updateCustomerProfile(token = bearerToken, customerId, customerUpdateProfileRequest = request)
     }
 
-    suspend fun getManyJajanItemsByVendor(
+    suspend fun getJajanItems(
         token: String,
         vendorId: String,
         pageNumber: Int,
         pageSize: Int
-
-    ) : NetworkResponse<JajanItemsResponse, CommonErrorResponse> {
+    ) : NetworkResponse<VendorJajanItemsResponse, CommonErrorResponse> {
         val bearerToken = "Bearer $token"
-        val where = "%7B%22id%22%3A%22$vendorId%22%7D"
+        val where = "%7B%22vendorId%22%3A%22$vendorId%22%7D"
 
         return service.getManyJajanItems(bearerToken, pageNumber, pageSize, where)
     }

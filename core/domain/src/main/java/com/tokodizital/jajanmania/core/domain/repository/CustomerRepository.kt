@@ -7,9 +7,11 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.JajanItem
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorJajanItem
 import kotlinx.coroutines.flow.Flow
 
 interface CustomerRepository {
@@ -98,4 +100,12 @@ interface CustomerRepository {
     suspend fun checkout(
         token: String,
     )
+
+    suspend fun getJajanItems(
+        token: String,
+        vendorId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ) : Flow<Resource<VendorJajanItem>>
+
 }

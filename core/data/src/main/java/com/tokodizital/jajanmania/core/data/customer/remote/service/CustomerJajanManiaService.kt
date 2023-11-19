@@ -16,8 +16,8 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRef
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRegisterResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.JajanItemSingleResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.JajanItemsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorJajanItemsSingleResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorJajanItemsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
@@ -117,7 +117,7 @@ interface CustomerJajanManiaService {
     suspend fun getJajanItemById(
         @Header("Authorization") token: String,
         @Path("jajanId") jajanId: String
-    ): NetworkResponse<JajanItemSingleResponse, CommonErrorResponse>
+    ): NetworkResponse<VendorJajanItemsSingleResponse, CommonErrorResponse>
 
     @GET("jajan-items")
     suspend fun getManyJajanItems(
@@ -126,7 +126,7 @@ interface CustomerJajanManiaService {
         @Query("page_size") pageSize: Int = 10,
         @Query("where") where: String,
         @Query("include") include: String? = null,
-    ): NetworkResponse<JajanItemsResponse, CommonErrorResponse>
+    ): NetworkResponse<VendorJajanItemsResponse, CommonErrorResponse>
 
     @POST("transactions/checkout")
     suspend fun checkout(

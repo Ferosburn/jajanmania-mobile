@@ -53,6 +53,7 @@ class MainActivity : ComponentActivity() {
                     customerHomeModule,
                     customerVendorModule,
                     customerProfileModule,
+                    customerCartModule,
                     customerSubscriptionModule
                 )
                 val allModules = coreModules + vendorModules + customerModules

@@ -11,6 +11,7 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterRes
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorJajanItem
 import kotlinx.coroutines.flow.Flow
 
 interface CustomerUseCase {
@@ -97,9 +98,12 @@ interface CustomerUseCase {
         categoryId: String
     ) : Flow<Resource<SubscriptionResult>>
 
-//    suspend fun getManyJajanItems(
-//
-//    ) : Flow<Resource<>>
+    suspend fun getJajanItems(
+        token: String,
+        vendorId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ) : Flow<Resource<VendorJajanItem>>
 //
 //    suspend fun checkout(
 //        token: String

@@ -10,6 +10,8 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterRes
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorJajanItem
+import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.JajanItem
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
 import kotlinx.coroutines.flow.Flow
@@ -137,4 +139,19 @@ class CustomerInteractor(
     ): Flow<Resource<SubscriptionResult>> {
         return customerRepository.unsubscribe(token, userId, categoryId)
     }
+
+    override suspend fun getJajanItems(
+        token: String,
+        vendorId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<VendorJajanItem>> {
+        return customerRepository.getJajanItems(
+            token,
+            vendorId,
+            pageNumber,
+            pageSize
+        )
+    }
+
 }

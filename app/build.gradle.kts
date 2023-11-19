@@ -60,6 +60,7 @@ dependencies {
 
     implementation(project(":ui"))
 
+    implementation(project(":customer:cart"))
     implementation(project(":customer:ewallet"))
     implementation(project(":customer:home"))
     implementation(project(":customer:profile"))

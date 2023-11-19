@@ -14,6 +14,8 @@ import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterRes
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
+import com.tokodizital.jajanmania.core.domain.model.customer.VendorJajanItem
+import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.JajanItem
 import com.tokodizital.jajanmania.core.domain.repository.CustomerRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -271,6 +273,30 @@ class CustomerRepositoryImpl(
 
     override suspend fun checkout(token: String) {
         //TODO("Not yet implemented")
+    }
+
+    override suspend fun getJajanItems(
+        token: String,
+        vendorId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<VendorJajanItem>> = flow {
+        emit(Resource.Loading)
+        println("Loading data...")
+        val jajanItemResponse = remoteDataSource.getJajanItems(token, vendorId, pageNumber, pageSize)
+        when (jajanItemResponse) {
+            is NetworkResponse.Success -> {
+                val jajanItems = jajanItemResponse.body.toResult()
+                emit(Resource.Success(jajanItems))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = jajanItemResponse.body?.message ?: jajanItemResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        println("Catch exception: ${it.message.toString()}")
+        emit(Resource.Error(message = it.message.toString()))
     }
 
     override suspend fun getCustomer(token: String, customerId: String): Flow<Resource<Customer>> = flow {
