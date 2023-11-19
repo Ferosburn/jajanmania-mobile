@@ -70,6 +70,7 @@ fun CategoryCollection(
             items(list) { category ->
                 CategoryItemCard(
                     name = category.name,
+                    icon = category.icon,
                     isSubscribed = category.isSubscribed,
                     onSubscribeClick = { onSubscribeClick(category) },
                     onUnsubscribeClick = { onUnsubscribeClick(category) }

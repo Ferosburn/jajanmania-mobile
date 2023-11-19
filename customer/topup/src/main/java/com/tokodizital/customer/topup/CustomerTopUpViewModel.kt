@@ -2,16 +2,16 @@ package com.tokodizital.customer.topup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -21,8 +21,8 @@ class CustomerTopUpViewModel(
 ) : ViewModel() {
 
     private val _topUpUiState = MutableStateFlow(CustomerTopUpUiState())
-
     val customerTopUpUiState: StateFlow<CustomerTopUpUiState> get() = _topUpUiState
+    val topUpButtonIsLoading get() = customerTopUpUiState.map { it.topUpResult is Resource.Loading }
 
     fun topUp(
         token: String,
@@ -80,19 +80,6 @@ class CustomerTopUpViewModel(
                 _topUpUiState.update {
                     it.copy(
                         refreshToken = result
-                    )
-                }
-            }
-        }
-    }
-
-    fun getCustomer(token: String, id: String) {
-        viewModelScope.launch {
-            customerUseCase.getCustomerAccount(token, id).collect { result ->
-                delay(1000L)
-                _topUpUiState.update {
-                    it.copy(
-                        customer = result
                     )
                 }
             }

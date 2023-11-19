@@ -17,9 +17,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
+import com.tokodizital.jajanmania.ui.R
 
 @Composable
 fun CustomerNearbyVendorItem(
@@ -36,7 +40,19 @@ fun CustomerNearbyVendorItem(
                     .size(72.dp, 48.dp)
                     .clip(RoundedCornerShape(10.dp))
                     .background(color = MaterialTheme.colorScheme.primaryContainer)
-            )
+            ) {
+                AsyncImage(
+                    model = vendor.image,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .width(72.dp)
+                        .height(48.dp),
+                    placeholder = painterResource(id = R.drawable.ic_jajan_mania_48),
+                    error = painterResource(id = R.drawable.ic_jajan_mania_48)
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
             Column {
                 Text(text = vendor.name, style = MaterialTheme.typography.titleSmall)

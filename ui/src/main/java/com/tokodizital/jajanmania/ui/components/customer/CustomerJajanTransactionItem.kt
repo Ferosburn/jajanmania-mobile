@@ -1,10 +1,10 @@
 package com.tokodizital.jajanmania.ui.components.customer
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -18,10 +18,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.tokodizital.jajanmania.common.utils.toRupiah
 import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
-import com.tokodizital.jajanmania.ui.theme.Typography
+import com.tokodizital.jajanmania.ui.R
 
 @Composable
 fun CustomerJajanTransactionItem(
@@ -36,49 +41,42 @@ fun CustomerJajanTransactionItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Box(modifier = Modifier
                 .clip(CircleShape)
                 .size(48.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
-                // TODO: Use when integrated with backend
-//                AsyncImage(
-//                    model = jajan.image,
-//                    contentDescription = null,
-//                    contentScale = ContentScale.Crop,
-//                    modifier = Modifier
-//                        .clip(CircleShape)
-//                        .fillMaxSize(),
-//                    placeholder = painterResource(id = R.drawable.ic_image)
-//                )
-                // TODO: Delete when integrated with backend
-                Box(
+                AsyncImage(
+                    model = jajan.imageUrl,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .clip(CircleShape)
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.primaryContainer)
+                        .fillMaxSize(),
+                    placeholder = painterResource(id = R.drawable.ic_jajan_mania_48),
+                    error = painterResource(id = R.drawable.ic_jajan_mania_48),
                 )
             }
-
-            Spacer(modifier = Modifier.width(16.dp))
             Text(
+                modifier = Modifier.weight(1f),
                 text = jajan.name,
-                style = Typography.titleSmall,
-                modifier = Modifier.weight(1f)
+                style = MaterialTheme.typography.titleMedium,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
-            Spacer(modifier = Modifier.width(16.dp))
             Text(
                 text = jajan.price.toInt().toRupiah(),
-                style = Typography.titleSmall
+                style = MaterialTheme.typography.titleSmall
             )
-            Spacer(modifier = Modifier.width(24.dp))
             Text(
                 text = count.toString(),
-                style = Typography.titleSmall
+                style = MaterialTheme.typography.titleSmall,
+                modifier = Modifier.width(64.dp),
+                textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.width(8.dp))
-
         }
         Divider()
     }

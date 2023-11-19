@@ -14,7 +14,7 @@ import com.tokodizital.customer.topup.di.customerTopUpModule
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
 import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
-import com.tokodizital.jajanmania.customer.ewallet.di.customerEwalletModule
+import com.tokodizital.jajanmania.customer.ewallet.di.customerEWalletModule
 import com.tokodizital.jajanmania.customer.home.di.customerHomeModule
 import com.tokodizital.jajanmania.customer.profile.di.customerProfileModule
 import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionModule
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                 )
                 val customerModules = listOf(
                     customerAuthModule,
-                    customerEwalletModule,
+                    customerEWalletModule,
                     customerHomeModule,
                     customerProfileModule,
                     customerSubscriptionModule,
