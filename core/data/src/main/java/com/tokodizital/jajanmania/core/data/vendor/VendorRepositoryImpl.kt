@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.data.vendor.mapper.toResult
 import com.tokodizital.jajanmania.core.data.vendor.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.mapper.transaction.toDomain
 import com.tokodizital.jajanmania.core.data.vendor.remote.VendorJajanManiaRemoteDataSource
+import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.UploadPictureResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Category
@@ -323,6 +324,80 @@ class VendorRepositoryImpl(
             is NetworkResponse.Error -> {
                 val errorMessage = logoutResponse.body?.message
                     ?: logoutResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun updateJajan(
+        token: String,
+        id: String,
+        category: String,
+        name: String,
+        price: Int,
+        picture: String,
+        jajanId: String
+    ): Flow<Resource<AddJajanItemResult>> = flow {
+        emit(Resource.Loading)
+        val updateJajanResponse = remoteDataSource.updateJajan(
+            token,
+            id,
+            category,
+            name,
+            price,
+            picture,
+            jajanId
+        )
+        when (updateJajanResponse) {
+            is NetworkResponse.Success -> {
+                val updateJajanItemResult = updateJajanResponse.body.toResult()
+                emit(Resource.Success(updateJajanItemResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = updateJajanResponse.body?.message
+                    ?: updateJajanResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getJajanbyId(token: String, jajanId: String): Flow<Resource<Jajan>> = flow {
+        emit(Resource.Loading)
+        val jajanItemReponse = remoteDataSource.getJajanById(
+            token, jajanId
+        )
+        when (jajanItemReponse) {
+            is NetworkResponse.Success -> {
+                val jajanResult = jajanItemReponse.body.toDomain()
+                emit(Resource.Success(jajanResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = jajanItemReponse.body?.message
+                    ?: jajanItemReponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun deleteJajanbyId(token: String, jajanId: String): Flow<Resource<String>> = flow {
+        emit(Resource.Loading)
+        val deteleItemReponse = remoteDataSource.deleteJajanById(
+            token, jajanId
+        )
+        when (deteleItemReponse) {
+            is NetworkResponse.Success -> {
+                val jajanResult = deteleItemReponse.body.message
+                emit(Resource.Success(jajanResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = deteleItemReponse.body?.message
+                    ?: deteleItemReponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }

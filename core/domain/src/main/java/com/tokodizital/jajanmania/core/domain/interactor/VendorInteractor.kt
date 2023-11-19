@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
+import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.UploadPictureResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Category
@@ -125,5 +126,31 @@ class VendorInteractor(
         expiredAt: String
     ): Flow<Resource<LogoutResult>> {
         return vendorRepository.logout(accountId, accountType, accessToken, refreshToken, expiredAt)
+    }
+
+    override suspend fun updateJajan(
+        token: String,
+        id: String,
+        category: String,
+        name: String,
+        price: Int,
+        picture: String,
+        jajanId: String
+    ): Flow<Resource<AddJajanItemResult>> {
+        return vendorRepository.updateJajan(
+            token, id, category, name, price, picture, jajanId
+        )
+    }
+
+    override suspend fun getJajanbyId(token: String, jajanId: String): Flow<Resource<Jajan>> {
+        return vendorRepository.getJajanbyId(
+            token, jajanId
+        )
+    }
+
+    override suspend fun deleteJajanbyId(token: String, jajanId: String): Flow<Resource<String>> {
+        return vendorRepository.deleteJajanbyId(
+            token, jajanId
+        )
     }
 }

@@ -67,7 +67,6 @@ class ShopViewModel(
 
     fun getVendorSession() {
         viewModelScope.launch {
-            Log.e("TAG", "getVendorSession: test", )
             vendorSessionUseCase.vendorSession
                 .debounce(1000L)
                 .distinctUntilChanged()

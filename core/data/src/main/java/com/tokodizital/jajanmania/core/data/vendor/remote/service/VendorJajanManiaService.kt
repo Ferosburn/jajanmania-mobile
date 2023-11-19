@@ -9,6 +9,8 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStat
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.DeleteJajanReponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.JajanItemReponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.ListJajanResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
@@ -19,6 +21,7 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.response.VendorRespons
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.transaction.TransactionHistoryResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -109,6 +112,7 @@ interface VendorJajanManiaService {
         @Query("where") where: String? = null,
         @Query("include") include: String? = null,
     ): NetworkResponse<CategoriesResponse, CommonErrorResponse>
+
     @POST("authentications/vendors/logout")
     suspend fun logout(
         @Header("authorization") token: String,
@@ -124,4 +128,23 @@ interface VendorJajanManiaService {
         @Query("include") include: String
     ): NetworkResponse<ListJajanResponse, CommonErrorResponse>
 
+    @PATCH("jajan-items/{id}")
+    suspend fun updateJajan(
+        @Header("authorization") token: String,
+        @Body addJajanRequest: AddJajanRequest,
+        @Path("id") id: String,
+    ): NetworkResponse<AddJajanItemResponse, CommonErrorResponse>
+
+    @GET("jajan-items/{id}")
+    suspend fun getJajanById(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+    ): NetworkResponse<JajanItemReponse, CommonErrorResponse>
+
+    @DELETE("jajan-items/{id}")
+    suspend fun deleteJajanById(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Query("method") method: String
+    ): NetworkResponse<DeleteJajanReponse, CommonErrorResponse>
 }

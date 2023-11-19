@@ -127,15 +127,7 @@ fun FormAddProductScreen(
             Toast.makeText(context, postImageResult.message, Toast.LENGTH_SHORT).show()
         }
     }
-
-    LaunchedEffect(key1 = postImageResult) {
-        if (postImageResult is Resource.Success) {
-            formAddProductViewModel.updateImageUrl(postImageResult.data.url)
-            formAddProductViewModel.postAddJajan()
-        } else if (postImageResult is Resource.Error) {
-            Toast.makeText(context, postImageResult.message, Toast.LENGTH_SHORT).show()
-        }
-    }
+    
 
     LaunchedEffect(key1 = addJajanResult) {
         if (addJajanResult is Resource.Success) {
