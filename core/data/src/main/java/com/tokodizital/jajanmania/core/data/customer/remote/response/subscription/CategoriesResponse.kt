@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.data.customer.remote.response
+package com.tokodizital.jajanmania.core.data.customer.remote.response.subscription
 
 import com.google.gson.annotations.SerializedName
 

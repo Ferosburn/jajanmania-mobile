@@ -29,7 +29,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,10 +50,12 @@ fun CustomerTopUpScreen(
     navigateToHomeScreen: () -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
 ) {
-
+    val context = LocalContext.current
     val customerTopUpUiState by customerTopUpViewModel.customerTopUpUiState.collectAsState()
+    val topUpButtonIsLoading by customerTopUpViewModel.topUpButtonIsLoading.collectAsState(false)
     val customerSession = customerTopUpUiState.customerSession
     val topUp = customerTopUpUiState.topUpResult
+    val refreshToken = customerTopUpUiState.refreshToken
 
     var token by remember { mutableStateOf("") }
     var userId by remember { mutableStateOf("") }
@@ -76,10 +77,6 @@ fun CustomerTopUpScreen(
             val session = customerSession.data
             token = session.accessToken
             userId = session.accountId
-            customerTopUpViewModel.getCustomer(
-                token = token,
-                id = userId,
-            )
         }
     }
 
@@ -95,22 +92,28 @@ fun CustomerTopUpScreen(
                 firebaseToken = session.firebaseToken,
             )
         }
-    }
-
-    LaunchedEffect(key1 = topUp) {
         if (topUp is Resource.Success) {
             xenditUrl = topUp.data.redirectUrl
-            println(xenditUrl)
             uriHandler.openUri(xenditUrl)
+            navigateToHomeScreen()
         }
     }
 
-    val onTopUpButtonClick: () -> Unit = {
-        // TODO: send the user id and nominal to server and get the xendit URL,
-        // then set the URL to xenditURL variable
-        navigateToHomeScreen()
+    LaunchedEffect(key1 = refreshToken) {
+        if (refreshToken is Resource.Success
+            && topUp is Resource.Error
+        ) {
+            Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
+        } else if (refreshToken is Resource.Success) {
+            val session = refreshToken.data
+            customerTopUpViewModel.topUp(token, userId, amount)
+            customerTopUpViewModel.updateCustomerSession(session)
+        }
+        if (refreshToken is Resource.Error) {
+            customerTopUpViewModel.deleteCustomerSession()
+            navigateToLoginScreen()
+        }
     }
-
 
     val onNominalButtonClick: (Long) -> Unit = { value ->
         amount = value.toString()
@@ -133,9 +136,9 @@ fun CustomerTopUpScreen(
                         customerTopUpViewModel.topUp(
                             token, userId, amount
                         )
-                        onTopUpButtonClick
                     },
-                    enabled = (if (amount.isNotBlank()) amount.toLong() >= 5000L else amount.isNotBlank())
+                    enabled = (if (amount.isNotBlank()) amount.toLong() >= 5000L else amount.isNotBlank()),
+                    isLoading = topUpButtonIsLoading
                 )
             }
         }
