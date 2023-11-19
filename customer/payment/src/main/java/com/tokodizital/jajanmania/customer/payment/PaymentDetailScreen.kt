@@ -255,8 +255,8 @@ fun PaymentDetailScreenPreview() {
                     listOf(
                         TransactionItem(
                             jajan = Jajan(
-                                id = 1,
-                                vendorId = 1,
+                                id = "1",
+                                vendorId = "1",
                                 name = "Soto",
                                 category = "Kuah",
                                 price = 10000L,
@@ -266,8 +266,8 @@ fun PaymentDetailScreenPreview() {
                         ),
                         TransactionItem(
                             jajan = Jajan(
-                                id = 1,
-                                vendorId = 1,
+                                id = "1",
+                                vendorId = "1",
                                 name = "Batagor",
                                 category = "Kering",
                                 price = 14000L,

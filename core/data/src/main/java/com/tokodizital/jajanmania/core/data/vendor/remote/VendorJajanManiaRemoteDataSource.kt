@@ -11,6 +11,7 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStat
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.ListJajanResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
@@ -181,4 +182,21 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
         )
     }
 
+    suspend fun getListJajan(
+        token: String,
+        vendorId: String,
+        page: Int = 1,
+        pageSize: Int = 10,
+    ): NetworkResponse<ListJajanResponse, CommonErrorResponse> {
+        val authorization = "Bearer $token"
+        val whereParams = "%7B%22vendorId%22%3A%22$vendorId%22%7D"
+        val includeParams = "%7B%22category%22%3Atrue%7D"
+        return service.getJajanItems(
+            authorization,
+            page,
+            pageSize,
+            whereParams,
+            includeParams
+        )
+    }
 }

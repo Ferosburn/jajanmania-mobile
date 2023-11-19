@@ -9,6 +9,7 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStat
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.ListJajanResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
@@ -113,5 +114,14 @@ interface VendorJajanManiaService {
         @Header("authorization") token: String,
         @Body logoutRequest: LogoutRequest
     ): NetworkResponse<LogoutResponse, CommonErrorResponse>
+
+    @GET("jajan-items")
+    suspend fun getJajanItems(
+        @Header("authorization") token: String,
+        @Query("page_number") page: Int = 1,
+        @Query("page_size") pageSize: Int = 10,
+        @Query("where") where: String,
+        @Query("include") include: String
+    ): NetworkResponse<ListJajanResponse, CommonErrorResponse>
 
 }

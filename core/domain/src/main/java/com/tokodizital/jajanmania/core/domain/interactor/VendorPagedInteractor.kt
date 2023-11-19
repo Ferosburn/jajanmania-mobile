@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import androidx.paging.PagingData
+import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.TransactionHistoryItem
 import com.tokodizital.jajanmania.core.domain.repository.VendorPagedRepository
 import com.tokodizital.jajanmania.core.domain.usecase.VendorPagedUseCase
@@ -18,6 +19,17 @@ class VendorPagedInteractor(
     ): Flow<PagingData<TransactionHistoryItem>> {
         return vendorPagedRepository.getTransactionHistory(
             token, page, pageSize, vendorId
+        )
+    }
+
+    override fun listJajan(
+        token: String,
+        vendorId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<PagingData<Jajan>> {
+        return vendorPagedRepository.listJajan(
+            token, pageNumber, pageSize, vendorId
         )
     }
 

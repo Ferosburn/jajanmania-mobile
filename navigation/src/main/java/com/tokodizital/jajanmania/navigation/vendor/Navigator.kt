@@ -55,8 +55,10 @@ fun NavHostController.navigateToAddProductScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToEditProductScreen() {
-    navigate(VendorScreens.EditProduct.route)
+fun NavHostController.navigateToEditProductScreen(
+    jajanId: String
+) {
+    navigate(VendorScreens.EditProduct.buildRoute(jajanId))
 }
 
 @Throws(IllegalArgumentException::class)
