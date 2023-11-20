@@ -4,6 +4,6 @@ import com.tokodizital.jajanmania.customer.ewallet.EWalletCustViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
-val customerEwalletModule = module {
+val customerEWalletModule = module {
     viewModel { EWalletCustViewModel(get(), get()) }
 }

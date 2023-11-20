@@ -26,18 +26,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.tokodizital.jajanmania.common.data.PaymentMethod
 import com.tokodizital.jajanmania.common.utils.parseIso8601
 import com.tokodizital.jajanmania.common.utils.toLocalDate
 import com.tokodizital.jajanmania.common.utils.toLocalTime
+import com.tokodizital.jajanmania.common.utils.toRupiah
 import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.customer.CustomerJajanTransactionItem
-import com.tokodizital.jajanmania.ui.components.customer.CustomerTotalTransactionFooter
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import com.tokodizital.jajanmania.ui.theme.Typography
 import org.koin.androidx.compose.koinViewModel
@@ -130,25 +134,19 @@ fun CustomerTransactionDetailScreen(
                     item {
                         Box(
                             modifier = Modifier
-                                .size(120.dp)
                                 .clip(CircleShape)
+                                .size(120.dp)
+                                .background(MaterialTheme.colorScheme.primaryContainer),
                         ) {
-                            // TODO: Use when integrated with backend
-//                    AsyncImage(
-//                        model = transaction.image,
-//                        contentDescription = null,
-//                        contentScale = ContentScale.Crop,
-//                        modifier = Modifier
-//                            .clip(CircleShape)
-//                            .fillMaxSize(),
-//                        placeholder = painterResource(id = R.drawable.ic_image)
-//                    )
-                            // TODO: Delete when integrated with backend
-                            Box(
+                            AsyncImage(
+                                model = transactionDetailResult.data.vendorImage,
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
                                 modifier = Modifier
                                     .clip(CircleShape)
-                                    .fillMaxSize()
-                                    .background(MaterialTheme.colorScheme.primaryContainer),
+                                    .fillMaxSize(),
+                                placeholder = painterResource(id = R.drawable.ic_jajan_mania_48),
+                                error = painterResource(id = R.drawable.ic_jajan_mania_48)
                             )
                         }
                         Spacer(modifier = Modifier.size(8.dp))
@@ -200,10 +198,14 @@ fun CustomerTransactionDetailScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 val transactionId = transactionDetailResult.data.transactionId
-                                val index = transactionId.length/2
+                                val index = transactionId.length / 2
                                 Text(text = "ID Transaksi", style = Typography.bodyMedium)
                                 Text(
-                                    text = transactionDetailResult.data.transactionId.replaceRange(index, index, "\n"),
+                                    text = transactionDetailResult.data.transactionId.replaceRange(
+                                        index,
+                                        index,
+                                        "\n"
+                                    ),
                                     style = Typography.bodyMedium,
                                     textAlign = TextAlign.End
                                 )
@@ -216,7 +218,24 @@ fun CustomerTransactionDetailScreen(
                         CustomerJajanTransactionItem(jajan = it, count = it.quantity)
                     }
                     item {
-                        CustomerTotalTransactionFooter(totalPrice = transactionDetailResult.data.totalPrice.toInt())
+                        Row(
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .padding(start = 64.dp, end = 80.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Text(
+                                text = "Total",
+                                style = MaterialTheme.typography.titleSmall,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = transactionDetailResult.data.totalPrice.toInt().toRupiah(),
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                        }
                     }
                 }
             }

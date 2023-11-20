@@ -22,17 +22,14 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.tokodizital.customer.topup.CustomerTopUpScreen
 import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.core.domain.model.TransactionItem
+import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
 import com.tokodizital.jajanmania.customer.auth.login.LoginScreenCust
 import com.tokodizital.jajanmania.customer.auth.register.RegisterScreenCust
 import com.tokodizital.jajanmania.customer.cart.additem.CheckoutAddItemScreen
 import com.tokodizital.jajanmania.customer.cart.home.CheckoutScreen
-import com.tokodizital.jajanmania.customer.ewallet.EWalletChangePinScreen
 import com.tokodizital.jajanmania.customer.ewallet.EWalletScreenCust
-import com.tokodizital.jajanmania.customer.ewallet.EWalletSettingScreen
 import com.tokodizital.jajanmania.customer.home.HomeScreen
 import com.tokodizital.jajanmania.customer.payment.PaymentDetailScreen
-import com.tokodizital.jajanmania.customer.payment.PaymentScreen
 import com.tokodizital.jajanmania.customer.profile.ProfileScreen
 import com.tokodizital.jajanmania.customer.profile.manage.ManageProfileScreen
 import com.tokodizital.jajanmania.customer.subscription.CategoryScreen
@@ -94,46 +91,34 @@ fun NavHostCustomer(
         composable(CustomerScreens.EWallet.route) {
             EWalletScreenCust(
                 onNavigationClick = navController::navigateUp,
-                navigateToPaymentScreen = navController::navigateToPaymentScreen,
+                navigateToNearbyVendorScreen = navController::navigateToNearbyVendorScreen,
                 navigateToTransactionHistoryScreen = navController::navigateToTransactionHistoryScreen,
-//                navigateToEWalletSettingScreen = navController::navigateToEWalletSettingScreen,
                 navigateToTopUpScreen = navController::navigateToTopUpScreen,
-            )
-        }
-        composable(CustomerScreens.Payment.route) {
-            PaymentScreen(
-                onNavigationClick = navController::navigateUp,
-                navigateToPaymentDetailScreen = navController::navigateToPaymentDetailScreen,
             )
         }
         composable(CustomerScreens.PaymentDetail.route) {
             val vendorName by remember { mutableStateOf("Batagor Bang Tigor") }
             val balance by remember { mutableLongStateOf(20000L) }
-            val listItems: List<TransactionItem> by remember {
+            val listItems: List<JajanItem> by remember {
                 mutableStateOf(
                     listOf(
-                        TransactionItem(
-                            jajan = Jajan(
-                                id = "1",
-                                vendorId = "1",
-                                name = "Soto",
-                                category = "Kuah",
-                                price = 10000L,
-                                image = ""
-                            ),
-                            amount = 1
+
+                        JajanItem(
+                            id = "1",
+                            name = "Soto",
+                            category = "Kuah",
+                            price = 10000L,
+                            imageUrl = "",
+                            quantity = 1
                         ),
-                        TransactionItem(
-                            jajan = Jajan(
-                                id = "1",
-                                vendorId = "1",
-                                name = "Batagor",
-                                category = "Kering",
-                                price = 14000L,
-                                image = "",
-                            ),
-                            amount = 2
-                        )
+                        JajanItem(
+                            id = "2",
+                            name = "Batagor",
+                            category = "Kering",
+                            price = 14000L,
+                            imageUrl = "",
+                            quantity = 2
+                        ),
                     )
                 )
             }
@@ -148,7 +133,8 @@ fun NavHostCustomer(
         composable(CustomerScreens.TopUp.route) {
             CustomerTopUpScreen(
                 navigateUp = navController::navigateUp,
-                navigateToHomeScreen = { navController.navigateToHomeScreen(route = CustomerScreens.Home.route) }
+                navigateToHomeScreen = { navController.navigateToHomeScreen(route = CustomerScreens.Home.route) },
+                navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
         composable(CustomerScreens.TransactionHistory.route) {
@@ -169,18 +155,6 @@ fun NavHostCustomer(
             CustomerTransactionDetailScreen(
                 onNavigationClick = navController::navigateUp,
                 navigateToLoginScreen = navController::navigateToCustomerLoginScreen
-            )
-        }
-        composable(CustomerScreens.EWalletSetting.route) {
-            EWalletSettingScreen(
-                onNavigationClick = navController::navigateUp,
-                navigateToChangePinScreen = navController::navigateToChangePinScreen
-            )
-        }
-        composable(CustomerScreens.ChangePin.route) {
-            EWalletChangePinScreen(
-                onNavigationClick = navController::navigateUp,
-                navigateToEWalletSettingScreen = navController::navigateToEWalletSettingScreen
             )
         }
         composable(CustomerScreens.Profile.route) {
@@ -221,7 +195,7 @@ fun NavHostCustomer(
         ) {
             CustomerVendorDetailScreen(
                 navigateUp = navController::navigateUp,
-                navigateToCheckoutScreen = navController::navigateToCheckoutScreen,
+                navigateToCheckoutScreen = { navController.navigateToCheckoutScreen(false) },
                 navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
@@ -249,7 +223,7 @@ fun NavHostCustomer(
             CheckoutScreen(
                 onNavigationClicked = navController::navigateUp,
                 navigationToAddItemScreen = navController::navigateToCheckoutAddItemScreen,
-                navigationToProcessTransactionScreen = {},
+                navigationToProcessTransactionScreen = navController::navigateToPaymentDetailScreen,
                 listJajanan = listJajanan,
                 onDecreaseClicked = {
                     val jajanan = listJajanan.toMutableList()
