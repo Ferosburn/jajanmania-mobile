@@ -1,70 +1,178 @@
 package com.tokodizital.jajanmania.customer.cart.home
 
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.tokodizital.jajanmania.core.domain.model.Jajan
+import coil.compose.AsyncImage
+import com.tokodizital.jajanmania.common.utils.toRupiah
+import com.tokodizital.jajanmania.core.domain.model.Resource
+import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
+import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.bottomsheet.BaseModalBottomSheet
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseOutlinedButton
 import com.tokodizital.jajanmania.ui.components.customer.CustomerJajanCheckoutItem
+import com.tokodizital.jajanmania.ui.components.customer.CustomerJajanTransactionItem
 import com.tokodizital.jajanmania.ui.components.customer.CustomerTotalTransactionFooter
+import com.tokodizital.jajanmania.ui.components.customer.CustomerVendorJajanItem
 import com.tokodizital.jajanmania.ui.components.state.EmptyContentState
-import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable
 fun CheckoutScreen(
     modifier: Modifier = Modifier,
+    checkoutViewModel: CheckoutViewModel = koinViewModel(),
     onNavigationClicked: () -> Unit = {},
-    navigationToAddItemScreen: () -> Unit = {},
-    navigationToProcessTransactionScreen: () -> Unit = {},
-    listJajanan: List<Jajan> = emptyList(),
-    onDecreaseClicked: (Jajan) -> Unit = {},
-    onIncreaseClicked: (Jajan) -> Unit = {}
+    navigateToLoginScreen: () -> Unit = {},
+    navigateToHomeScreen: () -> Unit = {},
+    navigateToTopUpScreen: () -> Unit = {},
 ) {
-
+    val context = LocalContext.current
+    val checkoutUiState by checkoutViewModel.checkoutUiState.collectAsState()
+    val customerSession = checkoutUiState.customerSession
+    val vendorDetailResult = checkoutUiState.vendorDetailResult
+    val refreshTokenResult = checkoutUiState.refreshTokenResult
+    val account = checkoutUiState.account
+    val checkoutList = checkoutUiState.checkoutList
     var backDialogState by remember { mutableStateOf(false) }
+    var addItemDialogState by remember { mutableStateOf(false) }
+    var paymentDialogState by remember { mutableStateOf(false) }
+    var totalPrice by remember { mutableLongStateOf(0L) }
+    var balance by remember { mutableLongStateOf(0L) }
+    var buttonProcessEnabled by remember { mutableStateOf(false) }
+    var lowBalanceDialogState by remember { mutableStateOf(false) }
+    var eWalletPaymentSuccessDialogState by remember { mutableStateOf(false) }
+    var processCashPaymentDialogState by remember { mutableStateOf(false) }
+    var cashPaymentSuccessDialogState by remember { mutableStateOf(false) }
 
-    val mappedJajanan = remember(key1 = listJajanan) {
-        listJajanan.groupBy { it.id }
-            .mapKeys { it.value.first() }
-            .mapValues { it.value.count() }
+    LaunchedEffect(key1 = checkoutList.size) {
+        totalPrice = checkoutList.sumOf { it.price }
+        buttonProcessEnabled = checkoutList.isNotEmpty()
+        val displayedCheckoutList = checkoutList
+            .distinctBy { it.id }
+            .map { item ->
+                JajanItem(
+                    id = item.id,
+                    name = item.name,
+                    price = item.price,
+                    imageUrl = item.imageUrl,
+                    category = item.category,
+                    quantity = checkoutList.filter { item.id == it.id }.size,
+                )
+            }
+        Log.i("TEST_X", displayedCheckoutList.toString())
     }
 
-    val totalPrice = remember(key1 = listJajanan) {
-        listJajanan.sumOf { it.price }
+    LaunchedEffect(key1 = Unit) {
+        checkoutViewModel.getCustomerSession()
     }
 
-    val buttonProcessEnabled = remember(key1 = listJajanan) {
-        listJajanan.isNotEmpty()
+    LaunchedEffect(key1 = customerSession) {
+        if (customerSession is Resource.Success) {
+            val session = customerSession.data
+            val vendorId = checkoutViewModel.vendorId
+            checkoutViewModel.getCustomerAccount(
+                token = session.accessToken,
+                userId = session.accountId
+            )
+            checkoutViewModel.getVendorDetail(
+                vendorId, session.accessToken
+            )
+        }
     }
 
+    LaunchedEffect(key1 = account) {
+        if (account is Resource.Success) {
+            balance = account.data.balance
+        }
+    }
+
+    LaunchedEffect(key1 = vendorDetailResult) {
+        if (vendorDetailResult is Resource.Error && customerSession is Resource.Success) {
+            val session = customerSession.data
+            checkoutViewModel.refreshToken(
+                accountId = session.accountId,
+                accountType = session.accountType,
+                accessToken = session.accessToken,
+                refreshToken = session.refreshToken,
+                expiredAt = session.expiredAt,
+                firebaseToken = session.firebaseToken,
+            )
+        }
+    }
+
+    LaunchedEffect(key1 = refreshTokenResult) {
+        if (refreshTokenResult is Resource.Success
+            && vendorDetailResult is Resource.Error
+            && vendorDetailResult.message.contains("authorization")
+        ) {
+            Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
+        } else if (refreshTokenResult is Resource.Success) {
+            val session = refreshTokenResult.data
+            val vendorId = checkoutViewModel.vendorId
+            checkoutViewModel.getCustomerAccount(
+                token = session.accessToken,
+                userId = session.accountId
+            )
+            checkoutViewModel.getVendorDetail(
+                vendorId, session.accessToken
+            )
+            checkoutViewModel.updateCustomerSession(session)
+        }
+        if (refreshTokenResult is Resource.Error) {
+            checkoutViewModel.deleteCustomerSession()
+            navigateToLoginScreen()
+        }
+    }
 
     if (backDialogState) {
         BaseModalBottomSheet(
@@ -81,6 +189,228 @@ fun CheckoutScreen(
         )
     }
 
+    if (addItemDialogState && vendorDetailResult is Resource.Success) {
+        ModalBottomSheet(
+            onDismissRequest = { addItemDialogState = false },
+            dragHandle = {},
+            sheetState = SheetState(skipPartiallyExpanded = true),
+            shape = RectangleShape,
+            modifier = Modifier
+                .navigationBarsPadding()
+                .fillMaxHeight(),
+            containerColor = MaterialTheme.colorScheme.background
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = { addItemDialogState = false }
+                    ) {
+                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                    Text(
+                        text = "Tambah Item",
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
+            Text(
+                text = "List Jajanan",
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 16.dp)
+                    .background(MaterialTheme.colorScheme.background)
+            )
+            LazyColumn {
+                items(items = vendorDetailResult.data.jajanItems, key = { it.id }) {
+                    CustomerVendorJajanItem(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .clickable {
+                                checkoutViewModel.addCheckoutList(it)
+                                addItemDialogState = false
+                            },
+                        jajan = it,
+                    )
+                }
+            }
+        }
+    }
+
+    // PaymentDialog
+    if (paymentDialogState && vendorDetailResult is Resource.Success && checkoutList.isNotEmpty()) {
+        ModalBottomSheet(
+            onDismissRequest = { paymentDialogState = false },
+            dragHandle = {},
+            sheetState = SheetState(skipPartiallyExpanded = true),
+            shape = RectangleShape,
+            modifier = Modifier
+                .navigationBarsPadding()
+                .fillMaxHeight(),
+            containerColor = MaterialTheme.colorScheme.background
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.primaryContainer)
+                    .fillMaxWidth()
+            ) {
+                Row(
+                    modifier = Modifier.padding(horizontal = 4.dp, vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    IconButton(
+                        onClick = { paymentDialogState = false }
+                    ) {
+                        Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                    Text(
+                        text = "Detail Transaksi",
+                        modifier = Modifier.padding(horizontal = 4.dp),
+                        style = MaterialTheme.typography.titleLarge
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier
+                    .padding(16.dp, 24.dp),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .clip(CircleShape)
+                            .size(120.dp)
+                            .background(MaterialTheme.colorScheme.primaryContainer)
+                    ) {
+                        AsyncImage(
+                            model = vendorDetailResult.data.image,
+                            contentDescription = null,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .size(120.dp),
+                            placeholder = painterResource(id = R.drawable.ic_jajan_mania_48),
+                            error = painterResource(id = R.drawable.ic_jajan_mania_48),
+                        )
+                    }
+                    Text(
+                        text = vendorDetailResult.data.name,
+                        style = MaterialTheme.typography.headlineSmall
+                    )
+                }
+                Text(text = "Rincian", style = MaterialTheme.typography.titleMedium)
+                LazyColumn {
+                    items(checkoutList.distinctBy { it.id }) {
+                        CustomerJajanTransactionItem(
+                            jajan = it,
+                            count = checkoutList.filter { item -> item.id == it.id }.size
+                        )
+                    }
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 8.dp)
+                                .padding(start = 64.dp, end = 80.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Text(
+                                text = "Total",
+                                style = MaterialTheme.typography.titleMedium,
+                                modifier = Modifier.weight(1f)
+                            )
+                            Text(
+                                text = totalPrice.toRupiah(),
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                        }
+                    }
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    BaseOutlinedButton(
+                        text = "Bayar Tunai",
+                        modifier = Modifier.weight(1f),
+                        onClicked = { processCashPaymentDialogState = true })
+                    BaseButton(
+                        text = "Bayar Non-Tunai",
+                        modifier = Modifier.weight(1f),
+                        onClicked = {
+                            if (balance < totalPrice) {
+                                lowBalanceDialogState = true
+                            } else {
+                                eWalletPaymentSuccessDialogState = true
+                            }
+                        })
+                }
+            }
+        }
+        if (lowBalanceDialogState) {
+            BaseModalBottomSheet(
+                title = "Yah, Saldo Tidak Cukup",
+                body = "Top-up dulu yuk biar saldo kamu cukup",
+                positiveButtonTitle = "Top Up",
+                onPositiveButtonClicked = {
+                    lowBalanceDialogState = false
+                    navigateToTopUpScreen()
+                },
+                negativeButtonTitle = "Tutup",
+                onNegativeButtonClicked = { lowBalanceDialogState = false }
+            )
+        }
+
+        if (eWalletPaymentSuccessDialogState) {
+            BaseModalBottomSheet(
+                title = "Pembayaran Sukses!",
+                body = "Yeay, terima kasih telah bertransaksi",
+                positiveButtonTitle = "Lanjut",
+                onPositiveButtonClicked = {
+                    eWalletPaymentSuccessDialogState = false
+                    navigateToHomeScreen()
+                }
+            )
+        }
+
+        if (processCashPaymentDialogState) {
+            BaseModalBottomSheet(
+                title = "Apakah Anda Yakin Bayar Tunai?",
+                body = "Siapkan uang sesuai jumlah, ya!",
+                positiveButtonTitle = "Lanjut",
+                onPositiveButtonClicked = {
+                    processCashPaymentDialogState = false
+                    cashPaymentSuccessDialogState = true
+                },
+                negativeButtonTitle = "Tutup",
+                onNegativeButtonClicked = { processCashPaymentDialogState = false }
+            )
+        }
+
+        if (cashPaymentSuccessDialogState) {
+            BaseModalBottomSheet(
+                title = "Pembayaran Sukses!",
+                body = "Yeay, terima kasih telah bertransaksi",
+                positiveButtonTitle = "Lanjut",
+                onPositiveButtonClicked = {
+                    cashPaymentSuccessDialogState = false
+                    navigateToHomeScreen()
+                })
+        }
+    }
 
     BackHandler {
         backDialogState = true
@@ -90,10 +420,7 @@ fun CheckoutScreen(
         topBar = {
             DetailTopAppBar(
                 title = "Keranjang",
-                onNavigationClicked = { backDialogState = true },
-                actions = {
-
-                }
+                onNavigationClicked = { backDialogState = true }
             )
         },
         modifier = modifier
@@ -113,7 +440,7 @@ fun CheckoutScreen(
                         .padding(horizontal = 20.dp, vertical = 16.dp)
                 )
             }
-            if (listJajanan.isEmpty()) {
+            if (checkoutList.isEmpty()) {
                 item {
                     EmptyContentState(
                         modifier = Modifier.padding(start = 20.dp, top = 8.dp, end = 20.dp),
@@ -122,19 +449,22 @@ fun CheckoutScreen(
                     )
                 }
             }
-            items(items = mappedJajanan.entries.toList(), key = { it.key.id }) {
+            items(
+                items = checkoutList.distinctBy { it.id },
+                key = { it.id }
+            ) { jajanItem ->
                 CustomerJajanCheckoutItem(
-                    jajan = it.key,
-                    count = it.value,
+                    jajan = jajanItem,
+                    count = checkoutList.filter { item -> item.id == jajanItem.id }.size,
                     onClick = {},
-                    onDecreaseClicked = onDecreaseClicked,
-                    onIncreaseClicked = onIncreaseClicked,
+                    onDecreaseClicked = { checkoutViewModel.removeCheckoutList(jajanItem) },
+                    onIncreaseClicked = { checkoutViewModel.addCheckoutList(jajanItem) },
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .animateItemPlacement()
                 )
             }
-            if (listJajanan.isNotEmpty()) {
+            if (checkoutList.isNotEmpty()) {
                 item {
                     CustomerTotalTransactionFooter(
                         totalPrice = totalPrice.toInt()
@@ -147,7 +477,8 @@ fun CheckoutScreen(
                     text = "Tambah Item",
                     modifier = Modifier.padding(horizontal = 16.dp),
                     containerColor = Color(0xFF343434),
-                    onClicked = navigationToAddItemScreen
+                    onClicked = { addItemDialogState = true },
+                    enabled = vendorDetailResult is Resource.Success,
                 )
             }
             item {
@@ -155,64 +486,9 @@ fun CheckoutScreen(
                     text = "Proses Pesanan",
                     modifier = Modifier.padding(horizontal = 16.dp),
                     enabled = buttonProcessEnabled,
-                    onClicked = navigationToProcessTransactionScreen
+                    onClicked = { paymentDialogState = true }
                 )
             }
-        }
-
-    }
-}
-
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
-@Preview
-@Composable
-fun PreviewEmptyCheckoutScreen() {
-    JajanManiaTheme {
-        Surface {
-            CheckoutScreen()
-        }
-    }
-}
-
-@ExperimentalMaterial3Api
-@ExperimentalFoundationApi
-@Preview
-@Composable
-fun PreviewFilledCheckoutScreen() {
-    val listJajanan: List<Jajan> by remember {
-        mutableStateOf(listOf(
-            Jajan(
-                id = "1",
-                vendorId = "1",
-                name = "Soto",
-                category = "Makanan Kuah",
-                price = 120000L,
-                image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-            ),
-            Jajan(
-                id = "2",
-                vendorId = "1",
-                name = "Batagor Isi 7",
-                category = "Tahu Isi",
-                price = 10000L,
-                image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-            ),
-            Jajan(
-                id = "1",
-                vendorId = "1",
-                name = "Soto",
-                category = "Makanan Kuah",
-                price = 120000L,
-                image = "https://s3-alpha-sig.figma.com/img/ea05/3764/2661ba0b6775ad6979528ee40a14bf91?Expires=1698019200&Signature=lDl-emDvDcVC4UBNMIT8jVSgUDwMVk--HpFp-Ht4MFuDCqOsaxEztHdJcwxTyZOTgexT0dm2Pemi4mgBHPc2AshwxIgb91RpzxRoTuLAxuGHVuQns~gWBfR2T4gamf4MrUbRBIC5EuMAOYi7DryHgIeQCENX0lv90rQYwmv3LggKDsJEJ1ZP5ZqytJKfN~cI5teLgalDBws1ZBmh3JIgZuo-vqui7xsJ8FwxKHU~3TJsbsOj9tuBXhsV3Ro3XAmAOeDQIsszjyTxXSh40qqzS7xNChg0A6T2qsWilW2~EwZQ0gFDzxwXMnOZSv08s6ipIEyouLMTowlCQewhjMVP5Q__&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4"
-            )
-        ))
-    }
-    JajanManiaTheme {
-        Surface {
-            CheckoutScreen(
-                listJajanan = listJajanan
-            )
         }
     }
 }

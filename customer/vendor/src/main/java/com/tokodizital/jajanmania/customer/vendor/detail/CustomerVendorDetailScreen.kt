@@ -50,7 +50,7 @@ fun CustomerVendorDetailScreen(
     modifier: Modifier = Modifier,
     customerVendorDetailViewModel: CustomerVendorDetailViewModel = koinViewModel(),
     navigateUp: () -> Unit = {},
-    navigateToCheckoutScreen: () -> Unit = {},
+    navigateToCheckoutScreen: (String) -> Unit = {},
     navigateToLoginScreen: () -> Unit = {},
 ) {
     val context = LocalContext.current
@@ -124,8 +124,8 @@ fun CustomerVendorDetailScreen(
                 BaseButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = stringResource(R.string.label_buy),
-                    onClicked = navigateToCheckoutScreen,
-                    enabled = vendorDetailResult is Resource.Success && vendorDetailResult.data.jajanItems.isNotEmpty()
+                    onClicked = { navigateToCheckoutScreen(customerVendorDetailViewModel.vendorId) },
+                    enabled = vendorDetailResult is Resource.Success && vendorDetailResult.data.jajanItems.isNotEmpty() && vendorDetailResult.data.status == "ON"
                 )
             }
         }

@@ -65,7 +65,8 @@ class HomeViewModel(
             customerUseCase.getNearbyVendors(
                 latitude = latitude,
                 longitude = longitude,
-                token = token
+                token = token,
+                pageSize = 20
             ).collect { result ->
                 _customerHomeUiState.update {
                     it.copy(

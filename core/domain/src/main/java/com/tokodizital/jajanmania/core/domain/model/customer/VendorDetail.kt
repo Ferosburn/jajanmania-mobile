@@ -5,7 +5,8 @@ data class VendorDetail(
     val name: String = "",
     val description: String = "",
     val image: String = "",
-    val jajanItems: List<JajanItem> = listOf()
+    val jajanItems: List<JajanItem> = listOf(),
+    val status: String = ""
 )
 
 data class JajanItem(

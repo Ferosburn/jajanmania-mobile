@@ -8,7 +8,7 @@ fun CustomerTransactionHistoryResponse.toResult(): CustomerTransaction {
     val transaction = data?.transactionHistories?.firstOrNull()
     return CustomerTransaction(
         transactionId = transaction?.id ?: "",
-        vendorName = transaction?.transactionItems?.firstOrNull()?.jajanItems?.vendor?.name ?: "",
+        vendorName = transaction?.transactionItems?.firstOrNull()?.jajanItems?.vendor?.jajanName ?: "",
         vendorImage = transaction?.transactionItems?.firstOrNull()?.jajanItems?.vendor?.image ?: "",
         paymentMethod = transaction?.paymentMethod ?: "",
         totalPrice = transaction?.transactionItems?.sumOf {
