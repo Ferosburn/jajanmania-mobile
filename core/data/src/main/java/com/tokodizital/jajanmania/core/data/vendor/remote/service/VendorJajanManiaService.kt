@@ -5,6 +5,7 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.request.AddJajanReques
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.RegisterRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
@@ -22,8 +23,6 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.response.transaction.T
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.DELETE
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Multipart
@@ -40,20 +39,9 @@ interface VendorJajanManiaService {
         @Body loginRequest: LoginRequest
     ): NetworkResponse<LoginResponse, CommonErrorResponse>
 
-    @FormUrlEncoded
     @POST("authentications/vendors/register?method=email_and_password")
     suspend fun register(
-        @Field("fullName") fullName: String,
-        @Field("username") username: String,
-        @Field("email") email: String,
-        @Field("gender") gender: String,
-        @Field("password") password: String,
-        @Field("address") address: String = "",
-        @Field("lastLatitude") lastLatitude: Double = 0.0,
-        @Field("lastLongitude") lastLongitude: Double = 0.0,
-        @Field("jajanImageUrl") jajanImageUrl: String = "",
-        @Field("jajanName") jajanName: String = "",
-        @Field("jajanDescription") jajanDescription: String = "",
+        @Body registerRequest: RegisterRequest
     ): NetworkResponse<RegisterResponse, CommonErrorResponse>
 
     @GET("transaction-histories")

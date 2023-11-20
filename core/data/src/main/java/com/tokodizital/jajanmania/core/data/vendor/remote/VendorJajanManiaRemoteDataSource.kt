@@ -7,6 +7,7 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutDataSess
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenSessionRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.RegisterRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
@@ -44,7 +45,14 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
         gender: String,
         password: String
     ): NetworkResponse<RegisterResponse, CommonErrorResponse> {
-        return service.register(fullName, username, email, gender, password)
+        val registerRequest = RegisterRequest(
+            fullName = fullName,
+            username = username,
+            email = email,
+            gender = gender,
+            password = password
+        )
+        return service.register(registerRequest)
     }
 
     suspend fun getTransactionHistory(
