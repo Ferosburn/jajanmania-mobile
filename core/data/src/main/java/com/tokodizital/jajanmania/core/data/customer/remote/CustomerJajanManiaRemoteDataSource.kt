@@ -21,8 +21,8 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerRes
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerTransactionHistoryResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorJajanItemsResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
+//import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
+//import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.subscription.MySubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.vendor.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse

@@ -194,7 +194,7 @@ fun NavHostCustomer(
         ) {
             CustomerVendorDetailScreen(
                 navigateUp = navController::navigateUp,
-                navigateToCheckoutScreen = { navController.navigateToCheckoutScreen(false) },
+                navigateToCheckoutScreen = navController::navigateToCheckoutScreen,
                 navigateToLoginScreen = navController::navigateToCustomerLoginScreen
             )
         }
