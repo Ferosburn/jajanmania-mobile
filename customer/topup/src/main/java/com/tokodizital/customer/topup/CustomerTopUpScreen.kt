@@ -1,5 +1,6 @@
 package com.tokodizital.customer.topup
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,50 +13,110 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.common.utils.toRupiah
+import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseOutlinedButton
 import com.tokodizital.jajanmania.ui.components.textfields.BaseOutlinedTextField
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
+import org.koin.androidx.compose.koinViewModel
 
 @ExperimentalMaterial3Api
 @Composable
 fun CustomerTopUpScreen(
     modifier: Modifier = Modifier,
+    customerTopUpViewModel: CustomerTopUpViewModel = koinViewModel(),
     navigateUp: () -> Unit = {},
     navigateToHomeScreen: () -> Unit = {},
+    navigateToLoginScreen: () -> Unit = {},
 ) {
-    var nominal by remember { mutableStateOf("") }
-    var xenditUrl by remember { mutableStateOf("https://checkout-staging.xendit.co/v2/653f5520a28e64aad3b36253") }
+    val context = LocalContext.current
+    val customerTopUpUiState by customerTopUpViewModel.customerTopUpUiState.collectAsState()
+    val topUpButtonIsLoading by customerTopUpViewModel.topUpButtonIsLoading.collectAsState(false)
+    val customerSession = customerTopUpUiState.customerSession
+    val topUp = customerTopUpUiState.topUpResult
+    val refreshToken = customerTopUpUiState.refreshToken
+
+    var token by remember { mutableStateOf("") }
+    var userId by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf("") }
+
+    var xenditUrl by remember { mutableStateOf("") }
+
     val listOfNominal: List<Long> = remember {
         listOf(20_000L, 50_000L, 100_000L, 200_000L, 300_000L, 500_000L)
     }
     val uriHandler = LocalUriHandler.current
 
-    val onNominalButtonClick: (Long) -> Unit = { value ->
-        nominal = value.toString()
+    LaunchedEffect(key1 = Unit) {
+        customerTopUpViewModel.getCustomerSession()
     }
 
-    val onTopUpButtonClick: () -> Unit = {
-        // TODO: send the user id and nominal to server and get the xendit URL,
-        //       then set the URL to xenditURL variable
-        navigateToHomeScreen()
-        uriHandler.openUri(xenditUrl)
+    LaunchedEffect(key1 = customerSession) {
+        if (customerSession is Resource.Success) {
+            val session = customerSession.data
+            token = session.accessToken
+            userId = session.accountId
+        }
+    }
+
+    LaunchedEffect(key1 = topUp) {
+        if (topUp is Resource.Error && customerSession is Resource.Success) {
+            val session = customerSession.data
+            customerTopUpViewModel.refreshToken(
+                accountId = session.accountId,
+                accountType = session.accountType,
+                accessToken = session.accessToken,
+                refreshToken = session.refreshToken,
+                expiredAt = session.expiredAt,
+                firebaseToken = session.firebaseToken,
+            )
+        }
+        if (topUp is Resource.Success) {
+            xenditUrl = topUp.data.redirectUrl
+            uriHandler.openUri(xenditUrl)
+            navigateToHomeScreen()
+        }
+    }
+
+    LaunchedEffect(key1 = refreshToken) {
+        if (refreshToken is Resource.Success
+            && topUp is Resource.Error
+        ) {
+            Toast.makeText(context, "Ada kesalahan aplikasi", Toast.LENGTH_SHORT).show()
+        } else if (refreshToken is Resource.Success) {
+            val session = refreshToken.data
+            customerTopUpViewModel.topUp(token, userId, amount)
+            customerTopUpViewModel.updateCustomerSession(session)
+        }
+        if (refreshToken is Resource.Error) {
+            customerTopUpViewModel.deleteCustomerSession()
+            navigateToLoginScreen()
+        }
+    }
+
+    val onNominalButtonClick: (Long) -> Unit = { value ->
+        amount = value.toString()
     }
 
     Scaffold(
@@ -71,8 +132,13 @@ fun CustomerTopUpScreen(
                 BaseButton(
                     modifier = Modifier.fillMaxWidth(),
                     text = "Top Up",
-                    onClicked = onTopUpButtonClick,
-                    enabled = (if (nominal.isNotBlank()) nominal.toLong() >= 5000L else nominal.isNotBlank())
+                    onClicked = {
+                        customerTopUpViewModel.topUp(
+                            token, userId, amount
+                        )
+                    },
+                    enabled = (if (amount.isNotBlank()) amount.toLong() >= 5000L else amount.isNotBlank()),
+                    isLoading = topUpButtonIsLoading
                 )
             }
         }
@@ -101,10 +167,13 @@ fun CustomerTopUpScreen(
             Spacer(modifier = modifier.height(16.dp))
             BaseOutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = nominal,
+                value = amount,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                ),
                 onValueChanged = { value ->
                     if (value.isNotEmpty()) {
-                        nominal = value.filter { it.isDigit() }
+                        amount = value.filter { it.isDigit() }
                     }
                 },
                 prefix = { Text(text = "Rp") },

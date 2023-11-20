@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.navigation.customer
 
 import androidx.navigation.NavHostController
+import com.tokodizital.jajanmania.navigation.app.AppScreen
 
 @Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToRegisterScreen() {
@@ -8,9 +9,9 @@ fun NavHostController.navigateToRegisterScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToLoginScreen(
+fun NavHostController.navigateToCustomerLoginScreen(
     clearBackStack: Boolean = true,
-    route: String = CustomerScreens.Login.route
+    route: String = AppScreen.LoginOption.route
 ) {
     navigate(CustomerScreens.Login.route) {
         if (clearBackStack) {
@@ -22,7 +23,7 @@ fun NavHostController.navigateToLoginScreen(
 @Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToHomeScreen(
     clearBackStack: Boolean = true,
-    route: String = CustomerScreens.Login.route
+    route: String = AppScreen.SplashScreen.route
 ) {
     navigate(CustomerScreens.Home.route) {
         if (clearBackStack) {
@@ -84,8 +85,8 @@ fun NavHostController.navigateToTransactionHistoryScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToTransactionDetailScreen() {
-    navigate(CustomerScreens.TransactionDetail.route)
+fun NavHostController.navigateToTransactionDetailScreen(transactionId: String) {
+    navigate(CustomerScreens.TransactionDetail.buildRoute(transactionId))
 }
 
 @Throws(IllegalArgumentException::class)
@@ -111,10 +112,8 @@ fun NavHostController.navigateToNearbyVendorScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToNearbyVendorDetailScreen(
-    vendorId: String
-) {
-    navigate("${ CustomerScreens.NearbyVendorDetail.route }/$vendorId")
+fun NavHostController.navigateToNearbyVendorDetailScreen(vendorId: String) {
+    navigate(CustomerScreens.NearbyVendorDetail.buildRoute(vendorId))
 }
 
 @Throws(IllegalArgumentException::class)

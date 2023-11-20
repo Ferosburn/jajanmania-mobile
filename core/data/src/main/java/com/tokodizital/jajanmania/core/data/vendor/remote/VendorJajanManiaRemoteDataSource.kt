@@ -1,20 +1,28 @@
 package com.tokodizital.jajanmania.core.data.vendor.remote
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.AddJajanRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutDataSessionRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenSessionRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RegisterResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.UploadPictureResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.VendorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.transaction.TransactionHistoryResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.service.VendorJajanManiaService
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
 class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaService) {
 
@@ -105,6 +113,51 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
             authorization,
             whereParams,
             includeParams
+        )
+    }
+
+    suspend fun postAddJajan(
+        token: String,
+        vendorId: String,
+        categoryId: String,
+        name: String,
+        price: Int,
+        imageUrl: String,
+    ): NetworkResponse<AddJajanItemResponse, CommonErrorResponse> {
+        val authorization = "Bearer $token"
+        val jajanRequest = AddJajanRequest(
+            categoryId = categoryId,
+            vendorId = vendorId,
+            name = name,
+            price = price,
+            imageUrl = imageUrl,
+        )
+        return service.postAddJajan(authorization,jajanRequest)
+    }
+
+    suspend fun postPicture(
+        token: String,
+        imageFile: File
+    ): NetworkResponse<UploadPictureResponse, CommonErrorResponse> {
+        val authorization = "Bearer $token"
+        val requestImageFile = imageFile.asRequestBody("image/jpeg".toMediaType())
+        val imagePart = MultipartBody.Part.createFormData("picture", imageFile.name, requestImageFile)
+        return service.postImage(
+            authorization,
+            imagePart
+        )
+    }
+
+    suspend fun getCategories(
+        token: String,
+        pageNumber: Int,
+        pageSize: Int,
+    ) : NetworkResponse<CategoriesResponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.getCategories(
+            token = bearerToken,
+            pageNumber = pageNumber,
+            pageSize = pageSize,
         )
     }
 

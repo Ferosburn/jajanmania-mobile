@@ -34,7 +34,6 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 import kotlinx.coroutines.FlowPreview
 import org.koin.androidx.compose.koinViewModel
 
-@FlowPreview
 @ExperimentalFoundationApi
 @ExperimentalMaterial3Api
 @Composable

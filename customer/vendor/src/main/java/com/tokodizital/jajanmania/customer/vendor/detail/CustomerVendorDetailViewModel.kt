@@ -21,7 +21,7 @@ class CustomerVendorDetailViewModel(
 
     private val _customerVendorDetailUiState = MutableStateFlow(CustomerVendorDetailUiState())
     val customerVendorDetailUiState: StateFlow<CustomerVendorDetailUiState> get() = _customerVendorDetailUiState
-    val vendorId: String = checkNotNull(savedStateHandle["vendorId"])
+    val vendorId: String = savedStateHandle["vendorId"] ?: ""
 
     fun getVendorDetail(vendorId: String, token: String) {
         viewModelScope.launch {

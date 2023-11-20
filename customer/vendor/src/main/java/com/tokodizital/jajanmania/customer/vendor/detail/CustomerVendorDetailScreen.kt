@@ -1,13 +1,13 @@
 package com.tokodizital.jajanmania.customer.vendor.detail
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
@@ -142,14 +143,23 @@ fun CustomerVendorDetailScreen(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.placeholder),
-                            contentDescription = vendorDetailResult.data.name,
+                        Box(
                             modifier = Modifier
-                                .size(120.dp, 120.dp)
-                                .clip(CircleShape),
-                            contentScale = ContentScale.Crop
-                        )
+                                .clip(CircleShape)
+                                .size(120.dp)
+                                .background(MaterialTheme.colorScheme.primaryContainer),
+                        ) {
+                            AsyncImage(
+                                model = vendorDetailResult.data.image,
+                                contentDescription = null,
+                                contentScale = ContentScale.Crop,
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .fillMaxSize(),
+                                placeholder = painterResource(id = R.drawable.ic_jajan_mania_48),
+                                error = painterResource(id = R.drawable.ic_jajan_mania_48)
+                            )
+                        }
                         Text(
                             text = vendorDetailResult.data.name,
                             style = MaterialTheme.typography.headlineSmall

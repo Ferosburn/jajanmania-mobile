@@ -13,5 +13,6 @@ data class JajanItem(
     val name: String = "",
     val price: Long = 0L,
     val imageUrl: String = "",
-    val category: String = ""
+    val category: String = "",
+    val quantity: Int = 0
 )

@@ -29,7 +29,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.tokodizital.jajanmania.common.data.Gender
+import com.tokodizital.jajanmania.common.utils.isValidEmail
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
@@ -108,7 +108,9 @@ fun ManageProfileScreen(
         manageProfileViewModel.updateErrorFullNameMessage(context.getString(errorMessage))
     }
     val onEmailChange: (String) -> Unit = { text ->
+        val errorMessage = if (text.isValidEmail()) R.string.empty else R.string.message_email_bad_format
         manageProfileViewModel.updateEmail(text)
+        manageProfileViewModel.updateErrorEmailMessage(context.getString(errorMessage))
     }
     val onAddressChange: (String) -> Unit = { text ->
         val errorMessage = if (text.isNotEmpty()) R.string.empty else R.string.message_address_required
@@ -259,8 +261,9 @@ fun ManageProfileScreen(
                         modifier = Modifier.fillMaxWidth(),
                         label = "Email",
                         placeholder = "Masukan email",
-                        enabled = false,
-                        type = BaseOutlinedTextFieldType.WithClearIcon
+                        enabled = true,
+                        type = BaseOutlinedTextFieldType.WithClearIcon,
+                        errorText = manageProfileUiState.errorEmailMessage
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     BaseOutlinedTextField(
@@ -341,6 +344,7 @@ fun ManageProfileScreen(
                         onClicked = {
                             manageProfileViewModel.updateCustomer(
                                 fullName = fullName,
+                                email = email,
                                 address = address,
                                 gender = genderCode,
                                 oldPassword = oldPassword,

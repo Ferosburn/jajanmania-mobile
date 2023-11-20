@@ -23,6 +23,7 @@ fun BaseOutlinedButton(
     onClicked: () -> Unit = {},
     borderColor: Color = MaterialTheme.colorScheme.outline,
     contentColor: Color = MaterialTheme.colorScheme.onBackground,
+    containerColor: Color = Color.Transparent,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     enabled: Boolean = true
 ) {
@@ -32,7 +33,8 @@ fun BaseOutlinedButton(
         enabled = enabled,
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = contentColor
+            contentColor = contentColor,
+            containerColor = containerColor
         ),
         contentPadding = contentPadding,
         border = BorderStroke(

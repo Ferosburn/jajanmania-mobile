@@ -1,24 +1,31 @@
 package com.tokodizital.jajanmania.core.data.vendor.remote.service
 
 import com.haroldadmin.cnradapter.NetworkResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.AddJajanRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LoginRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RefreshTokenResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.RegisterResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.UploadPictureResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.VendorResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.transaction.TransactionHistoryResponse
+import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -79,6 +86,28 @@ interface VendorJajanManiaService {
         @Query("include") include: String
     ): NetworkResponse<TransactionHistoryResponse, CommonErrorResponse>
 
+    @POST("files")
+    @Multipart
+    suspend fun postImage(
+        @Header("authorization") token: String,
+        @Part picture: MultipartBody.Part,
+    ): NetworkResponse<UploadPictureResponse, CommonErrorResponse>
+
+    @POST("jajan-items")
+    suspend fun postAddJajan(
+        @Header("authorization") token: String,
+        @Body addJajanRequest: AddJajanRequest
+    ): NetworkResponse<AddJajanItemResponse, CommonErrorResponse>
+
+
+    @GET("categories")
+    suspend fun getCategories(
+        @Header("Authorization") token: String,
+        @Query("page_number") pageNumber: Int = 1,
+        @Query("page_size") pageSize: Int = 100,
+        @Query("where") where: String? = null,
+        @Query("include") include: String? = null,
+    ): NetworkResponse<CategoriesResponse, CommonErrorResponse>
     @POST("authentications/vendors/logout")
     suspend fun logout(
         @Header("authorization") token: String,

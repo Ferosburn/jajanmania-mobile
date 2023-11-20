@@ -5,14 +5,17 @@ import com.tokodizital.jajanmania.core.data.customer.mapper.toDomain
 import com.tokodizital.jajanmania.core.data.customer.mapper.toResult
 import com.tokodizital.jajanmania.core.data.customer.remote.CustomerJajanManiaRemoteDataSource
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLogoutResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
+import com.tokodizital.jajanmania.core.domain.model.customer.TopUpResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorJajanItem
 import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.JajanItem
@@ -36,6 +39,38 @@ class CustomerRepositoryImpl(
             }
             is NetworkResponse.Error -> {
                 val errorMessage = loginResponse.body?.message ?: loginResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): Flow<Resource<CustomerLogoutResult>> = flow {
+        emit(Resource.Loading)
+        val logoutResponse = remoteDataSource.logout(
+            accountId,
+            accountType,
+            accessToken,
+            refreshToken,
+            expiredAt,
+            firebaseToken
+        )
+        when (logoutResponse) {
+            is NetworkResponse.Success -> {
+                val logoutResult = logoutResponse.body.toResult()
+                emit(Resource.Success(logoutResult))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage = logoutResponse.body?.message
+                    ?: logoutResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }
@@ -319,6 +354,7 @@ class CustomerRepositoryImpl(
     override suspend fun updateCustomerProfile(
         customerId: String,
         customerFullName: String,
+        customerEmail: String,
         customerGender: String,
         customerAddress: String,
         customerOldPassword: String,
@@ -327,7 +363,7 @@ class CustomerRepositoryImpl(
     ): Flow<Resource<Customer>> = flow {
         emit(Resource.Loading)
         val updateCustomerProfileResponse = remoteDataSource.updateCustomerProfile(
-            customerId, customerFullName, customerGender, customerAddress, customerOldPassword, customerNewPassword, token
+            customerId, customerFullName, customerEmail, customerGender, customerAddress, customerOldPassword, customerNewPassword, token
         )
 
         when (updateCustomerProfileResponse) {
@@ -337,6 +373,84 @@ class CustomerRepositoryImpl(
             }
             is NetworkResponse.Error -> {
                 val errorMessage = updateCustomerProfileResponse.body?.message ?: updateCustomerProfileResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<List<CustomerTransaction>>> = flow {
+        emit(Resource.Loading)
+        val transactionResponse = remoteDataSource.getTransactionHistory(
+            token = token,
+            userId = userId,
+            pageNumber = pageNumber,
+            pageSize = pageSize,
+        )
+        when (transactionResponse) {
+            is NetworkResponse.Success -> {
+                val response = transactionResponse.body.toDomain()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    transactionResponse.body?.message ?: transactionResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun getTransactionDetail(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<CustomerTransaction>> = flow {
+        emit(Resource.Loading)
+        val transactionDetailResponse = remoteDataSource.getTransactionDetail(
+            token = token,
+            transactionId = transactionId,
+        )
+        when (transactionDetailResponse) {
+            is NetworkResponse.Success -> {
+                val response = transactionDetailResponse.body.toResult()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    transactionDetailResponse.body?.message ?: transactionDetailResponse.error?.message
+                emit(Resource.Error(message = errorMessage.toString()))
+            }
+        }
+    }.catch {
+        emit(Resource.Error(message = it.message.toString()))
+    }
+
+    override suspend fun topUp(
+        token: String,
+        userId: String,
+        amount: String
+    ): Flow<Resource<TopUpResult>> = flow {
+        emit(Resource.Loading)
+        val topUpResponse = remoteDataSource.topUpCustomer(
+            token = token,
+            userId = userId,
+            amount = amount
+        )
+        when (topUpResponse) {
+            is NetworkResponse.Success -> {
+                val response = topUpResponse.body.toResult()
+                emit(Resource.Success(response))
+            }
+            is NetworkResponse.Error -> {
+                val errorMessage =
+                    topUpResponse.body?.message ?: topUpResponse.error?.message
                 emit(Resource.Error(message = errorMessage.toString()))
             }
         }

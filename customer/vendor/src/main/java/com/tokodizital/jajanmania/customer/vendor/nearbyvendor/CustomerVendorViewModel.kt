@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -13,7 +12,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-@FlowPreview
 class CustomerVendorViewModel(
     private val customerUseCase: CustomerUseCase,
     private val customerSessionUseCase: CustomerSessionUseCase

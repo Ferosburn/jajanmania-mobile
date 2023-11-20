@@ -1,14 +1,17 @@
 package com.tokodizital.jajanmania.core.domain.interactor
 
 import com.tokodizital.jajanmania.core.domain.model.Resource
-import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.Category
+import com.tokodizital.jajanmania.core.domain.model.customer.Customer
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerAccount
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLoginResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerLogoutResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRegisterResult
+import com.tokodizital.jajanmania.core.domain.model.customer.CustomerTransaction
 import com.tokodizital.jajanmania.core.domain.model.customer.NearbyVendorResult
 import com.tokodizital.jajanmania.core.domain.model.customer.SubscriptionResult
+import com.tokodizital.jajanmania.core.domain.model.customer.TopUpResult
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorDetail
 import com.tokodizital.jajanmania.core.domain.model.customer.VendorJajanItem
 import com.tokodizital.jajanmania.core.domain.model.vendor.transaction.JajanItem
@@ -25,6 +28,17 @@ class CustomerInteractor(
         password: String
     ): Flow<Resource<CustomerLoginResult>> {
         return customerRepository.login(email, password)
+    }
+
+    override suspend fun logout(
+        accountId: String,
+        accountType: String,
+        accessToken: String,
+        refreshToken: String,
+        expiredAt: String,
+        firebaseToken: String
+    ): Flow<Resource<CustomerLogoutResult>> {
+        return customerRepository.logout(accountId, accountType, accessToken, refreshToken, expiredAt, firebaseToken)
     }
 
     override suspend fun register(
@@ -90,6 +104,7 @@ class CustomerInteractor(
         token: String,
         id: String,
         fullName: String,
+        email: String,
         address: String,
         gender: String,
         oldPassword: String,
@@ -98,6 +113,7 @@ class CustomerInteractor(
         return customerRepository.updateCustomerProfile(
             customerId = id,
             customerFullName = fullName,
+            customerEmail = email,
             customerGender = gender,
             customerAddress = address,
             customerOldPassword = oldPassword,
@@ -138,6 +154,30 @@ class CustomerInteractor(
         categoryId: String
     ): Flow<Resource<SubscriptionResult>> {
         return customerRepository.unsubscribe(token, userId, categoryId)
+    }
+
+    override suspend fun getTransactionHistory(
+        token: String,
+        userId: String,
+        pageNumber: Int,
+        pageSize: Int
+    ): Flow<Resource<List<CustomerTransaction>>> {
+        return customerRepository.getTransactionHistory(token, userId, pageNumber, pageSize)
+    }
+
+    override suspend fun getTransactionDetail(
+        token: String,
+        transactionId: String
+    ): Flow<Resource<CustomerTransaction>> {
+        return customerRepository.getTransactionDetail(token, transactionId)
+    }
+
+    override suspend fun topUp(
+        token: String,
+        userId: String,
+        amount: String
+    ): Flow<Resource<TopUpResult>> {
+        return customerRepository.topUp(token, userId, amount)
     }
 
     override suspend fun getJajanItems(
