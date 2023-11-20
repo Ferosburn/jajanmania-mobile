@@ -102,6 +102,7 @@ fun NavHostCustomer(
             val listItems: List<JajanItem> by remember {
                 mutableStateOf(
                     listOf(
+
                         JajanItem(
                             id = "1",
                             name = "Soto",

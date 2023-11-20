@@ -7,10 +7,13 @@ import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutDataSess
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.LogoutRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.RefreshTokenSessionRequest
+import com.tokodizital.jajanmania.core.data.vendor.remote.request.RegisterRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.request.UpdateShopStatusRequest
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.AddJajanItemResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.CommonErrorResponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.DeleteJajanReponse
+import com.tokodizital.jajanmania.core.data.vendor.remote.response.JajanItemReponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.ListJajanResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LoginResponse
 import com.tokodizital.jajanmania.core.data.vendor.remote.response.LogoutResponse
@@ -42,7 +45,14 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
         gender: String,
         password: String
     ): NetworkResponse<RegisterResponse, CommonErrorResponse> {
-        return service.register(fullName, username, email, gender, password)
+        val registerRequest = RegisterRequest(
+            fullName = fullName,
+            username = username,
+            email = email,
+            gender = gender,
+            password = password
+        )
+        return service.register(registerRequest)
     }
 
     suspend fun getTransactionHistory(
@@ -189,7 +199,7 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
         pageSize: Int = 10,
     ): NetworkResponse<ListJajanResponse, CommonErrorResponse> {
         val authorization = "Bearer $token"
-        val whereParams = "%7B%22vendorId%22%3A%22$vendorId%22%7D"
+        val whereParams = "%7B%22AND%22%3A%5B%7B%22vendorId%22%3A%22$vendorId%22%7D%2C%7B%22deletedAt%22%3Anull%7D%5D%7D"
         val includeParams = "%7B%22category%22%3Atrue%7D"
         return service.getJajanItems(
             authorization,
@@ -197,6 +207,50 @@ class VendorJajanManiaRemoteDataSource(private val service: VendorJajanManiaServ
             pageSize,
             whereParams,
             includeParams
+        )
+    }
+
+    suspend fun updateJajan(
+        token: String,
+        vendorId: String,
+        categoryId: String,
+        name: String,
+        price: Int,
+        imageUrl: String,
+        jajanId: String,
+    ): NetworkResponse<AddJajanItemResponse, CommonErrorResponse> {
+        val authorization = "Bearer $token"
+        val jajanRequest = AddJajanRequest(
+            categoryId = categoryId,
+            vendorId = vendorId,
+            name = name,
+            price = price,
+            imageUrl = imageUrl,
+        )
+        return service.updateJajan(authorization,jajanRequest,jajanId)
+    }
+
+    suspend fun getJajanById(
+        token: String,
+        jajanId: String,
+    ) : NetworkResponse<JajanItemReponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.getJajanById(
+            token = bearerToken,
+            id = jajanId,
+        )
+    }
+
+    suspend fun deleteJajanById(
+        token: String,
+        jajanId: String,
+        method: String = "soft"
+    ) : NetworkResponse<DeleteJajanReponse, CommonErrorResponse> {
+        val bearerToken = "Bearer $token"
+        return service.deleteJajanById(
+            token = bearerToken,
+            id = jajanId,
+            method = method
         )
     }
 }
