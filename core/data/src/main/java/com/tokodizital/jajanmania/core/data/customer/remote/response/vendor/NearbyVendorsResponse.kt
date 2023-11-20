@@ -1,4 +1,4 @@
-package com.tokodizital.jajanmania.core.data.customer.remote.response
+package com.tokodizital.jajanmania.core.data.customer.remote.response.vendor
 
 import com.google.gson.annotations.SerializedName
 
@@ -16,18 +16,7 @@ data class NearbyVendorsData(
 
 data class NearbyVendor(
     @SerializedName("vendor")
-    val vendor: Vendor? = null,
+    val vendor: VendorDetail? = null,
     @SerializedName("distance")
     val distance: Double? = null,
-)
-
-data class Vendor(
-    @SerializedName("id")
-    val id: String? = null,
-    @SerializedName("jajan_name")
-    val name: String? = null,
-    @SerializedName("jajan_description")
-    val description: String? = null,
-    @SerializedName("jajan_image_url")
-    val image: String? = null,
 )

@@ -8,7 +8,6 @@ import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerRegi
 import com.tokodizital.jajanmania.core.data.customer.remote.request.CustomerUpdateProfileRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.SubscriptionRequest
 import com.tokodizital.jajanmania.core.data.customer.remote.request.TopUpRequest
-import com.tokodizital.jajanmania.core.data.customer.remote.response.CategoriesResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CommonErrorResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerAccountResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerLoginResponse
@@ -18,11 +17,12 @@ import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerReg
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerTransactionHistoryResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.CustomerUpdateResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.MySubscriptionResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.NearbyVendorsResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.SubscriptionResponse
 import com.tokodizital.jajanmania.core.data.customer.remote.response.TopUpResponse
-import com.tokodizital.jajanmania.core.data.customer.remote.response.VendorsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.subscription.CategoriesResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.subscription.MySubscriptionResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.vendor.NearbyVendorsResponse
+import com.tokodizital.jajanmania.core.data.customer.remote.response.vendor.VendorsResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

@@ -2,20 +2,15 @@ package com.tokodizital.jajanmania.customer.payment
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -32,17 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.tokodizital.jajanmania.common.utils.toRupiah
-import com.tokodizital.jajanmania.core.domain.model.Jajan
-import com.tokodizital.jajanmania.core.domain.model.TransactionItem
+import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
 import com.tokodizital.jajanmania.ui.components.bottomsheet.BaseModalBottomSheet
 import com.tokodizital.jajanmania.ui.components.buttons.BaseButton
 import com.tokodizital.jajanmania.ui.components.buttons.BaseOutlinedButton
+import com.tokodizital.jajanmania.ui.components.customer.CustomerJajanTransactionItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @ExperimentalMaterial3Api
@@ -51,20 +45,18 @@ fun PaymentDetailScreen(
     modifier: Modifier = Modifier,
     navigateUp: () -> Unit = {},
     navigateToHomeScreen: () -> Unit = {},
-    listJajanan: List<TransactionItem> = emptyList(),
+    listJajanan: List<JajanItem> = emptyList(),
     vendorName: String,
     balance: Long
 ) {
     var backDialogState by remember { mutableStateOf(false) }
     var lowBalanceDialogState by remember { mutableStateOf(false) }
-//    TODO: will be implemented for after the insert PIN dialog has been made
-//    var insertPinDialogState by remember { mutableStateOf(false) }
     var eWalletPaymentSuccessDialogState by remember { mutableStateOf(false) }
     var processCashPaymentDialogState by remember { mutableStateOf(false) }
     var cashPaymentSuccessDialogState by remember { mutableStateOf(false) }
 
     val totalPrice = remember(key1 = listJajanan) {
-        listJajanan.sumOf { it.jajan.price * it.amount }
+        listJajanan.sumOf { it.price * it.quantity }
     }
 
     if (backDialogState) {
@@ -92,10 +84,6 @@ fun PaymentDetailScreen(
             onNegativeButtonClicked = { lowBalanceDialogState = false }
         )
     }
-
-//    TODO: will be implemented for after the insert PIN dialog has been made
-//    if (insertPinDialogState) {
-//    }
 
     if (eWalletPaymentSuccessDialogState) {
         BaseModalBottomSheet(
@@ -153,7 +141,7 @@ fun PaymentDetailScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.placeholder),
+                    painter = painterResource(id = R.drawable.ic_jajan_mania_48),
                     contentDescription = "image",
                     modifier = Modifier
                         .size(120.dp, 120.dp)
@@ -165,60 +153,26 @@ fun PaymentDetailScreen(
             Text(text = "Rincian", style = MaterialTheme.typography.titleMedium)
             LazyColumn {
                 items(listJajanan) {
-                    Column {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .clip(CircleShape)
-                                    .width(48.dp)
-                                    .height(48.dp)
-                                    .background(MaterialTheme.colorScheme.primaryContainer)
-                            )
-                            Text(
-                                text = it.jajan.name,
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = it.jajan.price.toRupiah(),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                            Text(
-                                text = it.amount.toString(),
-                                style = MaterialTheme.typography.titleSmall,
-                                modifier = Modifier.width(64.dp),
-                                textAlign = TextAlign.Center
-                            )
-                        }
-                        Divider()
-                    }
+                    CustomerJajanTransactionItem(jajan = it, count = it.quantity)
                 }
                 item {
-                    Column {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(vertical = 8.dp)
-                                .padding(start = 64.dp, end = 80.dp),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            Text(
-                                text = "Total",
-                                style = MaterialTheme.typography.titleMedium,
-                                modifier = Modifier.weight(1f)
-                            )
-                            Text(
-                                text = totalPrice.toRupiah(),
-                                style = MaterialTheme.typography.titleSmall
-                            )
-                        }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp)
+                            .padding(start = 64.dp, end = 80.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Text(
+                            text = "Total",
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Text(
+                            text = totalPrice.toRupiah(),
+                            style = MaterialTheme.typography.titleSmall
+                        )
                     }
                 }
             }
@@ -250,31 +204,25 @@ fun PaymentDetailScreenPreview() {
         Surface {
             val vendorName by remember { mutableStateOf("Batagor Bang Tigor") }
             val balance by remember { mutableLongStateOf(20000L) }
-            val listItems: List<TransactionItem> by remember {
+            val listItems: List<JajanItem> by remember {
                 mutableStateOf(
                     listOf(
-                        TransactionItem(
-                            jajan = Jajan(
-                                id = "1",
-                                vendorId = "1",
-                                name = "Soto",
-                                category = "Kuah",
-                                price = 10000L,
-                                image = ""
-                            ),
-                            amount = 1
+                        JajanItem(
+                            id = "1",
+                            name = "Soto",
+                            category = "Kuah",
+                            price = 10000L,
+                            imageUrl = "",
+                            quantity = 1
                         ),
-                        TransactionItem(
-                            jajan = Jajan(
-                                id = "1",
-                                vendorId = "1",
-                                name = "Batagor",
-                                category = "Kering",
-                                price = 14000L,
-                                image = "",
-                            ),
-                            amount = 2
-                        )
+                        JajanItem(
+                            id = "2",
+                            name = "Batagor",
+                            category = "Kering",
+                            price = 14000L,
+                            imageUrl = "",
+                            quantity = 2
+                        ),
                     )
                 )
             }

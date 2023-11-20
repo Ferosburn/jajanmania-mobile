@@ -21,18 +21,23 @@ import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
 fun ProfileInfoCard(
+    modifier: Modifier = Modifier,
     name: String,
     subtext1: String,
     subtext2: String,
-    level: String
+    level: String,
+    isShowPhoto: Boolean = true
 ) {
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CircleImageCard(
-            90,
-            painterResource(id = R.drawable.placeholder)
-        )
+        if (isShowPhoto) {
+            CircleImageCard(
+                90,
+                painterResource(id = R.drawable.placeholder)
+            )
+        }
         Column(
             modifier = Modifier
                 .padding(start = 12.dp),
@@ -68,13 +73,12 @@ fun ProfileInfoCard(
 private fun Preview() {
     JajanManiaTheme {
         Surface {
-            var profileName = rememberSaveable { mutableStateOf("Elon Musk") }
-            var profileUsername = rememberSaveable { mutableStateOf("@username") }
-            var profileEmail = rememberSaveable { mutableStateOf("ElonMusk@twitter.com") }
-            var profileLevel = rememberSaveable { mutableStateOf("Level 1") }
-
-
+            val profileName = rememberSaveable { mutableStateOf("Elon Musk") }
+            val profileUsername = rememberSaveable { mutableStateOf("@username") }
+            val profileEmail = rememberSaveable { mutableStateOf("ElonMusk@twitter.com") }
+            val profileLevel = rememberSaveable { mutableStateOf("Level 1") }
             ProfileInfoCard(
+                Modifier,
                 profileName.value,
                 profileUsername.value,
                 profileEmail.value,

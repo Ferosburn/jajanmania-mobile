@@ -132,6 +132,7 @@ fun MySubscriptionScreen(
                 items(categories) { subscription ->
                     CategoryItemCard(
                         name = subscription.name,
+                        icon = subscription.icon,
                         isSubscribed = subscription.isSubscribed,
                         onSubscribeClick = {
                             subscriptionViewModel.subscribe(

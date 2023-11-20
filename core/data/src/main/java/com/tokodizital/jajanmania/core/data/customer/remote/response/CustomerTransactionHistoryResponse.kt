@@ -1,6 +1,7 @@
 package com.tokodizital.jajanmania.core.data.customer.remote.response
 
 import com.google.gson.annotations.SerializedName
+import com.tokodizital.jajanmania.core.data.customer.remote.response.vendor.JajanItem
 
 data class CustomerTransactionHistoryResponse(
     @SerializedName("message")

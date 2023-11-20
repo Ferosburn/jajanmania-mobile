@@ -1,17 +1,22 @@
 package com.tokodizital.jajanmania.customer.profile
 
 import android.widget.Toast
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.ExitToApp
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -36,7 +41,6 @@ import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.components.appbars.DetailTopAppBar
-import com.tokodizital.jajanmania.ui.components.buttons.BaseExtendedFloatingActionButton
 import com.tokodizital.jajanmania.ui.components.buttons.MenuButton
 import com.tokodizital.jajanmania.ui.components.cards.ProfileInfoCard
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
@@ -45,8 +49,8 @@ import org.koin.androidx.compose.koinViewModel
 @ExperimentalMaterial3Api
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = koinViewModel(),
     modifier: Modifier = Modifier,
+    profileViewModel: ProfileViewModel = koinViewModel(),
     onNavigationClick: () -> Unit = {},
     navigateToEditProfileScreen: () -> Unit = {},
     navigateToTransactionHistoryScreen: () -> Unit = {},
@@ -91,7 +95,7 @@ fun ProfileScreen(
     LaunchedEffect(key1 = customer) {
         if (customer is Resource.Success) {
             val data = customer.data
-            profileName= data.fullName
+            profileName = data.fullName
             profileEmail = data.email
             profileUsername = "@" + data.username
             profileLevel = "LEVEL 1"
@@ -141,18 +145,21 @@ fun ProfileScreen(
 
     InfoDialog(
         state = logoutDialog,
-        selection = InfoSelection(onPositiveClick = profileViewModel::logout,),
+        selection = InfoSelection(onPositiveClick = profileViewModel::logout),
         body = InfoBody.Default(
             bodyText = "Apakah yakin ingin keluar?"
         )
     )
 
     Scaffold(
-        topBar = { DetailTopAppBar(title = "Profile Customer", onNavigationClicked = onNavigationClick) },
+        topBar = {
+            DetailTopAppBar(
+                title = "Profile Customer",
+                onNavigationClicked = onNavigationClick
+            )
+        },
         modifier = modifier
     ) { paddingValues ->
-
-
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -160,31 +167,36 @@ fun ProfileScreen(
         ) {
             Column(
                 modifier = Modifier
-            ){
+            ) {
                 Row(
                     modifier = Modifier.padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceAround,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .weight(1F)
+                    ProfileInfoCard(
+                        Modifier.weight(1f),
+                        profileName,
+                        profileUsername,
+                        profileEmail,
+                        profileLevel,
+                        false
+                    )
+                    IconButton(
+                        onClick = navigateToEditProfileScreen,
                     ) {
-                        ProfileInfoCard(
-                            profileName,
-                            profileUsername,
-                            profileEmail,
-                            profileLevel
+                        Icon(
+                            Icons.Rounded.Edit,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .background(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    shape = CircleShape
+                                )
+                                .padding(8.dp),
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                    BaseExtendedFloatingActionButton(
-                        modifier = Modifier.size(50.dp),
-                        icon = R.drawable.ic_edit,
-                        text = "",
-                        onClick = navigateToEditProfileScreen
-                    )
                 }
-
                 Box(
                     modifier = Modifier
                 ) {
@@ -222,7 +234,7 @@ fun ProfileScreen(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_event_note),
                             menuTitle = "Ketentuan dan Privasi",
                             menuDescription = "",
-                            showEnter = true ,
+                            showEnter = true,
                             onClick = navigateToTermAndConditionScreen
                         )
 
