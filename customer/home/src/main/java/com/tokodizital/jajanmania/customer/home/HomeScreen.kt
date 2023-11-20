@@ -198,7 +198,7 @@ fun HomeScreen(
                     item {
                         HomeNearbyVendorSection(
                             modifier = Modifier.padding(horizontal = 16.dp),
-                            list = nearbyVendorResult.data.take(5),
+                            list = nearbyVendorResult.data.filter { it.status == "ON" && it.name.isNotEmpty()}.take(5),
                             onMoreClick = navigateToNearbyVendorScreen,
                             navigateToVendorDetailScreen = navigateToVendorDetailScreen
                         )

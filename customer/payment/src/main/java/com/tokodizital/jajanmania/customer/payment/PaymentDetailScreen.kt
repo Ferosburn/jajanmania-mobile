@@ -39,6 +39,7 @@ import com.tokodizital.jajanmania.ui.components.buttons.BaseOutlinedButton
 import com.tokodizital.jajanmania.ui.components.customer.CustomerJajanTransactionItem
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
+// Not in use
 @ExperimentalMaterial3Api
 @Composable
 fun PaymentDetailScreen(

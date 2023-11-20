@@ -1,8 +1,10 @@
-package com.tokodizital.jajanmania.customer.vendor.nearbyvendor
+package com.tokodizital.jajanmania.customer.cart.home
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
+import com.tokodizital.jajanmania.core.domain.model.customer.JajanItem
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,36 +14,51 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class CustomerVendorViewModel(
+class CheckoutViewModel(
+    savedStateHandle: SavedStateHandle,
     private val customerUseCase: CustomerUseCase,
     private val customerSessionUseCase: CustomerSessionUseCase
 ) : ViewModel() {
+    private val _checkoutUiState = MutableStateFlow(CheckoutUiState())
+    val checkoutUiState: StateFlow<CheckoutUiState> get() = _checkoutUiState
+    val vendorId: String = savedStateHandle["vendorId"] ?: ""
 
-    private val _customerVendorUiState = MutableStateFlow(CustomerVendorUiState())
-    val customerVendorUiState: StateFlow<CustomerVendorUiState> get() = _customerVendorUiState
-
-
-    fun getNearbyVendors(
-        latitude: Double,
-        longitude: Double,
-        pageNumber: Int,
+    fun getCustomerAccount(
         token: String,
+        userId: String
     ) {
         viewModelScope.launch {
-            customerUseCase.getNearbyVendors(
-                latitude = latitude,
-                longitude = longitude,
-                pageNumber = pageNumber,
-                pageSize = 20,
-                token = token
-            )
-                .collect { result ->
-                    _customerVendorUiState.update {
-                        it.copy(
-                            nearbyVendorsResult = result,
-                        )
-                    }
+            customerUseCase.getCustomerAccount(token, userId).collect { result ->
+                _checkoutUiState.update {
+                    it.copy(account = result)
                 }
+            }
+        }
+    }
+
+    fun addCheckoutList(item: JajanItem) {
+        _checkoutUiState.update {
+            val items = it.checkoutList + item
+            it.copy(checkoutList = items)
+        }
+    }
+
+    fun removeCheckoutList(item: JajanItem) {
+        _checkoutUiState.update {
+            val items = it.checkoutList - item
+            it.copy(checkoutList = items)
+        }
+    }
+
+    fun getVendorDetail(vendorId: String, token: String) {
+        viewModelScope.launch {
+            customerUseCase.getVendorDetail(vendorId, token).collect { result ->
+                _checkoutUiState.update {
+                    it.copy(
+                        vendorDetailResult = result
+                    )
+                }
+            }
         }
     }
 
@@ -50,7 +67,7 @@ class CustomerVendorViewModel(
             customerSessionUseCase.customerSession
                 .debounce(1000L)
                 .collectLatest { result ->
-                    _customerVendorUiState.update {
+                    _checkoutUiState.update {
                         it.copy(customerSession = result)
                     }
                 }
@@ -74,7 +91,7 @@ class CustomerVendorViewModel(
                 expiredAt = expiredAt,
                 firebaseToken = firebaseToken
             ).collectLatest { result ->
-                _customerVendorUiState.update {
+                _checkoutUiState.update {
                     it.copy(refreshTokenResult = result)
                 }
             }

@@ -9,19 +9,18 @@ sealed class CustomerScreens(val route: String) {
     object Register : CustomerScreens("customer-register")
     object Home : CustomerScreens("home")
     object EWallet : CustomerScreens("e-wallet")
-    object EWalletSetting : CustomerScreens("e-wallet-setting")
     object TopUp : CustomerScreens("top-up")
-    object ChangePin : CustomerScreens("change-pin")
     object NearbyVendor : CustomerScreens("nearby-vendor")
     object NearbyVendorDetail : CustomerScreens("nearby-vendor-detail/{$VENDOR_ID}") {
         fun buildRoute(vendorId: String): String {
             return "nearby-vendor-detail/$vendorId"
         }
     }
-    object Checkout : CustomerScreens("checkout")
-    object CheckoutAddItem : CustomerScreens("checkout-add-item")
-    object Payment : CustomerScreens("payment")
-    object PaymentDetail : CustomerScreens("payment-detail")
+    object Cart : CustomerScreens("cart/{$VENDOR_ID}") {
+        fun buildRoute(jajanItem: String): String {
+            return "cart/$jajanItem"
+        }
+    }
     object TransactionHistory : CustomerScreens("customer-transaction-history")
     object TransactionDetail : CustomerScreens("transaction-detail/{$TRANSACTION_ID}") {
         fun buildRoute(transactionId: String): String {

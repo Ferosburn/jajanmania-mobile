@@ -6,7 +6,6 @@ import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.customer.CustomerRefreshTokenResult
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerSessionUseCase
 import com.tokodizital.jajanmania.core.domain.usecase.CustomerUseCase
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -69,7 +68,6 @@ class ProfileViewModel(
     fun getCustomer(token: String, id: String) {
         viewModelScope.launch {
             customerUseCase.getCustomer(token, id).collect { result ->
-                delay(1000L)
                 _profileUiState.update {
                     it.copy(
                         customer = result

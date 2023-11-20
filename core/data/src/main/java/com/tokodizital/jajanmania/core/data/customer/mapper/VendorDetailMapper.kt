@@ -8,7 +8,9 @@ fun VendorsResponse.toDomain(): VendorDetail {
     val vendorDetail = data?.vendors?.firstOrNull()
     return VendorDetail(
         id = vendorDetail?.id ?: "",
-        name = vendorDetail?.name ?: "",
+        name = if (vendorDetail?.jajanName.isNullOrEmpty())
+            "Toko ${vendorDetail?.fullName ?: ""}"
+        else vendorDetail?.jajanName ?: "",
         description = vendorDetail?.description ?: "",
         image = vendorDetail?.image ?: "",
         jajanItems = vendorDetail?.jajanItems?.map { jajanItem ->
@@ -19,6 +21,7 @@ fun VendorsResponse.toDomain(): VendorDetail {
                 imageUrl = jajanItem.imageUrl ?: "",
                 category = jajanItem.category?.name ?: "",
             )
-        } ?: listOf()
+        } ?: listOf(),
+        status = vendorDetail?.status ?: ""
     )
 }

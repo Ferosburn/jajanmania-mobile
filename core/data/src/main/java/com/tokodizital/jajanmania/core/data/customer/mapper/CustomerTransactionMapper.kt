@@ -8,7 +8,7 @@ fun CustomerTransactionHistoryResponse.toDomain(): List<CustomerTransaction> {
     return data?.transactionHistories?.map { transaction ->
         CustomerTransaction(
             transactionId = transaction.id ?: "",
-            vendorName = transaction.transactionItems?.firstOrNull()?.jajanItems?.vendor?.name ?: "",
+            vendorName = transaction.transactionItems?.firstOrNull()?.jajanItems?.vendor?.jajanName ?: "",
             vendorImage = transaction.transactionItems?.firstOrNull()?.jajanItems?.vendor?.image ?: "",
             paymentMethod = transaction.paymentMethod ?: "",
             totalPrice = transaction.transactionItems?.sumOf {

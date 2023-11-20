@@ -50,16 +50,6 @@ fun NavHostController.navigateToEditProfileScreen() {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToPaymentScreen() {
-    navigate(CustomerScreens.Payment.route)
-}
-
-@Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToPaymentDetailScreen() {
-    navigate(CustomerScreens.PaymentDetail.route)
-}
-
-@Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToTopUpScreen() {
     navigate(CustomerScreens.TopUp.route)
 }
@@ -90,23 +80,6 @@ fun NavHostController.navigateToTransactionDetailScreen(transactionId: String) {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToEWalletSettingScreen(
-    clearBackStack: Boolean = true,
-    route: String = CustomerScreens.EWalletSetting.route
-) {
-    navigate(CustomerScreens.EWalletSetting.route) {
-        if (clearBackStack) {
-            popUpTo(route) { inclusive = true }
-        }
-    }
-}
-
-@Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToChangePinScreen() {
-    navigate(CustomerScreens.ChangePin.route)
-}
-
-@Throws(IllegalArgumentException::class)
 fun NavHostController.navigateToNearbyVendorScreen() {
     navigate(CustomerScreens.NearbyVendor.route)
 }
@@ -117,15 +90,20 @@ fun NavHostController.navigateToNearbyVendorDetailScreen(vendorId: String) {
 }
 
 @Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToCheckoutScreen(clearBackStack: Boolean = true, route: String = CustomerScreens.Checkout.route) {
-    navigate(CustomerScreens.Checkout.route) {
-        if (clearBackStack) {
-            popUpTo(route) { inclusive = true }
-        }
-    }
+fun NavHostController.navigateToCheckoutScreen(vendorId: String) {
+    navigate(CustomerScreens.Cart.buildRoute(vendorId))
 }
 
-@Throws(IllegalArgumentException::class)
-fun NavHostController.navigateToCheckoutAddItemScreen() {
-    navigate(CustomerScreens.CheckoutAddItem.route)
-}
+//@Throws(IllegalArgumentException::class)
+//fun NavHostController.navigateToCheckoutScreenFromCheckoutAddItemScreen(
+//    jajanItem: String,
+//    clearBackStack: Boolean = true,
+////    route: String = CustomerScreens.Checkout.route,
+//) {
+//    Log.i("TEST", "from add item")
+//    navigate(CustomerScreens.Checkout.buildRoute(jajanItem)) {
+//        if (clearBackStack) {
+//            popUpTo(CustomerScreens.Checkout.buildRoute(jajanItem)) { inclusive = true }
+//        }
+//    }
+//}

@@ -143,7 +143,7 @@ fun CustomerVendorScreen(
                         )
                     }
                 }
-                items(items = nearbyVendorsResult.data, key = { it.id }) {
+                items(items = nearbyVendorsResult.data.filter { it.status == "ON" }, key = { it.id }) {
                     CustomerNearbyVendorItem(
                         vendor = it,
                         onClick = onItemClick,
