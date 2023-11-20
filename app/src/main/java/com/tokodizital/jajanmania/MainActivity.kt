@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import com.tokodizital.jajanmania.core.data.di.dataModule
 import com.tokodizital.jajanmania.core.domain.di.domainModule
 import com.tokodizital.jajanmania.customer.auth.di.customerAuthModule
+import com.tokodizital.jajanmania.customer.cart.di.customerCartModule
 import com.tokodizital.jajanmania.customer.home.di.customerHomeModule
 import com.tokodizital.jajanmania.customer.profile.di.customerProfileModule
 import com.tokodizital.jajanmania.customer.subscription.di.customerSubscriptionModule
