@@ -4,6 +4,7 @@ sealed class VendorScreens(val route: String) {
 
     companion object {
         const val TRANSACTION_ID = "transactionId"
+        const val JAJAN_ID = "jajanId"
     }
 
     object Login : VendorScreens("login")
@@ -18,7 +19,11 @@ sealed class VendorScreens(val route: String) {
 
     object AddProduct : VendorScreens("add-product")
 
-    object EditProduct : VendorScreens("edit-product")
+    object EditProduct : VendorScreens("edit-product/{$JAJAN_ID}") {
+        fun buildRoute(jajanId: String): String {
+            return "edit-product/$jajanId"
+        }
+    }
 
     object Cashier : VendorScreens("cashier")
 

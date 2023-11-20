@@ -1,5 +1,6 @@
 package com.tokodizital.jajanmania.core.domain.repository
 
+import com.tokodizital.jajanmania.core.domain.model.Jajan
 import com.tokodizital.jajanmania.core.domain.model.Resource
 import com.tokodizital.jajanmania.core.domain.model.UploadPictureResult
 import com.tokodizital.jajanmania.core.domain.model.vendor.Category
@@ -93,4 +94,24 @@ interface VendorRepository {
         expiredAt: String
     ): Flow<Resource<LogoutResult>>
 
+    suspend fun updateJajan(
+        token: String,
+        id: String,
+        category: String,
+        name: String,
+        price: Int,
+        picture: String,
+        jajanId: String,
+    ): Flow<Resource<AddJajanItemResult>>
+
+
+    suspend fun getJajanbyId(
+        token: String,
+        jajanId: String
+    ) : Flow<Resource<Jajan>>
+
+    suspend fun deleteJajanbyId(
+        token: String,
+        jajanId: String
+    ) : Flow<Resource<String>>
 }

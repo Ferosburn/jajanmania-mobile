@@ -207,7 +207,7 @@ fun PaymentDetailScreenPreview() {
             val listItems: List<JajanItem> by remember {
                 mutableStateOf(
                     listOf(
-                        JajanItem(
+                      JajanItem(
                             id = "1",
                             name = "Soto",
                             category = "Kuah",

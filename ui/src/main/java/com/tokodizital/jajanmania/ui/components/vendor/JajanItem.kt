@@ -19,12 +19,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.tokodizital.jajanmania.common.utils.toRupiah
 import com.tokodizital.jajanmania.core.domain.model.Jajan
+import com.tokodizital.jajanmania.ui.R
 import com.tokodizital.jajanmania.ui.theme.JajanManiaTheme
 
 @Composable
@@ -42,25 +46,24 @@ fun JajanItem(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // TODO: This will use when integration will backend
-//            AsyncImage(
-//                model = jajan.image,
-//                contentDescription = null,
-//                contentScale = ContentScale.Crop,
-//                modifier = Modifier
-//                    .clip(RoundedCornerShape(10.dp))
-//                    .width(72.dp)
-//                    .height(48.dp),
-//                placeholder = painterResource(id = R.drawable.ic_image)
-//            )
-            // TODO: This will delete when integration will backend
             Box(
                 modifier = Modifier
                     .clip(RoundedCornerShape(10.dp))
                     .width(72.dp)
                     .height(48.dp)
                     .background(MaterialTheme.colorScheme.primaryContainer),
-            )
+            ){
+                AsyncImage(
+                    model = jajan.image,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .width(72.dp)
+                        .height(48.dp),
+                    placeholder = painterResource(id = R.drawable.ic_image)
+                )
+            }
             Spacer(modifier = Modifier.width(16.dp))
             Column(
                 modifier = Modifier.weight(1f)
@@ -94,8 +97,8 @@ fun PreviewJajanItem() {
     JajanManiaTheme {
         Surface {
             val jajan = Jajan(
-                id = 1,
-                vendorId = 1,
+                id = "1",
+                vendorId = "1",
                 name = "Soto",
                 category = "Makanan Kuah",
                 price = 120000L,
