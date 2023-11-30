@@ -115,13 +115,13 @@ interface VendorJajanManiaService {
         @Query("where") where: String,
         @Query("include") include: String
     ): NetworkResponse<ListJajanResponse, CommonErrorResponse>
-
+  
     @PATCH("jajan-items/{id}")
-    suspend fun updateJajan(
-        @Header("authorization") token: String,
-        @Body addJajanRequest: AddJajanRequest,
-        @Path("id") id: String,
-    ): NetworkResponse<AddJajanItemResponse, CommonErrorResponse>
+      suspend fun updateJajan(
+          @Header("authorization") token: String,
+          @Body addJajanRequest: AddJajanRequest,
+          @Path("id") id: String,
+      ): NetworkResponse<AddJajanItemResponse, CommonErrorResponse>
 
     @GET("jajan-items/{id}")
     suspend fun getJajanById(
